@@ -1,0 +1,131 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-brown-950);
+  color: var(--text-on-dark);
+  padding-top: clamp(3rem, 2rem + 4vw, 5rem);
+  /*
+   * A mobil CTA-sáv a képernyő aljára rögzül, ezért a helyét itt tartjuk
+   * fenn — nem a #root alján —, különben a sötét footer alatt egy világos
+   * csík maradna. Desktopon a --mobilebar-h értéke 0.
+   */
+  padding-bottom: calc(clamp(1.5rem, 1rem + 2vw, 2.5rem) + var(--mobilebar-h));
+}
+
+/* --- Háttérfelirat ---
+   Nagyon alacsony kontrasztú, a tartalom mögött. A footer szövege
+   külön rétegen ül, így az olvashatóság nem romlik. */
+
+.footer__wordmark {
+  position: absolute;
+  inset: auto 0 -0.14em;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+  line-height: 0.78;
+}
+
+.footer__wordmark span {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 20vw, 19rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  color: rgba(216, 194, 168, 0.07);
+}
+
+.footer__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.footer__top {
+  display: grid;
+  gap: var(--sp-7) var(--sp-6);
+  padding-bottom: clamp(3rem, 2rem + 6vw, 7rem);
+}
+
+@media (min-width: 620px) {
+  .footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .footer__top {
+    grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6);
+  }
+}
+
+.footer__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.footer__service {
+  margin-top: 0.3rem;
+  font-size: var(--fs-sm);
+  color: var(--text-on-dark-muted);
+}
+
+.footer__heading {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-sand);
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  list-style: none;
+}
+
+.footer__list a:not(.contact-link),
+.footer__list button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-on-dark-muted);
+  font: inherit;
+  font-size: var(--fs-sm);
+  text-align: left;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.footer__list a:not(.contact-link):hover,
+.footer__list button:hover {
+  color: var(--text-on-dark);
+  text-decoration: underline;
+}
+
+.footer__list .contact-link {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.footer__text {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--text-on-dark-muted);
+}
+.footer__text + .footer__text {
+  margin-top: var(--sp-2);
+}
+
+.footer__bottom {
+  padding-top: var(--sp-5);
+  border-top: 1px solid rgba(216, 194, 168, 0.16);
+  font-size: var(--fs-xs);
+  color: var(--text-on-dark-muted);
+}

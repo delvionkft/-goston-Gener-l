@@ -1,0 +1,41 @@
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--c-brown-900);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.contact-link svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  color: var(--c-brown-400);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.contact-link:hover {
+  color: var(--c-brown-700);
+  text-decoration: underline;
+}
+
+.contact-link:hover svg {
+  color: var(--c-brown-700);
+}
+
+.contact-link--muted {
+  cursor: default;
+}
+
+.on-dark .contact-link {
+  color: var(--text-on-dark);
+}
+.on-dark .contact-link svg {
+  color: var(--c-sand);
+}
+.on-dark .contact-link:hover {
+  color: var(--c-sand);
+}

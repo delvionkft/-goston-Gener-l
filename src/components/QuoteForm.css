@@ -1,0 +1,403 @@
+.qform {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+/* Csapdamező — láthatatlan, de nem `display:none`, hogy a botok kitöltsék */
+.qform__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.qform__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4) var(--sp-5);
+}
+
+@media (max-width: 559px) {
+  .qform__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Mező --- */
+
+.qfield {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.qfield__label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-brown-900);
+}
+
+.qform__req {
+  color: var(--c-brown-600);
+}
+
+.qfield input,
+.qfield select,
+.qfield textarea {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  /* Csak background-color: a `background` rövidítés törölné a select
+     saját nyíl-ikonjának pozícióját és méretét. */
+  background-color: var(--c-card);
+  color: var(--text);
+  font-size: var(--fs-base);
+  line-height: 1.4;
+  transition:
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out);
+}
+
+.qfield textarea {
+  resize: vertical;
+  min-height: 108px;
+}
+
+/* Natív nyíl helyett saját, hogy minden böngészőben egyforma legyen */
+.qfield select {
+  appearance: none;
+  padding-right: 2.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B4423' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 17px;
+  cursor: pointer;
+}
+
+.qfield input:hover,
+.qfield select:hover,
+.qfield textarea:hover {
+  border-color: var(--c-brown-400);
+}
+
+.qfield input:focus,
+.qfield select:focus,
+.qfield textarea:focus {
+  outline: none;
+  border-color: var(--c-brown-700);
+  box-shadow: 0 0 0 3px rgba(107, 68, 35, 0.16);
+}
+
+.qfield input:disabled,
+.qfield select:disabled,
+.qfield textarea:disabled {
+  background-color: var(--c-beige-deep);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.qfield input::placeholder,
+.qfield textarea::placeholder {
+  color: #7E6E62;
+}
+
+/* A telefonszám az elsődleges mező — vizuálisan is az */
+.qfield.is-primary input {
+  border-color: var(--c-brown-400);
+  background-color: #FFFCF6;
+}
+
+.qfield__hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* --- Hibaállapot --- */
+
+.qfield.has-error input,
+.qfield.has-error select,
+.qfield.has-error textarea {
+  border-color: #A03A28;
+  background-color: #FFF7F5;
+}
+
+.qfield.has-error input:focus,
+.qfield.has-error select:focus,
+.qfield.has-error textarea:focus {
+  box-shadow: 0 0 0 3px rgba(160, 58, 40, 0.18);
+}
+
+.qform__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: #8E3223;
+  font-weight: 500;
+}
+
+.qform__error svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  margin-top: 1px;
+}
+
+.qform__banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.qform__banner svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 1px;
+}
+
+.qform__banner--error {
+  background: #FCEFEC;
+  border: 1px solid #E9C6BE;
+  color: #7E2C1E;
+}
+
+.qform__banner-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  align-items: center;
+  margin-top: var(--sp-2);
+}
+
+.qform__banner-contact .contact-link {
+  font-size: var(--fs-sm);
+  color: #7E2C1E;
+}
+.qform__banner-contact .contact-link svg {
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+/* --- Hozzájárulás --- */
+
+.qform__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.qform__consent input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 2px;
+  accent-color: var(--c-brown-700);
+  cursor: pointer;
+}
+
+.qform__consent label {
+  cursor: pointer;
+}
+
+.qform__consent.has-error input[type='checkbox'] {
+  outline: 2px solid #A03A28;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.qform__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-brown-700);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.qform__link:hover {
+  color: var(--c-brown-900);
+}
+
+.qform__note {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* --- Betöltés --- */
+
+.qform__spinner {
+  width: 1.05em;
+  height: 1.05em;
+  animation: qform-spin 800ms linear infinite;
+}
+
+@keyframes qform-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qform__spinner { animation-duration: 2400ms; }
+}
+
+/* --- Siker --- */
+
+.qform--done {
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-8) var(--sp-5);
+  text-align: center;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  background: var(--c-card);
+}
+
+.qform__done-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--c-brown-900);
+  color: #FDFBF7;
+}
+
+.qform__done-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.qform__done-title {
+  font-size: var(--fs-xl);
+}
+
+.qform__done-text {
+  max-width: 44ch;
+  color: var(--text-muted);
+}
+
+/* --- Sötét háttéren --- */
+
+.qform.on-dark .qfield__label,
+.qform.on-dark .qform__consent label {
+  color: var(--text-on-dark);
+}
+
+.qform.on-dark .qfield__hint,
+.qform.on-dark .qform__note,
+.qform.on-dark .qform__consent {
+  color: var(--text-on-dark-muted);
+}
+
+.qform.on-dark .qform__req {
+  color: var(--c-sand);
+}
+
+.qform.on-dark input,
+.qform.on-dark select,
+.qform.on-dark textarea {
+  background-color: rgba(255, 253, 249, 0.06);
+  border-color: rgba(216, 194, 168, 0.34);
+  color: var(--text-on-dark);
+}
+
+.qform.on-dark input::placeholder,
+.qform.on-dark textarea::placeholder {
+  color: rgba(216, 194, 168, 0.62);
+}
+
+.qform.on-dark select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D8C2A8' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.qform.on-dark select option {
+  background: var(--c-brown-900);
+  color: var(--text-on-dark);
+}
+
+.qform.on-dark input:hover,
+.qform.on-dark select:hover,
+.qform.on-dark textarea:hover {
+  border-color: var(--c-sand);
+}
+
+.qform.on-dark input:focus,
+.qform.on-dark select:focus,
+.qform.on-dark textarea:focus {
+  border-color: var(--c-sand);
+  box-shadow: 0 0 0 3px rgba(216, 194, 168, 0.24);
+}
+
+.qform.on-dark .qfield.is-primary input {
+  border-color: var(--c-sand);
+  background-color: rgba(255, 253, 249, 0.1);
+}
+
+/* Sötét háttéren a hibaszín világosabb, hogy megmaradjon a kontraszt */
+.qform.on-dark .qform__error {
+  color: #F3B9AC;
+}
+
+.qform.on-dark .qfield.has-error input,
+.qform.on-dark .qfield.has-error select,
+.qform.on-dark .qfield.has-error textarea {
+  border-color: #E08874;
+  background-color: rgba(224, 136, 116, 0.1);
+}
+
+.qform.on-dark .qform__banner--error {
+  background: rgba(224, 136, 116, 0.14);
+  border-color: rgba(224, 136, 116, 0.45);
+  color: #F3C4B9;
+}
+
+.qform.on-dark .qform__banner-contact .contact-link,
+.qform.on-dark .qform__banner-contact .contact-link svg {
+  color: #F3C4B9;
+}
+
+.qform.on-dark .qform__link {
+  color: var(--c-sand);
+}
+.qform.on-dark .qform__link:hover {
+  color: #EFE4D6;
+}
+
+.qform.on-dark .qform__consent input[type='checkbox'] {
+  accent-color: var(--c-sand);
+}
+
+.qform--done.on-dark {
+  background: rgba(255, 253, 249, 0.06);
+  border-color: rgba(216, 194, 168, 0.3);
+}
+
+.qform--done.on-dark .qform__done-title {
+  color: var(--text-on-dark);
+}
+
+.qform--done.on-dark .qform__done-text {
+  color: var(--text-on-dark-muted);
+}
+
+.qform--done.on-dark .qform__done-icon {
+  background: var(--c-sand);
+  color: var(--c-brown-950);
+}

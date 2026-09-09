@@ -1,0 +1,116 @@
+.cookiebar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mobilebar-h) + 0px);
+  z-index: var(--z-toast);
+  padding: var(--sp-4) var(--gutter) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
+  background: var(--c-card);
+  border-top: 1px solid var(--c-line);
+  box-shadow: 0 -10px 40px -24px rgba(59, 38, 24, 0.55);
+  animation: cookiebar-in 340ms var(--ease-out) both;
+}
+
+@keyframes cookiebar-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookiebar { animation: none; }
+}
+
+.cookiebar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-6);
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+.cookiebar__text {
+  max-width: 62ch;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.cookiebar__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-brown-900);
+}
+
+.cookiebar__actions,
+.cookiebar__modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.cookiebar__actions {
+  flex: none;
+}
+
+.cookiebar__modal-actions {
+  justify-content: flex-end;
+}
+
+@media (max-width: 520px) {
+  .cookiebar__actions .btn,
+  .cookiebar__modal-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
+/* --- Kategóriák a modálisban --- */
+
+.cookiebar__cats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+  list-style: none;
+}
+
+.cookiebar__cat {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  padding: var(--sp-4);
+  background: var(--c-beige);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+}
+
+.cookiebar__cat-text label {
+  display: block;
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-brown-900);
+  cursor: pointer;
+}
+
+.cookiebar__cat-text p {
+  margin-top: 0.2rem;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.cookiebar__cat input[type='checkbox'] {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  margin-top: 2px;
+  accent-color: var(--c-brown-700);
+  cursor: pointer;
+}
+
+.cookiebar__cat input[type='checkbox']:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

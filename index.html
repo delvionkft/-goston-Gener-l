@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- FAVICON — cseréld le a saját ikonodra a /public mappában.
+         Ajánlott: favicon.svg (skálázható) + apple-touch-icon.png 180×180. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#F4EFE8" />
+
+    <!-- CANONICAL URL — írd át az éles domainre.
+         Ugyanezt az értéket állítsd be a src/config/site.ts `site.url` mezőjében is. -->
+    <link rel="canonical" href="https://example.hu/" />
+
+    <!-- A címet, a meta descriptiont, az Open Graph adatokat és a
+         strukturált adatot a src/lib/seo.ts állítja be a konfigurációból,
+         hogy egyetlen helyen kelljen szerkeszteni. Az itteni értékek a
+         betöltés előtti állapotra és a JS nélküli feldolgozókra szolgálnak. -->
+    <title>Ajánlatkérés</title>
+    <meta name="description" content="Kérj ajánlatot néhány kattintással." />
+
+    <!-- Betűtípusok. A preconnect a kapcsolatfelépítést előre elvégzi,
+         a display=swap pedig megakadályozza a láthatatlan szöveget. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap&subset=latin,latin-ext"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: system-ui, sans-serif">
+        Az oldal megtekintéséhez engedélyezned kell a JavaScriptet. Ha ez nem
+        lehetséges, vedd fel velünk a kapcsolatot telefonon vagy e-mailben.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

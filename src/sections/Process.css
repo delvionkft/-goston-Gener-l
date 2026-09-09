@@ -1,0 +1,209 @@
+.process {
+  background: var(--c-card);
+  border-block: 1px solid var(--c-line);
+}
+
+.process__head {
+  max-width: 56ch;
+}
+
+.process__list {
+  position: relative;
+  list-style: none;
+  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+}
+
+/* ===========================================================================
+   MOBIL: függőleges idővonal
+   =========================================================================== */
+
+.process__list::before,
+.process__list::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  border-radius: 2px;
+}
+
+/* Halvány alapvonal */
+.process__list::before {
+  background: var(--c-line);
+}
+
+/* Kitöltött rész — a görgetés előrehaladásával nő */
+.process__list::after {
+  bottom: auto;
+  height: calc(var(--progress, 0%) * 0.94);
+  background: linear-gradient(to bottom, var(--c-brown-700), var(--c-brown-400));
+  transition: height 620ms var(--ease-out);
+}
+
+.process__step {
+  position: relative;
+  padding-left: 52px;
+  padding-bottom: var(--sp-7);
+  opacity: 0.55;
+  transform: translateY(10px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.process__step:last-child {
+  padding-bottom: 0;
+}
+
+.process__step.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.process__marker {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-card);
+  box-shadow: 0 0 0 2px var(--c-line);
+  transition: box-shadow var(--dur) var(--ease-out);
+}
+
+.process__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-line);
+  transform: scale(0.7);
+  transition:
+    background-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.process__step.is-active .process__marker {
+  box-shadow: 0 0 0 2px var(--c-brown-700);
+}
+
+.process__step.is-active .process__dot {
+  background: var(--c-brown-700);
+  transform: scale(1);
+}
+
+.process__num {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--c-accent-text);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.process__step.is-active .process__num {
+  color: var(--c-brown-700);
+}
+
+.process__title {
+  margin-top: 0.25rem;
+  font-size: var(--fs-lg);
+}
+
+.process__text {
+  margin-top: var(--sp-2);
+  max-width: 48ch;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ===========================================================================
+   DESKTOP: vízszintes, váltakozó idővonal
+
+   Minden lépés három sorra oszlik: felső tartalomsáv, a vonal sávja,
+   alsó tartalomsáv. A két tartalomsáv egyforma magas, így a középső sáv
+   közepe pontosan a lista függőleges felezőpontján van — oda kerül a
+   vonal és a jelölő is. A páratlan lépések a felső, a párosak az alsó
+   sávba kerülnek.
+   =========================================================================== */
+
+@media (min-width: 1000px) {
+  .process__list {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: clamp(1rem, 0.2rem + 1.6vw, 2rem);
+  }
+
+  .process__list::before,
+  .process__list::after {
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    margin-top: -1px;
+  }
+
+  .process__list::after {
+    right: auto;
+    width: var(--progress, 0%);
+    height: 2px;
+    background: linear-gradient(to right, var(--c-brown-700), var(--c-brown-400));
+    transition: width 620ms var(--ease-out);
+  }
+
+  .process__step {
+    display: grid;
+    grid-template-rows: 1fr 46px 1fr;
+    min-height: 340px;
+    padding: 0;
+  }
+
+  .process__content {
+    padding-right: var(--sp-4);
+  }
+
+  /* Páratlan: felső sáv, a vonalhoz igazítva alulra */
+  .process__step:nth-child(odd) .process__content {
+    grid-row: 1;
+    align-self: end;
+  }
+
+  /* Páros: alsó sáv, a vonaltól indulva */
+  .process__step:nth-child(even) .process__content {
+    grid-row: 3;
+    align-self: start;
+  }
+
+  /* A jelölő a középső sávban, pontosan a vonalon */
+  .process__marker {
+    position: static;
+    grid-row: 2;
+    align-self: center;
+    justify-self: start;
+  }
+
+  .process__title {
+    font-size: var(--fs-base);
+  }
+
+  .process__text {
+    max-width: none;
+    font-size: var(--fs-xs);
+  }
+}
+
+/* Nagyobb kijelzőn már elfér a nagyobb betűméret */
+@media (min-width: 1240px) {
+  .process__title {
+    font-size: var(--fs-lg);
+  }
+  .process__text {
+    font-size: var(--fs-sm);
+  }
+}

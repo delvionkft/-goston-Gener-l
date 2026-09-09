@@ -1,0 +1,136 @@
+/* ===========================================================================
+   Design tokenek
+   Egyetlen forrás a színekhez, tipográfiához, térközökhöz.
+   =========================================================================== */
+
+:root {
+  /* --- Színpaletta (megadott márkaszínek) --- */
+  --c-brown-900: #3B2618; /* elsődleges sötétbarna */
+  --c-brown-700: #6B4423; /* fő barna */
+  --c-brown-400: #A67C52; /* világosabb barna akcentus */
+  --c-sand: #D8C2A8;      /* homokszín */
+  --c-beige: #F4EFE8;     /* világos bézs háttér */
+  --c-card: #FFFDF9;      /* kártyák, világos felületek */
+  --c-ink: #241A14;       /* sötét szöveg */
+  --c-muted: #74665C;     /* halvány szöveg */
+
+  /*
+   * Szövegre használható akcentszín.
+   * A megadott #A67C52 világos háttéren csak 3.3:1 kontrasztot ad, ezért
+   * kizárólag dekorációra (ikon, elválasztó, keret) használjuk, ahol a
+   * WCAG 3:1-et vár. Szöveghez ez a sötétebb változat megy: 5.7:1 bézsen.
+   */
+  --c-accent-text: #7E5430;
+
+  /* Származtatott árnyalatok — a paletta kiterjesztése, nem új márkaszín */
+  --c-brown-950: #2A1A10;
+  --c-brown-800: #4E3220;
+  --c-brown-600: #7E5430;
+  --c-brown-500: #916240;
+  --c-sand-light: #E7D8C4;
+  --c-beige-deep: #EBE3D8;
+  --c-line: #DFD4C6;
+  --c-line-soft: #EDE5DA;
+
+  /* --- Szerepkör szerinti színek --- */
+  --bg: var(--c-beige);
+  --bg-alt: var(--c-card);
+  --bg-deep: var(--c-brown-900);
+  --surface: var(--c-card);
+  --text: var(--c-ink);
+  --text-muted: var(--c-muted);
+  --text-on-dark: #F6F1EA;
+  --text-on-dark-muted: #C9B9A7;
+  --border: var(--c-line);
+  --accent: var(--c-brown-700);
+
+  /* --- Tipográfia --- */
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino,
+    'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  /* Fluid típusskála — clamp(min, preferált, max) */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --fs-lg: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --fs-xl: clamp(1.375rem, 1.28rem + 0.48vw, 1.75rem);
+  --fs-2xl: clamp(1.75rem, 1.55rem + 1vw, 2.5rem);
+  --fs-3xl: clamp(2.125rem, 1.75rem + 1.9vw, 3.5rem);
+  --fs-4xl: clamp(2.5rem, 1.9rem + 3vw, 4.5rem);
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.22;
+  --lh-body: 1.65;
+
+  --tracking-tight: -0.022em;
+  --tracking-wide: 0.14em;
+
+  /* --- Térköz (4px alapú skála) --- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 2.5rem;
+  --sp-8: 3rem;
+  --sp-9: 4rem;
+  --sp-10: 5rem;
+  --sp-11: 6.5rem;
+  --sp-12: 8rem;
+
+  /** Szekciók függőleges belső térköze — reszponzív. */
+  --section-y: clamp(4rem, 3rem + 5vw, 8rem);
+
+  /* --- Elrendezés --- */
+  --container: 1240px;
+  --container-narrow: 860px;
+  --gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
+
+  /* --- Sugár — visszafogott, nem „buborékos” --- */
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 8px;
+  --r-pill: 999px;
+
+  /* --- Árnyék — finom, barnás alapú, nem szürke --- */
+  --shadow-xs: 0 1px 2px rgba(59, 38, 24, 0.06);
+  --shadow-sm: 0 2px 6px rgba(59, 38, 24, 0.06), 0 1px 2px rgba(59, 38, 24, 0.04);
+  --shadow-md: 0 10px 26px -12px rgba(59, 38, 24, 0.22);
+  --shadow-lg: 0 28px 60px -28px rgba(59, 38, 24, 0.34);
+
+  /* --- Mozgás --- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 620ms;
+
+  /* --- Rétegek --- */
+  --z-header: 100;
+  --z-mobilebar: 90;
+  --z-float: 80;
+  --z-menu: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* Fejléc magassága — a scroll-margin-top számol vele */
+  --header-h: 68px;
+  /* Mobil alsó CTA sáv magassága */
+  --mobilebar-h: 0px;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+/* A mobil CTA-sáv csak kis kijelzőn foglal helyet */
+@media (max-width: 899px) {
+  :root {
+    --mobilebar-h: 68px;
+  }
+}

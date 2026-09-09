@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Írd át az éles domainre.
+Sitemap: https://example.hu/sitemap.xml

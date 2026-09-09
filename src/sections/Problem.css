@@ -1,0 +1,157 @@
+.problem {
+  background: var(--c-beige);
+}
+
+.problem__head {
+  max-width: 44ch;
+}
+
+.problem__head h2 {
+  max-width: 22ch;
+}
+
+.problem__body {
+  display: grid;
+  gap: var(--sp-5);
+  margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}
+
+@media (min-width: 880px) {
+  .problem__body {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 1rem + 3vw, 4rem);
+    align-items: start;
+  }
+}
+
+/* --- Problémaválasztó --- */
+
+.problem__tabs {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--c-line);
+}
+
+.problem__tab {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  width: 100%;
+  padding: var(--sp-5) var(--sp-4) var(--sp-5) 0;
+  border: 0;
+  border-bottom: 1px solid var(--c-line);
+  background: none;
+  text-align: left;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* Az aktív állapotot bal oldali él jelzi — nem csak szín, hanem forma is */
+.problem__tab::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: -1px;
+  width: 2px;
+  background: var(--c-brown-700);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.problem__tab:hover {
+  color: var(--c-brown-800);
+}
+
+.problem__tab.is-active {
+  color: var(--c-brown-900);
+}
+
+.problem__tab.is-active::before {
+  transform: scaleY(1);
+}
+
+.problem__tab-index {
+  flex: none;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--c-accent-text);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.problem__tab.is-active .problem__tab-index {
+  color: var(--c-brown-700);
+}
+
+.problem__tab-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+}
+
+@media (min-width: 880px) {
+  .problem__tab {
+    padding-left: var(--sp-5);
+  }
+  .problem__tab::before {
+    left: 0;
+  }
+}
+
+/* --- Panel --- */
+
+.problem__panel {
+  padding: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.problem__panel:focus-visible {
+  outline-offset: 4px;
+}
+
+.problem__panel-title {
+  font-size: var(--fs-xl);
+  max-width: 24ch;
+}
+
+.problem__panel-body {
+  margin-top: var(--sp-4);
+  max-width: 56ch;
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+}
+
+/* Finom megjelenés panelváltáskor — rövid, nem késleltet */
+.problem__panel:not([hidden]) .problem__panel-title,
+.problem__panel:not([hidden]) .problem__panel-body {
+  animation: problem-in 380ms var(--ease-out) both;
+}
+
+.problem__panel:not([hidden]) .problem__panel-body {
+  animation-delay: 60ms;
+}
+
+@keyframes problem-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .problem__panel:not([hidden]) .problem__panel-title,
+  .problem__panel:not([hidden]) .problem__panel-body {
+    animation: none;
+  }
+}
+
+.problem__cta {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+}

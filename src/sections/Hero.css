@@ -1,0 +1,287 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-top: calc(var(--header-h) + clamp(2rem, 1rem + 5vw, 5rem));
+  padding-bottom: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+  overflow: hidden;
+}
+
+/* Visszafogott háttér: bézs alap, egyetlen meleg fényforrással.
+   Nem sötét, nem komor, textúra nélkül is mélységet ad. */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      68% 58% at 78% 18%,
+      rgba(216, 194, 168, 0.55) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      52% 46% at 8% 92%,
+      rgba(166, 124, 82, 0.16) 0%,
+      transparent 70%
+    ),
+    var(--c-beige);
+}
+
+/* Vékony vízszintes vonal a hero alján — tagolás árnyék nélkül */
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--c-line) 22%,
+    var(--c-line) 78%,
+    transparent
+  );
+}
+
+.hero__inner {
+  position: relative;
+  display: grid;
+  gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  align-items: center;
+}
+
+/* --- Szövegoszlop --- */
+
+.hero__title {
+  margin-top: var(--sp-1);
+  max-width: 16ch;
+}
+
+/*
+ * Natív aláhúzás, nem abszolút pozicionált vonal: így hosszú, több sorba
+ * törő szolgáltatásnévnél is minden sor alá kerül, és nem lóg ki a
+ * konténerből.
+ */
+.hero__title-em {
+  font-style: italic;
+  color: var(--c-brown-700);
+  text-decoration: underline;
+  text-decoration-color: var(--c-brown-400);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.11em;
+  text-decoration-skip-ink: none;
+}
+
+.hero__lead {
+  max-width: 52ch;
+  margin-top: var(--sp-5);
+  font-size: var(--fs-lg);
+  color: var(--text-muted);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-7);
+}
+
+.hero__phone-missing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 1.05rem 0;
+  color: var(--text-muted);
+}
+.hero__phone-missing svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* --- Négy referenciapont --- */
+
+.hero__points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  list-style: none;
+  background: var(--c-line);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.hero__point {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: var(--sp-4) var(--sp-5);
+  background: color-mix(in srgb, var(--c-card) 76%, transparent);
+}
+
+.hero__point-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-brown-900);
+  letter-spacing: -0.01em;
+}
+
+.hero__point-text {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* --- Képoszlop --- */
+
+.hero__scene {
+  --parallax: 0px;
+  --px: 50%;
+  --py: 50%;
+  --glow: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+.hero__frame {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transform: translate3d(0, var(--parallax), 0);
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+/* Kurzorkövető fényfolt — csak a kép fölött, nagyon halványan */
+.hero__glow {
+  position: absolute;
+  inset: -6%;
+  z-index: 2;
+  border-radius: var(--r-lg);
+  background: radial-gradient(
+    22% 22% at var(--px) var(--py),
+    rgba(255, 253, 249, 0.5) 0%,
+    transparent 70%
+  );
+  opacity: var(--glow);
+  pointer-events: none;
+  transition: opacity 420ms var(--ease-out);
+  mix-blend-mode: soft-light;
+}
+
+/* Lebegő adatkártya a képre csúsztatva */
+.hero__badge {
+  position: absolute;
+  left: clamp(-1.5rem, -2vw, -0.5rem);
+  bottom: clamp(1.5rem, 4vw, 3rem);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: var(--sp-4) var(--sp-5);
+  max-width: 62%;
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  transform: translate3d(0, calc(var(--parallax) * -0.45), 0);
+  transition: transform 120ms linear;
+}
+
+.hero__badge-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero__badge-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-brown-900);
+}
+
+/* --- Görgetés-jelzés --- */
+
+.hero__scrollhint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 2vw, 1.75rem);
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.hero__scrollhint svg {
+  width: 15px;
+  height: 15px;
+  animation: hero-nudge 2.6s var(--ease-in-out) infinite;
+}
+
+.hero__scrollhint:hover {
+  color: var(--c-brown-900);
+}
+
+@keyframes hero-nudge {
+  0%, 72%, 100% { transform: translateY(0); }
+  84% { transform: translateY(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scrollhint svg { animation: none; }
+  .hero__frame,
+  .hero__badge { transform: none; }
+}
+
+/* --- Töréspontok --- */
+
+@media (max-width: 559px) {
+  .hero__points {
+    grid-template-columns: 1fr;
+  }
+  .hero__badge {
+    left: var(--sp-4);
+    right: var(--sp-4);
+    max-width: none;
+  }
+}
+
+@media (min-width: 700px) {
+  .hero__scene {
+    max-width: 560px;
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+  /* Desktopon kétoszlopos; mobilon a szöveg marad elöl (DOM-sorrend) */
+  .hero__scene {
+    max-width: none;
+  }
+  .hero__scrollhint {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1240px) {
+  .hero__inner {
+    gap: 5.5rem;
+  }
+}

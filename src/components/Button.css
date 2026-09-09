@@ -1,0 +1,101 @@
+.btn {
+  --btn-bg: var(--c-brown-900);
+  --btn-fg: #FDFBF7;
+  --btn-bg-hover: var(--c-brown-700);
+  --btn-border: transparent;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: 0.875rem 1.6rem;
+  border: 1px solid var(--btn-border);
+  border-radius: var(--r-md);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--lg {
+  padding: 1.05rem 2rem;
+  font-size: var(--fs-base);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* Elsődleges: sötétbarna alap, világos felirat (kontraszt ~12.9:1) */
+.btn--primary {
+  box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Másodlagos: körvonalas, világos felületen */
+.btn--secondary {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-brown-900);
+  --btn-bg-hover: rgba(107, 68, 35, 0.07);
+  --btn-border: var(--c-brown-400);
+}
+.btn--secondary:hover {
+  --btn-border: var(--c-brown-700);
+}
+
+/* Sötét háttéren: homokszín alap, sötétbarna felirat (kontraszt ~9.5:1) */
+.btn--onDark {
+  --btn-bg: var(--c-sand);
+  --btn-fg: var(--c-brown-950);
+  --btn-bg-hover: #E7D8C4;
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-brown-900);
+  --btn-bg-hover: rgba(107, 68, 35, 0.08);
+  padding-inline: 0.9rem;
+  font-weight: 500;
+}
+
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn[disabled]:active {
+  transform: none;
+}
+
+.btn__icon {
+  display: inline-flex;
+  flex: none;
+}
+
+.btn__icon svg {
+  width: 1.05em;
+  height: 1.05em;
+}
