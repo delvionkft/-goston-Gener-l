@@ -21,10 +21,31 @@
     ),
     radial-gradient(
       52% 46% at 8% 92%,
-      rgba(166, 124, 82, 0.16) 0%,
+      rgba(22, 84, 79, 0.11) 0%,
       transparent 70%
     ),
+    radial-gradient(
+      40% 34% at 96% 84%,
+      rgba(166, 124, 82, 0.2) 0%,
+      transparent 72%
+    ),
     var(--c-beige);
+}
+
+/*
+ * Finom rácsvonalak a háttérben. Építészeti utalás, és megtöri a
+ * nagy, üres bézs felületet anélkül, hogy elvonná a figyelmet.
+ */
+.hero__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, rgba(59, 38, 24, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 38, 24, 0.05) 1px, transparent 1px);
+  background-size: 76px 76px;
+  mask-image: radial-gradient(72% 62% at 50% 36%, #000 0%, transparent 78%);
 }
 
 /* Vékony vízszintes vonal a hero alján — tagolás árnyék nélkül */
@@ -53,7 +74,7 @@
 
 .hero__title {
   margin-top: var(--sp-1);
-  max-width: 16ch;
+  max-width: 19ch;
 }
 
 /*
@@ -61,14 +82,30 @@
  * törő szolgáltatásnévnél is minden sor alá kerül, és nem lóg ki a
  * konténerből.
  */
+/*
+ * A kiemelt szó színátmenetes. A `background-clip: text` nem támogatott
+ * mindenhol, ezért a színt előbb tömören beállítjuk — ahol a gradiens nem
+ * megy, ott is olvasható marad a szöveg.
+ */
 .hero__title-em {
-  font-style: italic;
   color: var(--c-brown-700);
-  text-decoration: underline;
-  text-decoration-color: var(--c-brown-400);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.11em;
-  text-decoration-skip-ink: none;
+  background: linear-gradient(96deg, var(--c-brown-700) 8%, var(--c-cta) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /*
+   * Ha a kiemelt rész több sorra törik, alapból csak az első sor kapja meg
+   * a hátteret, a többi átlátszó szövegként eltűnik. A `clone` minden
+   * sorfragmentumra külön ráteszi a gradienst.
+   */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+@supports not (background-clip: text) {
+  .hero__title-em {
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 .hero__lead {
@@ -99,24 +136,57 @@
 
 /* --- Négy referenciapont --- */
 
+/*
+ * Külön kártyák egybefüggő rács helyett: a „táblázat" hatás elavultnak
+ * hatott, a különálló, lekerekített csempék modernebbek és jobban is
+ * tagolnak.
+ */
 .hero__points {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
+  gap: var(--sp-3);
   margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
   list-style: none;
-  background: var(--c-line);
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-md);
-  overflow: hidden;
 }
 
 .hero__point {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   padding: var(--sp-4) var(--sp-5);
-  background: color-mix(in srgb, var(--c-card) 76%, transparent);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  transition:
+    background var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.hero__point:hover {
+  background: rgba(255, 255, 255, 0.78);
+  border-color: var(--c-brown-400);
+  transform: translateY(-2px);
+}
+
+/* Kis pipajel minden csempe tetején — vizuális horgony szöveg nélkül. */
+.hero__point::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  margin-bottom: var(--sp-2);
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, var(--c-cta), #2A7F78);
+  box-shadow: 0 0 0 4px rgba(22, 84, 79, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__point:hover {
+    transform: none;
+  }
 }
 
 .hero__point-title {
@@ -144,10 +214,24 @@
   isolation: isolate;
 }
 
+/*
+ * A kép mögé csúsztatott, elforgatott másodlagos réteg — ettől a kép
+ * nem síkban ül, hanem tárgyként.
+ */
+.hero__scene::before {
+  content: '';
+  position: absolute;
+  inset: 6% -3% -4% 5%;
+  z-index: -1;
+  border-radius: var(--r-xl);
+  background: linear-gradient(150deg, var(--c-sand), rgba(216, 194, 168, 0.2));
+  transform: rotate(-2.4deg);
+}
+
 .hero__frame {
   position: relative;
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xl);
   transform: translate3d(0, var(--parallax), 0);
   transition: transform 120ms linear;
   will-change: transform;
@@ -159,7 +243,7 @@
  * hogy a keret levágná.
  */
 .hero__frame > .imgslot {
-  border-radius: var(--r-lg);
+  border-radius: var(--r-xl);
   overflow: hidden;
 }
 
@@ -191,10 +275,11 @@
   gap: 0.15rem;
   padding: var(--sp-4) var(--sp-5);
   max-width: 62%;
-  background: var(--c-card);
-  border: 1px solid var(--c-line);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--r-md);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transform: translate3d(0, calc(var(--parallax) * -0.45), 0);
   transition: transform 120ms linear;
 }
@@ -287,7 +372,12 @@
 
 @media (min-width: 1000px) {
   .hero__inner {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    /*
+     * Aszimmetrikus rács: a szövegoszlop szélesebb. Így a hosszú magyar
+     * összetett szavak („kompromisszumok") egy sorba férnek, és a
+     * tördelés nem vág ketté szót.
+     */
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
   }
   /* Desktopon kétoszlopos; mobilon a szöveg marad elöl (DOM-sorrend) */
   .hero__scene {

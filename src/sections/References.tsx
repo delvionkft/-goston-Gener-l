@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ANCHOR, activeServices, references, testimonials, type ReferenceItem } from '../config/site';
 import { track } from '../lib/analytics';
 import { useReveal } from '../hooks/useReveal';
+import { useSpotlight } from '../hooks/useSpotlight';
 import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
 import { Lightbox } from '../components/Lightbox';
@@ -20,6 +21,7 @@ const ALL = 'mind';
  */
 export function References() {
   const headRef = useReveal<HTMLDivElement>();
+  const gridRef = useSpotlight<HTMLUListElement>('.refs__card');
   const [filter, setFilter] = useState<string>(ALL);
   const [visible, setVisible] = useState<number>(references.pageSize);
   const [lightboxId, setLightboxId] = useState<string | null>(null);
@@ -99,7 +101,7 @@ export function References() {
           </div>
         ) : null}
 
-        <ul className="refs__grid">
+        <ul className="refs__grid" ref={gridRef}>
           {shown.map((item) => (
             <li key={item.id} className="refs__item">
               <button

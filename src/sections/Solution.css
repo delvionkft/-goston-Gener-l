@@ -33,13 +33,14 @@
 }
 
 .svc__card {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
   border: 1px solid var(--c-line-soft);
   border-radius: var(--r-lg);
-  background: var(--c-card);
+  background: var(--surface-raised);
   box-shadow: var(--shadow-sm);
   transition:
     box-shadow var(--dur) var(--ease-out),
@@ -47,15 +48,45 @@
     transform var(--dur) var(--ease-out);
 }
 
+/*
+ * Kurzorkövető fényfolt. A pozíciót a useSpotlight hook írja a --mx/--my
+ * változókba; itt csak megjelenítjük. Alapból láthatatlan, hoverre úszik be.
+ */
+.svc__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(22, 84, 79, 0.07),
+    transparent 62%
+  );
+}
+
+.svc__card:hover::before {
+  opacity: 1;
+}
+
 .svc__card:hover {
-  border-color: var(--c-line);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  border-color: var(--c-brown-400);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-4px);
 }
 
 .svc.is-open .svc__card {
   border-color: var(--c-cta);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lift);
+}
+
+/* A tartalom a fényfolt fölött marad */
+.svc__body,
+.svc__media {
+  position: relative;
+  z-index: 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -104,11 +135,22 @@
 .svc__toggle-icon {
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border: 1px solid var(--c-line);
   border-radius: 50%;
-  transition: transform var(--dur) var(--ease-out);
+  background: var(--bg);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.svc__toggle:hover .svc__toggle-icon {
+  background: var(--c-cta);
+  border-color: var(--c-cta);
+  color: #fff;
 }
 
 .svc__toggle-icon svg {
@@ -211,22 +253,53 @@
 
 /* --- Záró CTA ------------------------------------------------------------ */
 
+/*
+ * Záró CTA-blokk. Sötét felület: a szolgáltatások világos kártyarácsa
+ * után ez zárja le a szekciót, és vizuálisan is jelzi, hogy itt döntés
+ * következik.
+ */
 .solution__cta {
+  position: relative;
+  overflow: hidden;
   display: grid;
   gap: var(--sp-5);
   margin-top: var(--sp-8);
-  padding: var(--sp-7);
-  border: 1px solid var(--c-line-soft);
-  border-radius: var(--r-lg);
-  background: var(--c-card);
+  padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  border-radius: var(--r-xl);
+  background: var(--c-ink-deep);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-lg);
   text-align: center;
   justify-items: center;
 }
 
+.solution__cta::before {
+  content: '';
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  top: -60%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(166, 124, 82, 0.3), transparent 66%);
+  pointer-events: none;
+}
+
+.solution__cta > * {
+  position: relative;
+  z-index: 1;
+}
+
 .solution__cta-text {
-  max-width: 62ch;
-  font-size: var(--fs-lg);
-  color: var(--text);
+  max-width: 54ch;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-on-dark);
+  text-wrap: balance;
 }
 
 @media (max-width: 559px) {

@@ -1,6 +1,8 @@
 .process {
+  position: relative;
   background: var(--c-card);
   border-block: 1px solid var(--c-line);
+  overflow: hidden;
 }
 
 .process__head {
@@ -37,7 +39,7 @@
 .process__list::after {
   bottom: auto;
   height: calc(var(--progress, 0%) * 0.94);
-  background: linear-gradient(to bottom, var(--c-brown-700), var(--c-brown-400));
+  background: linear-gradient(to bottom, var(--c-cta), var(--c-brown-400));
   transition: height 620ms var(--ease-out);
 }
 
@@ -63,21 +65,23 @@
 
 .process__marker {
   position: absolute;
-  left: 8px;
-  top: 6px;
+  left: 5px;
+  top: 4px;
   display: grid;
   place-items: center;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--c-card);
   box-shadow: 0 0 0 2px var(--c-line);
-  transition: box-shadow var(--dur) var(--ease-out);
+  transition:
+    box-shadow var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out);
 }
 
 .process__dot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--c-line);
   transform: scale(0.7);
@@ -87,29 +91,34 @@
 }
 
 .process__step.is-active .process__marker {
-  box-shadow: 0 0 0 2px var(--c-brown-700);
+  box-shadow:
+    0 0 0 2px var(--c-cta),
+    0 0 0 6px rgba(22, 84, 79, 0.12);
 }
 
 .process__step.is-active .process__dot {
-  background: var(--c-brown-700);
+  background: var(--c-cta);
   transform: scale(1);
 }
 
+/* Nagy, halvány sorszám — tipográfiai díszítés, nem információ. */
 .process__num {
   display: block;
-  font-size: var(--fs-xs);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2vw, 3.25rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--c-accent-text);
+  line-height: 0.9;
+  letter-spacing: var(--tracking-tighter);
+  color: var(--c-line);
   transition: color var(--dur) var(--ease-out);
 }
 
 .process__step.is-active .process__num {
-  color: var(--c-brown-700);
+  color: var(--c-sand);
 }
 
 .process__title {
-  margin-top: 0.25rem;
+  margin-top: var(--sp-2);
   font-size: var(--fs-lg);
 }
 

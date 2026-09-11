@@ -1,0 +1,89 @@
+/* Szolgáltatás-futószalag. */
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--sp-4);
+  border-block: 1px solid var(--c-line);
+  background: var(--c-ink-deep);
+  color: var(--c-sand);
+}
+
+/* Elhalványuló szélek, hogy a szöveg ne vágódjon el élesen. */
+.marquee::before,
+.marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(40px, 8vw, 120px);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--c-ink-deep), transparent);
+}
+
+.marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--c-ink-deep), transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 46s linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__list {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-7);
+  padding-right: var(--sp-7);
+  list-style: none;
+}
+
+.marquee__list li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-7);
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Elválasztó pont a tételek között */
+.marquee__list li::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-brown-500);
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Pontosan egy listányit lép — a másolat zökkenő nélkül veszi át. */
+    transform: translateX(-50%);
+  }
+}
+
+/* Csökkentett mozgás: nincs animáció, helyette görgethető sáv. */
+.marquee.is-static {
+  overflow-x: auto;
+}
+
+.marquee.is-static .marquee__track {
+  animation: none;
+}

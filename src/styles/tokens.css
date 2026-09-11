@@ -33,6 +33,11 @@
   --c-cta-hover: #0F423E;
 
   /* Származtatott árnyalatok — a paletta kiterjesztése, nem új márkaszín */
+  /* Mélyebb, melegebb feketésbarna a sötét szekciókhoz. A korábbi
+     #3B2618 világos volt: nem adott elég értékkontrasztot a bézzsel
+     szemben, ezért a szekciók egymásba folytak. */
+  --c-ink-deep: #14100D;
+  --c-ink-deep-2: #1E1813;
   --c-brown-950: #2A1A10;
   --c-brown-800: #4E3220;
   --c-brown-600: #7E5430;
@@ -45,7 +50,14 @@
   /* --- Szerepkör szerinti színek --- */
   --bg: var(--c-beige);
   --bg-alt: var(--c-card);
-  --bg-deep: var(--c-brown-900);
+  --bg-deep: var(--c-ink-deep);
+  /* Enyhén megemelt felület világos háttéren — a lapos fehér kártyák
+     helyett ez adja a rétegzettséget. */
+  --surface-raised: #FFFFFF;
+  --surface-sunken: #EFE8DE;
+  /* Üveghatású felület (fejléc, lebegő elemek) */
+  --glass: rgba(250, 246, 240, 0.72);
+  --glass-border: rgba(59, 38, 24, 0.09);
   --surface: var(--c-card);
   --text: var(--c-ink);
   --text-muted: var(--c-muted);
@@ -75,13 +87,15 @@
   --fs-xl: clamp(1.375rem, 1.28rem + 0.48vw, 1.75rem);
   --fs-2xl: clamp(1.75rem, 1.55rem + 1vw, 2.5rem);
   --fs-3xl: clamp(2.125rem, 1.75rem + 1.9vw, 3.5rem);
-  --fs-4xl: clamp(2.5rem, 1.9rem + 3vw, 4.5rem);
+  --fs-4xl: clamp(2.15rem, 1.5rem + 2.8vw, 4.25rem);
+  --fs-5xl: clamp(3.25rem, 2rem + 5.4vw, 7rem);
 
   --lh-tight: 1.08;
   --lh-snug: 1.22;
   --lh-body: 1.65;
 
-  --tracking-tight: -0.022em;
+  --tracking-tight: -0.028em;
+  --tracking-tighter: -0.042em;
   --tracking-wide: 0.14em;
 
   /* --- Térköz (4px alapú skála) --- */
@@ -106,17 +120,37 @@
   --container-narrow: 860px;
   --gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
 
-  /* --- Sugár — visszafogott, nem „buborékos” --- */
-  --r-sm: 3px;
-  --r-md: 5px;
-  --r-lg: 8px;
+  /* --- Sugár ---
+     A korábbi 3–8 px szűk volt: nagy felületeken szinte szögletesnek
+     látszott, és a kártyák olcsó hatást keltettek. Ez a skála nagyobb,
+     de nem „buborékos”. */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
   --r-pill: 999px;
 
-  /* --- Árnyék — finom, barnás alapú, nem szürke --- */
+  /* --- Árnyék ---
+     Több rétegű, barnás alapú. Egyetlen éles árnyék helyett egy szoros
+     kontaktárnyék + egy nagy, lágy szórás adja a mélységet. */
   --shadow-xs: 0 1px 2px rgba(59, 38, 24, 0.06);
-  --shadow-sm: 0 2px 6px rgba(59, 38, 24, 0.06), 0 1px 2px rgba(59, 38, 24, 0.04);
-  --shadow-md: 0 10px 26px -12px rgba(59, 38, 24, 0.22);
-  --shadow-lg: 0 28px 60px -28px rgba(59, 38, 24, 0.34);
+  --shadow-sm:
+    0 1px 2px rgba(42, 26, 16, 0.05),
+    0 4px 12px -4px rgba(42, 26, 16, 0.07);
+  --shadow-md:
+    0 2px 4px rgba(42, 26, 16, 0.05),
+    0 12px 28px -10px rgba(42, 26, 16, 0.16);
+  --shadow-lg:
+    0 4px 8px rgba(42, 26, 16, 0.05),
+    0 32px 64px -24px rgba(42, 26, 16, 0.26);
+  --shadow-xl:
+    0 6px 12px rgba(42, 26, 16, 0.06),
+    0 48px 96px -32px rgba(42, 26, 16, 0.34);
+  /* Emelkedő kártya hoverre */
+  --shadow-lift:
+    0 2px 4px rgba(42, 26, 16, 0.05),
+    0 24px 48px -16px rgba(42, 26, 16, 0.22);
 
   /* --- Mozgás --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

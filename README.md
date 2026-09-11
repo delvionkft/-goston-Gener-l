@@ -253,6 +253,19 @@ CSS-változóként. A márkapaletta változtatásához elég ez az egy fájl.
 **Betűtípus:** címsorokhoz Montserrat, folyószöveghez Inter. A Montserrat nagy
 méretben határozott, de hosszabb bekezdésben az Inter olvashatóbb.
 
+**Szemcse:** az egész oldal fölött egy rögzített, SVG-zajból generált
+szemcseréteg ül (`body::after` a `base.css`-ben). Ez adja az anyagszerű
+hatást; nincs hozzá képfájl, és nem fogja el a kattintást. Erősségét az
+`opacity` szabályozza.
+
+**Szekciósorszám:** a szekciócímkék elé CSS-számláló írja a sorszámot
+(`01`, `02`, …). Nem kell kézzel karbantartani: új szekciónál magától
+újraszámozódik.
+
+**Világos–sötét ritmus:** a problémafelvetés, a szolgáltatások záró CTA-ja,
+a záró ajánlatkérő és a footer sötét. Enélkül az egész oldal egyetlen bézs
+felületté folyna össze — az értékkontraszt tagolja a szekciókat.
+
 **CTA-szín (`--c-cta`, `#16544F`):** a paletta egyébként végig meleg barna. Ha a
 főgomb is barna lenne, semmi nem emelkedne ki belőle. Ez a mély zöld kizárólag
 az elsődleges konverziós gombokon jelenik meg — ha máshol is használod, elveszti
@@ -285,6 +298,23 @@ háttéren szövegként 7.6:1.
   lépések egyenként aktiválódnak; csökkentett mozgásnál azonnal mind aktív.
 - **Rögzített CTA** — mobilon alsó sáv, asztali nézetben lebegő gomb. Mindkettő
   eltűnik, amikor egy ajánlatkérő űrlap látszik, hogy ne takarja a mezőket.
+- **Futószalag** (`Marquee`) — a hero alatt a bekapcsolt szolgáltatások
+  végtelenített sávja. Csökkentett mozgás esetén nem animál, helyette
+  oldalra görgethető. Hoverre megáll.
+- **Görgetésjelző** (`ScrollProgress`) — az oldal tetején. CSS-változóra ír,
+  nem React-állapotra, így a görgetés nem indít újrarenderelést.
+- **Fényfolt a kártyákon** (`useSpotlight`) — kurzorkövető fény a
+  szolgáltatás- és referenciakártyákon. Egyetlen figyelő ül a rácson, nem
+  kártyánként egy. Érintőképernyőn és csökkentett mozgásnál ki van kapcsolva.
+
+### Hosszú magyar szavak
+
+A címsorok `overflow-wrap: break-word` + `hyphens: auto` beállítást kapnak, a
+rácselemek pedig `min-width: 0`-t. Enélkül egy hosszú összetett szó
+(„kompromisszumok", „árnyékolástechnika") szélesebb lesz, mint a rácsoszlop,
+és kitolja az egész elrendezést a képernyőről — amit a `body { overflow-x:
+hidden }` csak **elrejt**, nem old meg. Ha új, hosszú szót teszel címsorba,
+ellenőrizd 360 px széles nézetben.
 
 ---
 

@@ -9,14 +9,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--sp-3);
-  padding: 0.875rem 1.6rem;
+  padding: 0.95rem 1.7rem;
   border: 1px solid var(--btn-border);
-  border-radius: var(--r-md);
+  border-radius: var(--r-pill);
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-family: var(--font-body);
   font-size: var(--fs-sm);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.005em;
   line-height: 1.2;
   text-align: center;
@@ -32,14 +32,36 @@
 
 .btn:hover {
   background: var(--btn-bg-hover);
+  transform: translateY(-2px);
 }
 
 .btn:active {
-  transform: translateY(1px);
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* Az ikon hoverre elmozdul a saját irányába — apró, de érezhető visszajelzés. */
+.btn__icon {
+  display: inline-flex;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn:hover .btn__icon {
+  transform: translateX(3px);
+}
+
+/* Lefelé mutató nyílnál értelemszerűen lefelé */
+.btn:hover .btn__icon:has(path[d^='M12 4v15']) {
+  transform: translateY(3px);
 }
 
 .btn--lg {
-  padding: 1.05rem 2rem;
+  padding: 1.15rem 2.2rem;
   font-size: var(--fs-base);
 }
 

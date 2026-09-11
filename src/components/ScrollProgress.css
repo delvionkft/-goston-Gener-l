@@ -1,0 +1,13 @@
+.scrollprog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: calc(var(--z-header) + 1);
+  pointer-events: none;
+  transform-origin: 0 50%;
+  /* scaleX-szel skálázunk, nem szélességgel: így nincs újratördelés. */
+  transform: scaleX(var(--scrolled, 0));
+  background: linear-gradient(90deg, var(--c-cta), var(--c-brown-400));
+}

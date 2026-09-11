@@ -3,6 +3,7 @@ import { ANCHOR, activeServices, solution } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
+import { useSpotlight } from '../hooks/useSpotlight';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
@@ -20,6 +21,7 @@ import './Solution.css';
 export function Solution() {
   const uid = useId();
   const headRef = useReveal<HTMLDivElement>();
+  const gridRef = useSpotlight<HTMLUListElement>('.svc__card');
   /* Alapból minden kártya csukva: így a rács egyenletes, és a látogató
      dönti el, mit nyit ki. */
   const [open, setOpen] = useState<string | null>(null);
@@ -41,7 +43,7 @@ export function Solution() {
           <p className="section-lead">{solution.lead}</p>
         </div>
 
-        <ul className="solution__grid">
+        <ul className="solution__grid" ref={gridRef}>
           {activeServices.map((service) => {
             const panelId = `${uid}-${service.key}`;
             const isOpen = open === service.key;

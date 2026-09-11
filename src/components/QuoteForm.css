@@ -48,9 +48,9 @@
 .qfield select,
 .qfield textarea {
   width: 100%;
-  padding: 0.8rem 0.9rem;
+  padding: 0.95rem 1.05rem;
   border: 1px solid var(--c-line);
-  border-radius: var(--r-md);
+  border-radius: var(--r-sm);
   /* Csak background-color: a `background` rövidítés törölné a select
      saját nyíl-ikonjának pozícióját és méretét. */
   background-color: var(--c-card);
@@ -89,7 +89,8 @@
 .qfield select:focus,
 .qfield textarea:focus {
   outline: none;
-  border-color: var(--c-brown-700);
+  border-color: var(--c-cta);
+  box-shadow: 0 0 0 3px rgba(22, 84, 79, 0.13);
   box-shadow: 0 0 0 3px rgba(107, 68, 35, 0.16);
 }
 

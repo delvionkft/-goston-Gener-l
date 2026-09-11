@@ -48,7 +48,8 @@ export function Problem() {
   };
 
   return (
-    <section className="section problem" id={ANCHOR.problem} aria-labelledby="problem-cim">
+    <section className="section section--dark problem on-dark" id={ANCHOR.problem} aria-labelledby="problem-cim">
+      <div className="mesh" aria-hidden="true" />
       <div className="container">
         <div className="problem__head" ref={revealRef}>
           <p className="eyebrow">{problem.eyebrow}</p>

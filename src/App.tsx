@@ -11,6 +11,8 @@ import { Process } from './sections/Process';
 import { FinalCta } from './sections/FinalCta';
 import { Footer } from './sections/Footer';
 import { StickyContact } from './components/StickyContact';
+import { ScrollProgress } from './components/ScrollProgress';
+import { Marquee } from './components/Marquee';
 import { CookieConsent } from './components/CookieConsent';
 import { Modal } from './components/Modal';
 
@@ -33,10 +35,12 @@ export function App() {
         Ugrás a tartalomra
       </a>
 
+      <ScrollProgress />
       <Header />
 
       <main id="fotartalom">
         <Hero />
+        <Marquee />
         <QuickQuote onOpenPrivacy={() => setLegalDoc('privacy')} />
         <Problem />
         <Solution />

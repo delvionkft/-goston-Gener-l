@@ -1,7 +1,13 @@
 /* Problémafelvetés: ablakrajz jelölésekkel + fülek. */
 
+/*
+ * Sötét szekció. Ez az oldal érzelmi mélypontja — itt a látogató a saját
+ * problémáját ismeri fel —, és egyben az a pont, ahol a világos szekciók
+ * sorát meg kell törni, különben az egész oldal egyetlen bézs felületté
+ * folyik össze.
+ */
 .problem {
-  background: var(--c-card);
+  color: var(--text-on-dark);
 }
 
 .problem__head {
@@ -25,7 +31,7 @@
 .problem__figure-hint {
   margin-top: var(--sp-4);
   font-size: var(--fs-sm);
-  color: var(--text-muted);
+  color: var(--text-on-dark-muted);
   text-align: center;
 }
 
@@ -39,11 +45,11 @@
 }
 
 .problem__tab {
-  padding: var(--sp-2) var(--sp-4);
-  border: 1px solid var(--c-line);
+  padding: 0.55rem var(--sp-4);
+  border: 1px solid rgba(216, 194, 168, 0.22);
   border-radius: var(--r-pill);
-  background: transparent;
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-dark-muted);
   font-size: var(--fs-sm);
   font-weight: 600;
   transition:
@@ -53,24 +59,24 @@
 }
 
 .problem__tab:hover {
-  border-color: var(--c-brown-400);
-  color: var(--c-brown-700);
+  border-color: var(--c-sand);
+  color: var(--text-on-dark);
 }
 
 .problem__tab.is-active {
-  background: var(--c-brown-900);
-  border-color: var(--c-brown-900);
-  color: var(--text-on-dark);
+  background: var(--c-sand);
+  border-color: var(--c-sand);
+  color: var(--c-brown-950);
 }
 
 /* --- Panel --------------------------------------------------------------- */
 
 .problem__panel {
   padding: var(--sp-6);
-  border: 1px solid var(--c-line-soft);
-  border-left: 3px solid var(--c-cta);
+  border: 1px solid rgba(216, 194, 168, 0.16);
   border-radius: var(--r-lg);
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(8px);
   /* A magasság a leghosszabb szöveghez igazodik, hogy váltáskor ne ugráljon. */
   min-height: 190px;
 }
@@ -84,8 +90,12 @@
   margin-bottom: var(--sp-3);
 }
 
+.problem__panel-title {
+  color: var(--text-on-dark);
+}
+
 .problem__panel-body {
-  color: var(--text-muted);
+  color: var(--text-on-dark-muted);
   max-width: 58ch;
 }
 
@@ -96,7 +106,7 @@
   gap: var(--sp-5);
   margin-top: var(--sp-8);
   padding-top: var(--sp-6);
-  border-top: 1px solid var(--c-line-soft);
+  border-top: 1px solid rgba(216, 194, 168, 0.16);
 }
 
 @media (min-width: 860px) {
@@ -113,7 +123,7 @@
   gap: var(--sp-3);
   max-width: 68ch;
   font-size: var(--fs-sm);
-  color: var(--text-muted);
+  color: var(--text-on-dark-muted);
 }
 
 .problem__disclaimer svg {
@@ -121,11 +131,18 @@
   width: 20px;
   height: 20px;
   margin-top: 2px;
-  color: var(--c-accent-text);
+  color: var(--c-sand);
 }
 
 @media (max-width: 859px) {
   .problem__foot .btn {
     width: 100%;
   }
+}
+
+/* A sötét háttéren az ablakrajz kap egy halvány keretet, hogy ne
+   „lebegjen" kontúr nélkül. */
+.problem .winfig__svg {
+  border: 1px solid rgba(216, 194, 168, 0.14);
+  box-shadow: var(--shadow-xl);
 }

@@ -22,10 +22,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-4);
+  padding: 0.55rem var(--sp-4);
   border: 1px solid var(--c-line);
   border-radius: var(--r-pill);
-  background: var(--c-card);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
   color: var(--text-muted);
   font-size: var(--fs-sm);
   font-weight: 600;
@@ -41,9 +42,10 @@
 }
 
 .refs__filter.is-active {
-  background: var(--c-brown-900);
-  border-color: var(--c-brown-900);
+  background: var(--c-ink-deep);
+  border-color: var(--c-ink-deep);
   color: var(--text-on-dark);
+  box-shadow: var(--shadow-sm);
 }
 
 .refs__filter-count {
@@ -73,12 +75,13 @@
 }
 
 .refs__card {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0;
   border: 1px solid var(--c-line-soft);
   border-radius: var(--r-lg);
-  background: var(--c-card);
+  background: var(--surface-raised);
   text-align: left;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -88,10 +91,29 @@
     border-color var(--dur) var(--ease-out);
 }
 
+.refs__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(22, 84, 79, 0.08),
+    transparent 60%
+  );
+}
+
+.refs__card:hover::after {
+  opacity: 1;
+}
+
 .refs__card:hover {
-  border-color: var(--c-line);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
+  border-color: var(--c-brown-400);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-5px);
 }
 
 @media (prefers-reduced-motion: reduce) {
