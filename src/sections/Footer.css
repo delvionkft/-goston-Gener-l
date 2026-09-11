@@ -129,3 +129,39 @@
   font-size: var(--fs-xs);
   color: var(--text-on-dark-muted);
 }
+
+/* Logószöveg és közösségi linkek. */
+.footer__logo {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-on-dark);
+  margin-bottom: var(--sp-2);
+}
+
+.footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+  list-style: none;
+}
+
+.footer__social a {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-sand);
+}
+
+.footer__list--plain {
+  gap: var(--sp-2);
+}
+
+.footer__logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  margin-bottom: var(--sp-2);
+}

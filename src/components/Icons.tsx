@@ -89,3 +89,24 @@ export const PinIcon = () => (
     <circle cx="12" cy="10" r="2.6" />
   </svg>
 );
+
+export const ClockIcon = () => (
+  <svg {...base}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5.2l3.2 2" />
+  </svg>
+);
+
+export const PlusIcon = () => (
+  <svg {...base}>
+    <path d="M12 5.5v13M5.5 12h13" />
+  </svg>
+);
+
+export const SlidersIcon = () => (
+  <svg {...base}>
+    <path d="M4 8h10M18 8h2M4 16h4M12 16h8" />
+    <circle cx="16" cy="8" r="2" />
+    <circle cx="10" cy="16" r="2" />
+  </svg>
+);

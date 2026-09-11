@@ -4,15 +4,17 @@ import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
-import { PH } from '../components/PlaceholderText';
-import { ArrowDownIcon } from '../components/Icons';
+import { WindowFigure } from '../components/WindowFigure';
+import { AlertIcon, ArrowDownIcon } from '../components/Icons';
 import './Problem.css';
 
 /**
- * Fájdalompont-szekció interaktív problémaválasztóval.
- * Desktopon fülekként, mobilon harmonikaként viselkedik — mindkét
- * esetben ugyanaz a DOM és ugyanaz az ARIA-szerep (tablist), így
- * a billentyűzetes navigáció egységes.
+ * Problémafelvetés.
+ *
+ * Két bemenet, egy állapot: az ablakrajz jelölései és a fülek ugyanazt a
+ * kiválasztást állítják. A fülek adják az ARIA tab-mintát, a rajz jelölései
+ * kiegészítő kapcsolók (`aria-pressed`) — így nincs két versengő tablist
+ * ugyanarra a panelre.
  */
 export function Problem() {
   const uid = useId();
@@ -22,6 +24,7 @@ export function Problem() {
 
   const tabId = (i: number) => `${uid}-tab-${i}`;
   const panelId = (i: number) => `${uid}-panel-${i}`;
+  const current = problem.items[active];
 
   /** Nyílbillentyűs navigáció a fülek között — WAI-ARIA tabs minta. */
   const onKeyDown = (event: React.KeyboardEvent) => {
@@ -39,7 +42,10 @@ export function Problem() {
     listRef.current?.querySelector<HTMLElement>(`#${CSS.escape(tabId(next))}`)?.focus();
   };
 
-  const current = problem.items[active];
+  const selectByKey = (key: string) => {
+    const index = problem.items.findIndex((item) => item.key === key);
+    if (index >= 0) setActive(index);
+  };
 
   return (
     <section className="section problem" id={ANCHOR.problem} aria-labelledby="problem-cim">
@@ -51,61 +57,69 @@ export function Problem() {
         </div>
 
         <div className="problem__body">
-          <div
-            className="problem__tabs"
-            role="tablist"
-            aria-label="Gyakori problémák"
-            aria-orientation="vertical"
-            ref={listRef}
-            onKeyDown={onKeyDown}
-          >
-            {problem.items.map((item, index) => (
-              <button
-                key={item.key}
-                type="button"
-                role="tab"
-                id={tabId(index)}
-                aria-selected={active === index}
-                aria-controls={panelId(index)}
-                tabIndex={active === index ? 0 : -1}
-                className={`problem__tab ${active === index ? 'is-active' : ''}`}
-                onClick={() => setActive(index)}
-              >
-                <span className="problem__tab-index" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <span className="problem__tab-label">
-                  <PH value={item.label} />
-                </span>
-              </button>
-            ))}
+          <div className="problem__figure">
+            <WindowFigure
+              markers={problem.items}
+              activeKey={current.key}
+              onSelect={selectByKey}
+            />
+            <p className="problem__figure-hint">
+              Kattints egy jelölésre az ablakon, vagy válassz a lista közül.
+            </p>
           </div>
 
-          {problem.items.map((item, index) => (
+          <div className="problem__picker">
             <div
-              key={item.key}
-              role="tabpanel"
-              id={panelId(index)}
-              aria-labelledby={tabId(index)}
-              hidden={active !== index}
-              tabIndex={0}
-              className="problem__panel"
+              className="problem__tabs"
+              role="tablist"
+              aria-label="Gyakori problémák nyílászáróknál"
+              ref={listRef}
+              onKeyDown={onKeyDown}
             >
-              {active === index ? (
-                <>
-                  <h3 className="problem__panel-title">
-                    <PH value={item.title} />
-                  </h3>
-                  <p className="problem__panel-body">
-                    <PH value={item.body} />
-                  </p>
-                </>
-              ) : null}
+              {problem.items.map((item, index) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  role="tab"
+                  id={tabId(index)}
+                  aria-selected={active === index}
+                  aria-controls={panelId(index)}
+                  tabIndex={active === index ? 0 : -1}
+                  className={`problem__tab ${active === index ? 'is-active' : ''}`}
+                  onClick={() => setActive(index)}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
-          ))}
+
+            {problem.items.map((item, index) => (
+              <div
+                key={item.key}
+                role="tabpanel"
+                id={panelId(index)}
+                aria-labelledby={tabId(index)}
+                hidden={active !== index}
+                tabIndex={0}
+                className="problem__panel"
+              >
+                {active === index ? (
+                  <>
+                    <h3 className="problem__panel-title">{item.title}</h3>
+                    <p className="problem__panel-body">{item.body}</p>
+                  </>
+                ) : null}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="problem__cta">
+        <div className="problem__foot">
+          <p className="problem__disclaimer">
+            <AlertIcon />
+            <span>{problem.disclaimer}</span>
+          </p>
+
           <Button
             size="lg"
             icon={<ArrowDownIcon />}

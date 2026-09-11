@@ -25,10 +25,10 @@
   align-items: center;
   gap: var(--sp-3);
   padding: 0.95rem 1.5rem;
-  border: 1px solid var(--c-brown-800);
+  border: 1px solid var(--c-cta);
   border-radius: var(--r-pill);
-  background: var(--c-brown-900);
-  color: #FDFBF7;
+  background: var(--c-cta);
+  color: #FFFFFF;
   font-size: var(--fs-sm);
   font-weight: 600;
   box-shadow: var(--shadow-lg);
@@ -43,7 +43,8 @@
 }
 
 .sticky-float__btn:hover {
-  background: var(--c-brown-700);
+  background: var(--c-cta-hover);
+  border-color: var(--c-cta-hover);
   transform: translateY(-2px);
 }
 
@@ -82,7 +83,12 @@
 }
 
 .sticky-bar__call,
+/* A CTA-gomb ugyanazt a színt kapja, mint az oldal többi elsődleges gombja. */
 .sticky-bar__quote {
+  flex: 1;
+  border: 1px solid var(--c-cta);
+  background: var(--c-cta);
+  color: #FFFFFF;
   display: inline-flex;
   align-items: center;
   justify-content: center;

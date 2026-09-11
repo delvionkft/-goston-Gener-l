@@ -85,3 +85,19 @@
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-md);
 }
+
+/* Válaszidő — csak valós vállalás esetén jelenik meg. */
+.quick__response {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-basis: 100%;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-accent-text);
+}
+
+.quick__response svg {
+  width: 17px;
+  height: 17px;
+}

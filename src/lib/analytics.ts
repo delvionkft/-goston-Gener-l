@@ -24,10 +24,13 @@ export type AnalyticsEvent =
   | 'cta_quote_click'
   | 'phone_click'
   | 'email_click'
+  | 'form_start'
   | 'form_submit_top'
   | 'form_submit_bottom'
   | 'form_error'
   | 'reference_open'
+  | 'reference_filter'
+  | 'service_open'
   | 'nav_click'
   | 'process_step_view';
 
@@ -48,12 +51,36 @@ declare global {
   }
 }
 
+/**
+ * ---------------------------------------------------------------------------
+ *  KONFIGURÁCIÓS HELY A MÉRŐRENDSZEREKHEZ
+ *  Amíg egy azonosító üres, az adott integráció egyszerűen nem fut le.
+ *  Nincs félig bekötött, néma hiba.
+ * ------------------------------------------------------------------------ */
+
 /** Meta Pixel standard eseménynevek a saját eseményekhez rendelve. */
 const META_PIXEL_MAP: Partial<Record<AnalyticsEvent, string>> = {
   form_submit_top: 'Lead',
   form_submit_bottom: 'Lead',
   phone_click: 'Contact',
   email_click: 'Contact',
+};
+
+/**
+ * Google Ads konverziókövetés.
+ *
+ * BEÁLLÍTÁS:
+ *  1. `conversionId` — a Google Ads címke azonosítója, pl. 'AW-123456789'.
+ *  2. `labels` — az egyes eseményekhez tartozó konverziócímkék.
+ * Amíg a `conversionId` üres, a Google Ads konverzió nem sül el.
+ */
+export const GOOGLE_ADS = {
+  conversionId: '',
+  labels: {
+    form_submit_top: '',
+    form_submit_bottom: '',
+    phone_click: '',
+  } as Partial<Record<AnalyticsEvent, string>>,
 };
 
 let consent: ConsentState = { analytics: false, marketing: false };
@@ -99,7 +126,17 @@ function dispatch(name: AnalyticsEvent, params: AnalyticsParams): void {
     window.gtag?.('event', name, params);
   }
 
-  // 3) Meta Pixel
+  // 3) Google Ads konverzió — csak beállított azonosítóval és címkével
+  if (consent.marketing && GOOGLE_ADS.conversionId) {
+    const label = GOOGLE_ADS.labels[name];
+    if (label) {
+      window.gtag?.('event', 'conversion', {
+        send_to: `${GOOGLE_ADS.conversionId}/${label}`,
+      });
+    }
+  }
+
+  // 4) Meta Pixel
   if (consent.marketing) {
     const metaEvent = META_PIXEL_MAP[name];
     if (metaEvent) window.fbq?.('track', metaEvent, params);

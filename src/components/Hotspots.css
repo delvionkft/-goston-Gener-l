@@ -1,0 +1,154 @@
+/* Információs pontok képek fölött (hero). */
+
+.hotspots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.hotspot__dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 253, 249, 0.94);
+  color: var(--c-brown-900);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(59, 38, 24, 0.12);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out);
+}
+
+.hotspot__dot svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.hotspot__dot:hover {
+  transform: scale(1.08);
+}
+
+.hotspot.is-open .hotspot__dot {
+  background: var(--c-cta);
+  color: #fff;
+}
+
+.hotspot.is-open .hotspot__dot svg {
+  transform: rotate(45deg);
+}
+
+/* Lüktető gyűrű — csak addig, amíg a pont zárva van. */
+.hotspot__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 253, 249, 0.8);
+  animation: hotspot-pulse 2.8s var(--ease-out) infinite;
+}
+
+.hotspot.is-open .hotspot__ring {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes hotspot-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  70%,
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspot__ring {
+    animation: none;
+  }
+}
+
+.hotspot__bubble {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max(210px, 17vw);
+  max-width: 250px;
+  padding: var(--sp-4);
+  border-radius: var(--r-lg);
+  background: var(--c-brown-900);
+  color: var(--text-on-dark);
+  box-shadow: var(--shadow-lg);
+  z-index: 4;
+}
+
+.hotspot__bubble::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-bottom-color: var(--c-brown-900);
+}
+
+.hotspot__title {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-1);
+}
+
+.hotspot__text {
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-on-dark-muted);
+}
+
+/* A szélső pontoknál a buborék ne lógjon ki a képből. */
+.hotspot:first-child .hotspot__bubble {
+  left: 0;
+  transform: none;
+}
+.hotspot:first-child .hotspot__bubble::before {
+  left: 19px;
+  transform: none;
+}
+
+.hotspot:last-child .hotspot__bubble {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.hotspot:last-child .hotspot__bubble::before {
+  left: auto;
+  right: 19px;
+  transform: none;
+}
+
+@media (max-width: 599px) {
+  .hotspot__dot {
+    width: 32px;
+    height: 32px;
+  }
+  .hotspot__dot svg {
+    width: 15px;
+    height: 15px;
+  }
+  .hotspot__bubble {
+    width: min(64vw, 250px);
+  }
+}

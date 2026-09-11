@@ -1,39 +1,35 @@
-import { useId, useRef, useState } from 'react';
-import { ANCHOR, solution } from '../config/site';
+import { useId, useState } from 'react';
+import { ANCHOR, activeServices, solution } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
-import { ArrowDownIcon, CheckIcon } from '../components/Icons';
+import { ArrowDownIcon, CheckIcon, PlusIcon } from '../components/Icons';
 import './Solution.css';
 
 /**
- * Szolgáltatásbemutató váltakozó kép–szöveg elrendezéssel, fülekkel.
- * Nem ikonkártya-rács: minden fül egy nagyobb, önálló bemutató blokk.
+ * Szolgáltatások.
+ *
+ * Kártyarács, ahol minden kártya lenyitható (ARIA disclosure minta).
+ * Nem carousel: a rács minden méreten kiszámíthatóan viselkedik, a
+ * lenyitás pedig nem visz el másik nézetre — a látogató nem veszíti el
+ * a helyét, és nem kell lapozgatnia, hogy összehasonlítson kettőt.
  */
 export function Solution() {
   const uid = useId();
-  const [active, setActive] = useState(0);
-  const listRef = useRef<HTMLDivElement>(null);
   const headRef = useReveal<HTMLDivElement>();
-  const bodyRef = useReveal<HTMLDivElement>();
+  /* Alapból minden kártya csukva: így a rács egyenletes, és a látogató
+     dönti el, mit nyit ki. */
+  const [open, setOpen] = useState<string | null>(null);
 
-  const tabId = (i: number) => `${uid}-stab-${i}`;
-  const panelId = (i: number) => `${uid}-spanel-${i}`;
-
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    const last = solution.tabs.length - 1;
-    let next: number | null = null;
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = active === last ? 0 : active + 1;
-    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = active === 0 ? last : active - 1;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = last;
-    if (next === null) return;
-    event.preventDefault();
-    setActive(next);
-    listRef.current?.querySelector<HTMLElement>(`#${CSS.escape(tabId(next))}`)?.focus();
+  const toggle = (key: string, label: string) => {
+    setOpen((prev) => {
+      const next = prev === key ? null : key;
+      if (next) track('service_open', { service: label });
+      return next;
+    });
   };
 
   return (
@@ -41,102 +37,98 @@ export function Solution() {
       <div className="container">
         <div className="solution__head" ref={headRef}>
           <p className="eyebrow">{solution.eyebrow}</p>
-          <h2 id="solution-cim" className="solution__title">
-            <PH value={solution.title} />
-          </h2>
-          <div className="solution__intro">
-            <p className="section-lead">
-              <PH value={solution.lead} />
-            </p>
-            <p className="solution__body">
-              <PH value={solution.body} />
-            </p>
-          </div>
+          <h2 id="solution-cim">{solution.title}</h2>
+          <p className="section-lead">{solution.lead}</p>
         </div>
 
-        <div className="solution__wrap" ref={bodyRef}>
-          <div
-            className="solution__tabs"
-            role="tablist"
-            aria-label="Szolgáltatásaink"
-            ref={listRef}
-            onKeyDown={onKeyDown}
-          >
-            {solution.tabs.map((tab, index) => (
-              <button
-                key={tab.key}
-                type="button"
-                role="tab"
-                id={tabId(index)}
-                aria-selected={active === index}
-                aria-controls={panelId(index)}
-                tabIndex={active === index ? 0 : -1}
-                className={`solution__tab ${active === index ? 'is-active' : ''}`}
-                onClick={() => setActive(index)}
-              >
-                <PH value={tab.label} />
-              </button>
-            ))}
-          </div>
+        <ul className="solution__grid">
+          {activeServices.map((service) => {
+            const panelId = `${uid}-${service.key}`;
+            const isOpen = open === service.key;
 
-          {solution.tabs.map((tab, index) => (
-            <div
-              key={tab.key}
-              role="tabpanel"
-              id={panelId(index)}
-              aria-labelledby={tabId(index)}
-              hidden={active !== index}
-              tabIndex={0}
-              className={`solution__panel ${index % 2 === 1 ? 'is-reversed' : ''}`}
-            >
-              {active === index ? (
-                <>
-                  <div className="solution__panel-copy">
-                    <h3 className="solution__panel-title">
-                      <PH value={tab.title} />
-                    </h3>
-                    <p className="solution__panel-body">
-                      <PH value={tab.body} />
-                    </p>
-                    <ul className="solution__bullets">
-                      {tab.bullets.map((bullet, i) => (
-                        <li key={`${tab.key}-${i}`}>
-                          <span className="solution__bullet-icon" aria-hidden="true">
-                            <CheckIcon />
-                          </span>
-                          <PH value={bullet} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="solution__panel-media">
+            return (
+              <li key={service.key} className={`svc ${isOpen ? 'is-open' : ''}`}>
+                <article className="svc__card">
+                  <div className="svc__media">
                     <ImageSlot
-                      src={tab.image || undefined}
-                      alt={tab.imageAlt}
-                      ratio="5 / 4"
+                      src={service.image || undefined}
+                      alt={service.imageAlt}
+                      ratio="5 / 3"
                       label="[SZOLGÁLTATÁS KÉP]"
-                      sizes="(min-width: 900px) 46vw, 100vw"
+                      sizes="(min-width: 1100px) 30vw, (min-width: 700px) 46vw, 92vw"
                     />
                   </div>
-                </>
-              ) : null}
-            </div>
-          ))}
-        </div>
+
+                  <div className="svc__body">
+                    <h3 className="svc__title">{service.label}</h3>
+                    <p className="svc__summary">{service.summary}</p>
+
+                    <button
+                      type="button"
+                      className="svc__toggle"
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => toggle(service.key, service.label)}
+                    >
+                      <span className="svc__toggle-icon" aria-hidden="true">
+                        <PlusIcon />
+                      </span>
+                      <span>{isOpen ? 'Kevesebb részlet' : 'Részletek'}</span>
+                    </button>
+
+                    <div className="svc__detail" id={panelId} hidden={!isOpen}>
+                      <dl className="svc__facts">
+                        <div>
+                          <dt>Kinek ajánljuk</dt>
+                          <dd>{service.audience}</dd>
+                        </div>
+                        <div>
+                          <dt>Mire ad megoldást</dt>
+                          <dd>{service.solves}</dd>
+                        </div>
+                      </dl>
+
+                      <p className="svc__options-label">Miből választhatsz</p>
+                      <ul className="svc__options">
+                        {service.options.map((option) => (
+                          <li key={option}>
+                            <span className="svc__check" aria-hidden="true">
+                              <CheckIcon />
+                            </span>
+                            <PH value={option} />
+                          </li>
+                        ))}
+                      </ul>
+
+                      <button
+                        type="button"
+                        className="svc__cta"
+                        onClick={() => {
+                          track('cta_quote_click', {
+                            placement: 'szolgaltatas-kartya',
+                            context: service.label,
+                          });
+                          scrollToId(ANCHOR.quickForm);
+                        }}
+                      >
+                        Ajánlatot kérek erre
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
 
         <div className="solution__cta">
-          <p className="solution__cta-text">
-            Nem vagy biztos benne, melyik kell? Írd le a helyzetet, és megmondjuk.
-          </p>
+          <p className="solution__cta-text">{solution.ctaText}</p>
           <Button
             size="lg"
             icon={<ArrowDownIcon />}
             onClick={() => {
-              track('cta_quote_click', {
-                placement: 'szolgaltatas',
-                context: solution.tabs[active].key,
-              });
-              scrollToId(ANCHOR.finalForm);
+              track('cta_quote_click', { placement: 'szolgaltatas-zaro' });
+              scrollToId(ANCHOR.quickForm);
             }}
           >
             {solution.cta}

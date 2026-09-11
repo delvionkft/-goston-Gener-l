@@ -171,3 +171,27 @@
     left: calc(60% - 44px - var(--sp-3));
   }
 }
+
+/* Projektadatok a nagy nézetben. */
+.lightbox__facts {
+  display: grid;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+  padding: var(--sp-4) 0;
+  border-block: 1px solid rgba(255, 253, 249, 0.14);
+}
+
+.lightbox__facts dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-sand);
+  margin-bottom: 2px;
+}
+
+.lightbox__facts dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-on-dark);
+}

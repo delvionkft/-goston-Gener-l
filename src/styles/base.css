@@ -31,6 +31,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  /*
+   * A rögzített mobil CTA-sáv kitakarná az oldal alját, ezért pontosan
+   * ennyi helyet hagyunk neki a dokumentum végén. Asztali nézetben a
+   * --mobilebar-h értéke 0, tehát ott nem változik semmi.
+   */
+  padding-bottom: var(--mobilebar-h);
 }
 
 body.is-locked {

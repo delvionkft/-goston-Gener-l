@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { ImageSlot } from './ImageSlot';
+import { BeforeAfter } from './BeforeAfter';
 import { PH } from './PlaceholderText';
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, PinIcon } from './Icons';
 import './Lightbox.css';
@@ -9,9 +10,17 @@ export interface LightboxItem {
   id: string;
   title: string;
   location: string;
+  /** Elvégzett munka típusa. */
+  work: string;
+  /** Beépített megoldás. */
+  installed: string;
   description: string;
   image: string;
   imageAlt: string;
+  beforeImage: string;
+  beforeAlt: string;
+  afterImage: string;
+  afterAlt: string;
 }
 
 interface Props {
@@ -94,14 +103,24 @@ export function Lightbox({ items, index, onIndexChange, onClose }: Props) {
         </button>
 
         <div className="lightbox__stage">
-          <ImageSlot
-            src={item.image || undefined}
-            alt={item.imageAlt}
-            ratio="4 / 3"
-            label="[REFERENCIAKÉP]"
-            priority
-            className="lightbox__image"
-          />
+          {/* Ha mindkét kép megvan, összehasonlító csúszka jön a sima kép helyett. */}
+          {item.beforeImage && item.afterImage ? (
+            <BeforeAfter
+              beforeSrc={item.beforeImage}
+              beforeAlt={item.beforeAlt}
+              afterSrc={item.afterImage}
+              afterAlt={item.afterAlt}
+            />
+          ) : (
+            <ImageSlot
+              src={item.image || item.afterImage || undefined}
+              alt={item.imageAlt}
+              ratio="4 / 3"
+              label="[REFERENCIAKÉP]"
+              priority
+              className="lightbox__image"
+            />
+          )}
         </div>
 
         <div className="lightbox__info">
@@ -115,6 +134,22 @@ export function Lightbox({ items, index, onIndexChange, onClose }: Props) {
             <PinIcon />
             <PH value={item.location} />
           </p>
+
+          <dl className="lightbox__facts">
+            <div>
+              <dt>Elvégzett munka</dt>
+              <dd>
+                <PH value={item.work} />
+              </dd>
+            </div>
+            <div>
+              <dt>Beépített megoldás</dt>
+              <dd>
+                <PH value={item.installed} />
+              </dd>
+            </div>
+          </dl>
+
           <p className="lightbox__desc">
             <PH value={item.description} />
           </p>

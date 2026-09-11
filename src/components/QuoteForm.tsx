@@ -1,25 +1,39 @@
-import { useId, useRef, useState } from 'react';
-import { form as formCopy } from '../config/site';
+import { useEffect, useId, useRef, useState } from 'react';
+import { activeServices, contact, form as formCopy, isFilled } from '../config/site';
 import { track } from '../lib/analytics';
 import { submitLead } from '../lib/submitLead';
-import { emptyForm, validate, type FormErrors, type FormValues } from '../lib/validation';
+import { emptyForm, MESSAGE_MAX, validate, type FormErrors, type FormValues } from '../lib/validation';
 import { Button } from './Button';
 import { EmailLink, PhoneLink } from './ContactLinks';
-import { AlertIcon, ArrowRightIcon, CheckIcon } from './Icons';
+import { AlertIcon, ArrowRightIcon, CheckIcon, ClockIcon } from './Icons';
 import './QuoteForm.css';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
+
+/**
+ * Spamvédelem második rétege: ha a beküldés a megjelenés után ennél
+ * hamarabb érkezik, szinte biztosan automata. Embernek a legrövidebb
+ * kitöltés is több másodperc.
+ */
+const MIN_FILL_MS = 2500;
 
 interface Props {
   /** Melyik űrlapról van szó — a mérésben és a CRM-ben megkülönbözteti őket. */
   source: 'top' | 'bottom';
   /** Sötét háttéren világos űrlapstílus. */
   onDark?: boolean;
+  /** A beküldés gomb felirata. */
+  submitLabel?: string;
   /** Az adatkezelési tájékoztató megnyitása. */
   onOpenPrivacy: () => void;
 }
 
-export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
+export function QuoteForm({
+  source,
+  onDark = false,
+  submitLabel = 'Ajánlatot kérek',
+  onOpenPrivacy,
+}: Props) {
   const uid = useId();
   const [values, setValues] = useState<FormValues>(emptyForm);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -28,11 +42,28 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
   /** Csak az első beküldési kísérlet után mutatunk hibát mező alatt. */
   const [submitted, setSubmitted] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  /** Az „űrlap megkezdése” eseményt űrlaponként csak egyszer küldjük. */
+  const startTracked = useRef(false);
+  const mountedAt = useRef(0);
+
+  /* A megjelenés időpontja a spamszűrőhöz. Effektben vesszük fel, hogy a
+     renderelés tiszta (mellékhatásmentes) maradjon. */
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
 
   const fid = (name: string) => `${uid}-${name}`;
   const eid = (name: string) => `${uid}-${name}-hiba`;
 
+  /** Az első érdemi interakcióra elsül az „űrlap megkezdése” esemény. */
+  const markStarted = () => {
+    if (startTracked.current) return;
+    startTracked.current = true;
+    track('form_start', { source });
+  };
+
   const setField = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
+    markStarted();
     setValues((prev) => {
       const next = { ...prev, [key]: value };
       // Beküldés után élőben tisztítjuk a javított mezők hibáit.
@@ -53,9 +84,19 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       track('form_error', { source, fields: Object.keys(found).join(',') });
       // A fókusz az első hibás mezőre kerül — billentyűzettel is használható.
       const firstKey = Object.keys(found)[0];
-      formRef.current
-        ?.querySelector<HTMLElement>(`#${CSS.escape(fid(firstKey))}`)
-        ?.focus();
+      formRef.current?.querySelector<HTMLElement>(`#${CSS.escape(fid(firstKey))}`)?.focus();
+      return;
+    }
+
+    /*
+     * Spamvédelem. Mindkét szűrő csendben sikert mutat a küldőnek:
+     * a botnak nem adunk visszajelzést arról, min bukott el.
+     */
+    const trap = formRef.current?.querySelector<HTMLInputElement>('input[name="cegnev"]');
+    const tooFast = Date.now() - mountedAt.current < MIN_FILL_MS;
+    if (trap?.value || tooFast) {
+      track('form_error', { source, reason: 'spam_filter' });
+      setStatus('success');
       return;
     }
 
@@ -67,6 +108,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       track(source === 'top' ? 'form_submit_top' : 'form_submit_bottom', {
         source,
         service: values.service || 'nincs megadva',
+        city: values.city.trim() || 'nincs megadva',
       });
       setValues(emptyForm);
       setSubmitted(false);
@@ -84,19 +126,27 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
         <span className="qform__done-icon" aria-hidden="true">
           <CheckIcon />
         </span>
-        <h3 className="qform__done-title">Megkaptuk az üzeneted</h3>
+        <h3 className="qform__done-title">Megkaptuk az ajánlatkérésed</h3>
         <p className="qform__done-text">
-          Hamarosan jelentkezünk a megadott elérhetőségen. Ha sürgős, hívj minket
-          nyugodtan közvetlenül is.
+          {isFilled(contact.responseTime)
+            ? `Jelentkezünk a megadott elérhetőségen, jellemzően ${contact.responseTime}.`
+            : 'Hamarosan jelentkezünk a megadott elérhetőségen.'}{' '}
+          Ha sürgős, hívj minket nyugodtan közvetlenül is.
         </p>
+        <div className="qform__done-contacts">
+          <PhoneLink placement={`urlap-${source}-siker`} />
+          <EmailLink placement={`urlap-${source}-siker`} />
+        </div>
         <Button
           variant={onDark ? 'onDark' : 'secondary'}
           onClick={() => {
             setStatus('idle');
             setServerError('');
+            mountedAt.current = Date.now();
+            startTracked.current = false;
           }}
         >
-          Új üzenet küldése
+          Új ajánlatkérés indítása
         </Button>
       </div>
     );
@@ -115,21 +165,15 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       {/* Rejtett csapdamező az automata kitöltők ellen. Nem látszik,
           és a képernyőolvasó is átugorja. */}
       <div className="qform__trap" aria-hidden="true">
-        <label htmlFor={fid('company')}>Ne töltsd ki</label>
-        <input
-          id={fid('company')}
-          name="company"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-        />
+        <label htmlFor={fid('cegnev')}>Ne töltsd ki</label>
+        <input id={fid('cegnev')} name="cegnev" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
       <div className="qform__grid">
         <Field
           id={fid('name')}
           errorId={eid('name')}
-          label="Neved"
+          label="Név"
           required
           error={submitted ? errors.name : undefined}
         >
@@ -165,11 +209,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
             value={values.phone}
             disabled={loading}
             aria-invalid={submitted && !!errors.phone}
-            aria-describedby={
-              [submitted && errors.phone ? eid('phone') : '', `${fid('phone')}-hint`]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
+            aria-describedby={describedBy(submitted && errors.phone, eid('phone'), fid('phone'))}
             onChange={(e) => setField('phone', e.target.value)}
           />
         </Field>
@@ -190,53 +230,72 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
             value={values.email}
             disabled={loading}
             aria-invalid={submitted && !!errors.email}
-            aria-describedby={
-              [submitted && errors.email ? eid('email') : '', `${fid('email')}-hint`]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
+            aria-describedby={describedBy(submitted && errors.email, eid('email'), fid('email'))}
             onChange={(e) => setField('email', e.target.value)}
           />
         </Field>
 
-        <Field id={fid('service')} errorId={eid('service')} label="Mi érdekel?">
-          <select
-            id={fid('service')}
-            name="service"
-            value={values.service}
+        <Field
+          id={fid('city')}
+          errorId={eid('city')}
+          label="Település"
+          required
+          error={submitted ? errors.city : undefined}
+        >
+          <input
+            id={fid('city')}
+            name="city"
+            type="text"
+            autoComplete="address-level2"
+            value={values.city}
             disabled={loading}
-            onChange={(e) => setField('service', e.target.value)}
-          >
-            <option value="">Válassz…</option>
-            {formCopy.serviceOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            aria-invalid={submitted && !!errors.city}
+            aria-describedby={submitted && errors.city ? eid('city') : undefined}
+            onChange={(e) => setField('city', e.target.value)}
+          />
         </Field>
       </div>
+
+      <Field
+        id={fid('service')}
+        errorId={eid('service')}
+        label="Milyen munkára van szükséged?"
+        hint="Ha még nem tudod pontosan, válaszd az utolsó lehetőséget."
+      >
+        <select
+          id={fid('service')}
+          name="service"
+          value={values.service}
+          disabled={loading}
+          aria-describedby={`${fid('service')}-hint`}
+          onChange={(e) => setField('service', e.target.value)}
+        >
+          <option value="">Válassz…</option>
+          {activeServices.map((service) => (
+            <option key={service.key} value={service.label}>
+              {service.label}
+            </option>
+          ))}
+          <option value={formCopy.otherOption}>{formCopy.otherOption}</option>
+        </select>
+      </Field>
 
       <Field
         id={fid('message')}
         errorId={eid('message')}
         label="Rövid üzenet"
-        hint="Néhány mondat is elég."
+        hint="Néhány mondat is elég: hány nyílászáróról van szó, és mi a cél."
         error={submitted ? errors.message : undefined}
       >
         <textarea
           id={fid('message')}
           name="message"
           rows={4}
-          maxLength={2100}
+          maxLength={MESSAGE_MAX + 100}
           value={values.message}
           disabled={loading}
           aria-invalid={submitted && !!errors.message}
-          aria-describedby={
-            [submitted && errors.message ? eid('message') : '', `${fid('message')}-hint`]
-              .filter(Boolean)
-              .join(' ') || undefined
-          }
+          aria-describedby={describedBy(submitted && errors.message, eid('message'), fid('message'))}
           onChange={(e) => setField('message', e.target.value)}
         />
       </Field>
@@ -257,7 +316,8 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
           <button type="button" className="qform__link" onClick={onOpenPrivacy}>
             adatkezelési tájékoztatót
           </button>
-          .<span className="qform__req" aria-hidden="true"> *</span>
+          , és hozzájárulok az adataim kezeléséhez.
+          <span className="qform__req" aria-hidden="true"> *</span>
           <span className="visually-hidden"> (kötelező)</span>
         </label>
       </div>
@@ -274,8 +334,8 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
           <div>
             <p>{serverError}</p>
             <p className="qform__banner-contact">
-              Közvetlen elérhetőségeink: <PhoneLink placement={`form-${source}-hiba`} />{' '}
-              <EmailLink placement={`form-${source}-hiba`} />
+              Közvetlen elérhetőségeink: <PhoneLink placement={`urlap-${source}-hiba`} />{' '}
+              <EmailLink placement={`urlap-${source}-hiba`} />
             </p>
           </div>
         </div>
@@ -290,17 +350,28 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
         disabled={loading}
         icon={loading ? <Spinner /> : <ArrowRightIcon />}
       >
-        {loading ? 'Küldés folyamatban…' : 'Ajánlatot kérek'}
+        {loading ? 'Küldés folyamatban…' : submitLabel}
       </Button>
 
       <p className="qform__note">
-        A megadott adatokat kizárólag a kapcsolatfelvételhez használjuk.
+        {isFilled(contact.responseTime) ? (
+          <>
+            <ClockIcon />
+            <span>Válasz jellemzően {contact.responseTime}. </span>
+          </>
+        ) : null}
+        <span>A megadott adatokat kizárólag a kapcsolatfelvételhez használjuk.</span>
       </p>
     </form>
   );
 }
 
 /* ------------------------------------------------------------------ */
+
+/** Hiba- és súgóazonosítók összefűzése az `aria-describedby` mezőhöz. */
+function describedBy(hasError: unknown, errorId: string, fieldId: string): string | undefined {
+  return [hasError ? errorId : '', `${fieldId}-hint`].filter(Boolean).join(' ') || undefined;
+}
 
 interface FieldProps {
   id: string;
@@ -346,13 +417,7 @@ function Spinner() {
   return (
     <svg viewBox="0 0 24 24" className="qform__spinner" aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.28" strokeWidth="2.4" />
-      <path
-        d="M21 12a9 9 0 0 0-9-9"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
+      <path d="M21 12a9 9 0 0 0-9-9" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   );
 }

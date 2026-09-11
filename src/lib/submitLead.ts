@@ -32,6 +32,7 @@ export interface LeadData {
   name: string;
   phone: string;
   email: string;
+  city: string;
   service: string;
   message: string;
   consent: boolean;
@@ -55,6 +56,7 @@ function toPayload(data: LeadData) {
     name: data.name.trim(),
     phone: data.phone.trim(),
     email: data.email.trim(),
+    city: data.city.trim(),
     service: data.service,
     message: data.message.trim(),
     consent: data.consent,

@@ -239,3 +239,11 @@
     display: none;
   }
 }
+
+/* Valós logó a fejlécben — a magasság kötött, a szélesség arányosan igazodik. */
+.header__logo {
+  height: 32px;
+  width: auto;
+  max-width: 190px;
+  object-fit: contain;
+}

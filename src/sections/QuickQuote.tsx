@@ -1,8 +1,8 @@
-import { ANCHOR, form as formCopy } from '../config/site';
+import { ANCHOR, contact, form as formCopy, isFilled } from '../config/site';
 import { QuoteForm } from '../components/QuoteForm';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { useReveal } from '../hooks/useReveal';
-import { CheckIcon } from '../components/Icons';
+import { CheckIcon, ClockIcon } from '../components/Icons';
 import './QuickQuote.css';
 
 interface Props {
@@ -14,11 +14,7 @@ export function QuickQuote({ onOpenPrivacy }: Props) {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section
-      className="section quick"
-      id={ANCHOR.quickForm}
-      aria-labelledby="quick-cim"
-    >
+    <section className="section quick" id={ANCHOR.quickForm} aria-labelledby="quick-cim">
       <div className="container">
         <div className="quick__grid" ref={ref}>
           <div className="quick__aside">
@@ -29,10 +25,17 @@ export function QuickQuote({ onOpenPrivacy }: Props) {
             <div className="quick__contacts">
               <PhoneLink placement="urlap-felso" />
               <EmailLink placement="urlap-felso" />
+              {/* Csak akkor jelenik meg, ha valós vállalás áll mögötte. */}
+              {isFilled(contact.responseTime) ? (
+                <p className="quick__response">
+                  <ClockIcon />
+                  <span>Válaszidő: {contact.responseTime}</span>
+                </p>
+              ) : null}
             </div>
 
             <div className="quick__after">
-              <h3 className="quick__after-title">Mi történik az elküldés után?</h3>
+              <h3 className="quick__after-title">Mi történik a beküldés után?</h3>
               <ol className="quick__steps">
                 {formCopy.afterSubmit.map((step, index) => (
                   <li key={step}>

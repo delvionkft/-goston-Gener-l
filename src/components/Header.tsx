@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ANCHOR, company, navLinks } from '../config/site';
+import { ANCHOR, company, isFilled, navLinks } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useFocusTrap } from '../hooks/useFocusTrap';
@@ -79,10 +79,23 @@ export function Header() {
             go(ANCHOR.hero, 'logó');
           }}
         >
-          <span className="header__mark" aria-hidden="true" />
-          <span className="header__name">
-            <PH value={company.shortName} />
-          </span>
+          {/* Valós logó, ha van; különben egyszerű márkajel. */}
+          {isFilled(company.logo) ? (
+            <img
+              className="header__logo"
+              src={company.logo}
+              alt={isFilled(company.logoAlt) ? company.logoAlt : company.name}
+              width={140}
+              height={32}
+            />
+          ) : (
+            <>
+              <span className="header__mark" aria-hidden="true" />
+              <span className="header__name">
+                <PH value={company.shortName} />
+              </span>
+            </>
+          )}
         </a>
 
         <nav className="header__nav" aria-label="Fő navigáció">

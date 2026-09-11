@@ -1,4 +1,4 @@
-import { ANCHOR, company, finalCta } from '../config/site';
+import { ANCHOR, company, contact, form as formCopy, isFilled } from '../config/site';
 import { QuoteForm } from '../components/QuoteForm';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
@@ -24,11 +24,11 @@ export function FinalCta({ onOpenPrivacy }: Props) {
       <div className="container">
         <div className="final__grid" ref={ref}>
           <div className="final__copy">
-            <p className="eyebrow">{finalCta.eyebrow}</p>
+            <p className="eyebrow">Kapcsolat</p>
             <h2 id="final-cim" className="final__title">
-              {finalCta.title}
+              {formCopy.final.title}
             </h2>
-            <p className="section-lead">{finalCta.lead}</p>
+            <p className="section-lead">{formCopy.final.lead}</p>
 
             <dl className="final__contacts">
               <div>
@@ -49,11 +49,23 @@ export function FinalCta({ onOpenPrivacy }: Props) {
                   <PH value={company.serviceArea} />
                 </dd>
               </div>
+              {/* Nyitvatartás csak akkor, ha meg van adva. */}
+              {isFilled(contact.hours) ? (
+                <div>
+                  <dt>Mikor érsz el minket</dt>
+                  <dd>{contact.hours}</dd>
+                </div>
+              ) : null}
             </dl>
           </div>
 
           <div className="final__panel">
-            <QuoteForm source="bottom" onDark onOpenPrivacy={onOpenPrivacy} />
+            <QuoteForm
+              source="bottom"
+              onDark
+              submitLabel={formCopy.final.cta}
+              onOpenPrivacy={onOpenPrivacy}
+            />
           </div>
         </div>
       </div>

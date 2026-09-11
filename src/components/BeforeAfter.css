@@ -1,0 +1,136 @@
+/* Előtte-utána képösszehasonlító. */
+
+.ba {
+  margin: 0;
+  width: 100%;
+}
+
+.ba__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--ratio, 4 / 3);
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--c-beige-deep);
+}
+
+.ba__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ba__clip {
+  position: absolute;
+  inset: 0;
+}
+
+.ba__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: rgba(255, 253, 249, 0.9);
+  box-shadow: 0 0 0 1px rgba(59, 38, 24, 0.2);
+  pointer-events: none;
+}
+
+.ba__handle-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 38px;
+  height: 38px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(255, 253, 249, 0.95);
+  box-shadow: var(--shadow-md);
+}
+
+.ba__handle-grip::before,
+.ba__handle-grip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+}
+
+.ba__handle-grip::before {
+  left: 7px;
+  transform: translateY(-50%);
+  border-right-color: var(--c-brown-700);
+}
+
+.ba__handle-grip::after {
+  right: 7px;
+  transform: translateY(-50%);
+  border-left-color: var(--c-brown-700);
+}
+
+.ba__tag {
+  position: absolute;
+  bottom: var(--sp-3);
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: rgba(42, 26, 16, 0.72);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ba__tag--before {
+  left: var(--sp-3);
+}
+.ba__tag--after {
+  right: var(--sp-3);
+}
+
+/* A csúszka átlátszóan fedi a teljes képet — a hüvelykujj a fogantyú. */
+.ba__range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+
+.ba__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  cursor: ew-resize;
+}
+
+.ba__range::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: ew-resize;
+}
+
+.ba__range:focus-visible {
+  outline: 2px solid var(--c-brown-700);
+  outline-offset: 2px;
+}
+
+.ba__caption {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.on-dark .ba__caption {
+  color: var(--text-on-dark-muted);
+}

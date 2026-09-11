@@ -7,335 +7,662 @@
  *  semmilyen üzleti adatot nem tartalmaznak hardcode-olva.
  *
  *  HOGYAN VEDD HASZNÁLATBA:
- *  1. Cseréld ki lentebb a `PLACEHOLDER(...)` értékeket valós adatokra.
- *  2. Amíg egy érték helyőrző, az oldalon szögletes zárójelben, kiemelve
- *     jelenik meg (pl. [CÉGNÉV]), fejlesztői módban sárga háttérrel — így
- *     nem lehet véletlenül kitöltetlenül élesíteni.
- *  3. A `npm run check:content` parancs kilistázza az összes még kitöltetlen
- *     helyőrzőt, és hibával kilép, ha maradt ilyen.
+ *  1. Cseréld ki a szögletes zárójeles értékeket (`[CÉGNÉV]`) valós adatra.
+ *  2. Amíg egy érték helyőrző, az oldalon megjelölve jelenik meg —
+ *     fejlesztői módban sárga háttérrel —, így nem lehet véletlenül
+ *     kitöltetlenül élesíteni.
+ *  3. A `npm run check:content` kilistázza az összes maradék helyőrzőt,
+ *     és hibával kilép, ha maradt ilyen.
  *
- *  NE tegyél ide kitalált referenciát, statisztikát, garanciát vagy
- *  ügyfélvéleményt. Ami nincs meg, az maradjon helyőrző.
+ *  AMIT SOHA NE TEGYÉL IDE:
+ *  kitalált referenciát, ügyfélvéleményt, kedvezményt, garanciát,
+ *  tanúsítványt vagy számszerű eredményt. Ami nincs meg, maradjon helyőrző.
+ *
+ *  AMIT VISZONT ELLENŐRIZZ:
+ *  a szolgáltatások és a munkafolyamat lépései `enabled` kapcsolóval
+ *  ki-be kapcsolhatók. Csak azt hagyd bekapcsolva, amit a cég tényleg
+ *  vállal. Egy nem vállalt szolgáltatás ugyanolyan félrevezető, mint egy
+ *  kitalált referencia.
  * ============================================================================
  */
-
-/** Helyőrző-jelölő. Amíg egy mező ilyen, nincs valós adattal kitöltve. */
-export const PLACEHOLDER_PREFIX = '[';
-
-export type MaybePlaceholder = string;
 
 /** Igaz, ha az érték még kitöltetlen helyőrző. */
 export function isPlaceholder(value: string | undefined | null): boolean {
   return typeof value === 'string' && /^\[.+\]$/.test(value.trim());
 }
 
-/* ---------------------------------------------------------------------------
- * 1. ALAPADATOK  — ezeket cseréld ki először
- * ------------------------------------------------------------------------ */
+/** Igaz, ha a mező valós, megjeleníthető értéket tartalmaz. */
+export function isFilled(value: string | undefined | null): value is string {
+  return typeof value === 'string' && value.trim().length > 0 && !isPlaceholder(value);
+}
+
+/* ===========================================================================
+ * 1. ALAPADATOK — ezeket cseréld ki először
+ * ======================================================================== */
 
 export const company = {
   /** Cég teljes neve, ahogy a fejlécben és a footerben megjelenik. */
-  name: '[CÉGNÉV]' as MaybePlaceholder,
-  /** Rövid név / logószöveg. Ha üres, a `name` kerül a helyére. */
-  shortName: '[CÉGNÉV]' as MaybePlaceholder,
-  /** A fő szolgáltatás egy szóban vagy rövid kifejezésben. Pl. „lakásfelújítás”. */
-  mainService: '[FŐ SZOLGÁLTATÁS]' as MaybePlaceholder,
-  /** 1–2 mondatos bemutatkozás. Ez kerül a hero alá és a meta descriptionbe. */
-  intro: '[RÖVID BEMUTATKOZÁS]' as MaybePlaceholder,
+  name: '[CÉGNÉV]',
+  /** Rövid név / logószöveg. A footer háttérfelirata is ebből készül. */
+  shortName: '[CÉGNÉV]',
+  /** Cégjegyzékbe bejegyzett név, ha eltér. Üresen hagyható. */
+  legalName: '',
+  /**
+   * Logó a /public mappából, pl. '/logo.svg'. SVG vagy átlátszó hátterű PNG.
+   * Üresen hagyva a fejlécben egy egyszerű márkajel, a footerben pedig a
+   * cégnév szöveges változata jelenik meg — nincs törött képikon.
+   */
+  logo: '',
+  /** A logó alt szövege. Csak akkor számít, ha van logó. */
+  logoAlt: '',
   /** Szolgáltatási terület, pl. „Budapest és Pest vármegye”. */
-  serviceArea: '[SZOLGÁLTATÁSI TERÜLET]' as MaybePlaceholder,
+  serviceArea: '[TELEPÜLÉSEK VAGY RÉGIÓ]',
+  /**
+   * Hány éve dolgozik a cég a szakmában. Csak számot írj ide (pl. '12').
+   * Amíg helyőrző, a tapasztalatra hivatkozó elemek nem jelennek meg —
+   * kitalált évszám tilos.
+   */
+  experienceYears: '[ÉVEK SZÁMA]',
+  /** Adószám. Üresen hagyható, ha nem kell megjeleníteni. */
+  taxNumber: '[ADÓSZÁM]',
+  /** Székhely vagy telephely. Üresen hagyható. */
+  seat: '[SZÉKHELY]',
 } as const;
 
 export const contact = {
-  /** Megjelenített telefonszám. */
-  phoneDisplay: '[TELEFONSZÁM]' as MaybePlaceholder,
+  /** Megjelenített telefonszám, pl. '+36 30 123 4567'. */
+  phoneDisplay: '[TELEFONSZÁM]',
   /**
-   * Tárcsázható formátum a `tel:` linkhez. Nemzetközi formában, szóköz nélkül.
-   * Pl. '+36301234567'. Amíg helyőrző, a gomb nem tel: linkként viselkedik.
+   * Tárcsázható formátum a `tel:` linkhez, szóköz nélkül: '+36301234567'.
+   * Amíg helyőrző, a hívásgombok szövegként jelennek meg link helyett —
+   * így nincs az oldalon működésképtelen gomb.
    */
-  phoneHref: '[TELEFONSZÁM]' as MaybePlaceholder,
-  email: '[E-MAIL-CÍM]' as MaybePlaceholder,
-  /** Opcionális postai cím a footerhez és a structured datához. Hagyd üresen, ha nincs. */
-  address: '' as MaybePlaceholder,
-  /** Nyitvatartás / elérhetőségi idő rövid szövege. Hagyd üresen, ha nincs. */
-  hours: '' as MaybePlaceholder,
+  phoneHref: '[TELEFONSZÁM]',
+  email: '[E-MAIL-CÍM]',
+  /** Telephely címe a footerhez. Üres = nem jelenik meg. */
+  address: '',
+  /**
+   * Elérhetőségi idő, pl. 'Hétfő–péntek 8:00–17:00'.
+   * Üres = a nyitvatartás blokk nem jelenik meg sehol.
+   */
+  hours: '',
+  /**
+   * Válaszadási idő az űrlap mellett, pl. '1 munkanapon belül'.
+   * CSAK akkor töltsd ki, ha ezt tényleg tartani tudod. Üres = nem
+   * jelenik meg. Be nem tartott ígéret rosszabb, mint a semmilyen.
+   */
+  responseTime: '',
 } as const;
+
+/**
+ * Közösségi média. Csak azokat hagyd benne, amelyek tényleg léteznek —
+ * a többi sort töröld. Üres tömb esetén a blokk nem jelenik meg.
+ */
+export const socialLinks: readonly { label: string; href: string }[] = [
+  { label: 'Facebook', href: '' },
+  { label: 'Instagram', href: '' },
+];
 
 export const site = {
   /** Éles URL. A canonical linkhez és az Open Graph adatokhoz kell. */
   url: 'https://example.hu',
-  /** Böngészőfül és Open Graph cím. */
-  title: `${company.name} – ${company.mainService}`,
   locale: 'hu_HU',
-  /** OG kép elérési útja a /public mappához képest. Cseréld le valós képre. */
+  /** OG kép a /public mappában. Ajánlott: 1200×630 px. */
   ogImage: '/og-image.png',
+  /**
+   * Böngészőfül címe és Open Graph cím. Szerkeszthető.
+   * A `{ceg}` helyére a cégnév kerül.
+   */
+  title: '{ceg} — nyílászáró csere, beépítés és árnyékolástechnika',
+  /** Meta description. 150–160 karakter az ideális. */
+  description:
+    'Új nyílászárók felméréstől a beépítésig. Műanyag, fa és alumínium ablakok, bejárati ajtók, redőny és szúnyogháló. Kérj személyre szabott ajánlatot.',
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 2. NAVIGÁCIÓ
- * ------------------------------------------------------------------------ */
+/* ===========================================================================
+ * 2. NAVIGÁCIÓ ÉS HORGONYOK
+ * ======================================================================== */
 
-export const navLinks = [
-  { id: 'szolgaltatas', label: 'Szolgáltatás' },
-  { id: 'referenciak', label: 'Referenciák' },
-  { id: 'folyamat', label: 'Folyamat' },
-  { id: 'kapcsolat', label: 'Kapcsolat' },
-] as const;
-
-/** Az ajánlatkérő űrlapok horgonyai. */
 export const ANCHOR = {
   hero: 'fooldal',
   quickForm: 'ajanlatkeres',
-  problem: 'miert',
-  solution: 'szolgaltatas',
+  problem: 'problemak',
+  solution: 'szolgaltatasok',
   references: 'referenciak',
   process: 'folyamat',
   finalForm: 'kapcsolat',
 } as const;
 
-/* ---------------------------------------------------------------------------
+export const navLinks = [
+  { id: ANCHOR.solution, label: 'Szolgáltatások' },
+  { id: ANCHOR.references, label: 'Referenciák' },
+  { id: ANCHOR.process, label: 'Folyamat' },
+  { id: ANCHOR.finalForm, label: 'Kapcsolat' },
+] as const;
+
+/* ===========================================================================
  * 3. HERO
- * ------------------------------------------------------------------------ */
+ * ======================================================================== */
 
 export const hero = {
+  /** A cím fölötti apró felirat. A szolgáltatási területet mutatja. */
   eyebrow: company.serviceArea,
-  /**
-   * Főcím. Kerüld az általános szlogeneket. Mondd ki, mit csinálsz és kinek.
-   * A `highlight` rész kap vizuális kiemelést.
-   */
-  titleBefore: 'Kiszámítható ',
-  titleHighlight: company.mainService,
-  titleAfter: ' — üres ígéretek nélkül.',
-  lead: company.intro,
+  /** Az oldal egyetlen H1 címsora. A `highlight` rész kap kiemelést. */
+  titleBefore: 'Új nyílászárók, ',
+  titleHighlight: 'kompromisszumok',
+  titleAfter: ' nélkül',
+  lead: 'A felméréstől a beépítésig végigkísérünk, hogy otthonod kényelmesebb, csendesebb és energiahatékonyabb legyen.',
   primaryCta: 'Ajánlatot kérek',
-  secondaryCta: 'Hívlak most',
+  secondaryCta: 'Telefonálok',
   /**
-   * Négy rövid, ellenőrizhető állítás. Csak olyat írj ide, ami tényleg igaz
-   * a cégre. Ha nincs adat, maradjon helyőrző.
+   * Négy rövid bizalmi állítás.
+   * ELLENŐRIZD: mind a négynek igaznak kell lennie a cégre. Ami nem az,
+   * azt írd át vagy töröld. Nincs benne szám, garancia és tanúsítvány —
+   * szándékosan, mert azt csak valós adattal szabad állítani.
    */
   points: [
-    { title: '[ELŐNY 1]', text: '[Rövid magyarázat, egy mondat.]' },
-    { title: '[ELŐNY 2]', text: '[Rövid magyarázat, egy mondat.]' },
-    { title: '[ELŐNY 3]', text: '[Rövid magyarázat, egy mondat.]' },
-    { title: '[ELŐNY 4]', text: '[Rövid magyarázat, egy mondat.]' },
+    {
+      title: 'Személyre szabott megoldások',
+      text: 'A nyílászárót az adott nyíláshoz és a te igényeidhez választjuk ki.',
+    },
+    {
+      title: 'Szakszerű helyszíni felmérés',
+      text: 'Pontos méretek és a beépítés körülményei a helyszínen rögzülnek.',
+    },
+    {
+      title: 'Precíz beépítés',
+      text: 'A beépítést mi végezzük, nem alvállalkozói láncon keresztül.',
+    },
+    {
+      title: 'Átlátható munkafolyamat',
+      text: 'Tudod, mi a következő lépés, és mikor várható.',
+    },
   ],
   /**
-   * Hero kép. Tedd a fájlt a /public mappába és írd ide az útvonalát,
-   * pl. '/hero.jpg'. Amíg üres, egy jelölt képhelyőrző jelenik meg.
-   * Ajánlott méret: 1200×1500 px, WebP vagy AVIF, 200 kB alatt.
+   * Hero kép. Tedd a fájlt a /public mappába, és írd ide az útvonalát
+   * (pl. '/hero.webp'). Ajánlott: 1200×1500 px, WebP vagy AVIF, 200 kB alatt.
    */
   image: '',
-  imageAlt: '[Képaláírás: mit ábrázol a kép]',
+  imageAlt: '[Képaláírás: pl. „Beépített háromszárnyú műanyag ablak nappaliban”]',
+  /**
+   * Információs pontok a képen. A kép fölött kattintható jelölésként
+   * jelennek meg. `x` és `y` a kép szélességének/magasságának százaléka.
+   * Ha nem akarod használni őket, ürítsd ki a tömböt.
+   */
+  hotspots: [
+    { x: 26, y: 30, title: 'Üvegezés', text: 'Két- vagy háromrétegű üveg, az adott helyiség igénye szerint.' },
+    { x: 63, y: 52, title: 'Profil és vasalat', text: 'A profil kamraszáma és a vasalat a zárásért és a tartósságért felel.' },
+    { x: 40, y: 78, title: 'Beépítés és párkány', text: 'A csatlakozás tömítése dönti el, marad-e huzat a kész ablaknál.' },
+  ],
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 4. ŰRLAP
- * ------------------------------------------------------------------------ */
+/* ===========================================================================
+ * 4. AJÁNLATKÉRŐ ŰRLAP
+ * ======================================================================== */
 
 export const form = {
   quick: {
-    title: 'Kérj ajánlatot két percben',
-    lead: 'Írd le pár mondatban, mire van szükséged. Nem kell pontos műszaki leírás — a részleteket úgyis átbeszéljük.',
+    title: 'Kérj személyre szabott ajánlatot!',
+    lead: 'Add meg az elérhetőségeidet és néhány alapvető információt a tervezett munkáról. Felvesszük veled a kapcsolatot a részletek egyeztetéséhez.',
   },
   final: {
-    title: 'Beszéljük át, mire van szükséged',
-    lead: 'Küldd el az adataidat, és visszahívunk. Ha gyorsabb, hívj minket közvetlenül.',
+    title: 'Tervezed a nyílászárók cseréjét?',
+    lead: 'Kérj személyre szabott ajánlatot, és egyeztessünk az otthonodhoz, igényeidhez és lehetőségeidhez illő megoldásról.',
+    cta: 'Elindítom az ajánlatkérést',
   },
-  /** Az „mi történik ezután” blokk pontjai az űrlap mellett. */
+  /** A „mi történik a beküldés után” blokk pontjai az űrlap mellett. */
   afterSubmit: [
-    'Megnézzük, amit írtál, és tisztázzuk a nyitott kérdéseket.',
+    'Átnézzük, amit írtál, és tisztázzuk a nyitott kérdéseket.',
     'Felvesszük veled a kapcsolatot a megadott elérhetőségen.',
-    'Ha kell, helyszíni felmérést egyeztetünk.',
+    'Egyeztetünk egy időpontot a helyszíni felmérésre.',
   ],
-  /** Szolgáltatásválasztó opciói. Cseréld a valós szolgáltatásokra. */
-  serviceOptions: [
-    '[SZOLGÁLTATÁS 1]',
-    '[SZOLGÁLTATÁS 2]',
-    '[SZOLGÁLTATÁS 3]',
-    'Egyéb / még nem tudom',
-  ],
+  /**
+   * A „Milyen munkára van szükséged?” mező opciói.
+   * Alapból a bekapcsolt szolgáltatásokból áll össze (lásd lentebb),
+   * így nem kell két helyen karbantartani.
+   */
+  otherOption: 'Egyéb / még nem tudom',
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 5. PROBLÉMA SZEKCIÓ
- * ------------------------------------------------------------------------ */
+/* ===========================================================================
+ * 5. PROBLÉMAFELVETÉS
+ *
+ *  Ezek tünetek, nem diagnózisok. A szövegek szándékosan nem állítanak
+ *  biztos okot — azt csak helyszíni felméréssel lehet megállapítani.
+ * ======================================================================== */
 
 export const problem = {
-  eyebrow: 'A helyzet',
-  title: 'A legtöbb bosszúság nem a munkából jön, hanem a körülötte lévő káoszból',
-  lead: 'A szakmai rész általában megoldható. Ami elviszi az energiát, az a bizonytalanság: mikor, mennyiért, ki felel érte. Válaszd ki, ami nálad a legismerősebb.',
-  /** 3–4 konkrét fájdalompont. Ne dramatizáld — konkrét helyzeteket írj le. */
+  eyebrow: 'Ismerős helyzetek',
+  title: 'Ismerősek ezek a problémák?',
+  lead: 'A legtöbb nyílászárócsere egy hétköznapi bosszúsággal kezdődik. Kattints arra, ami nálad a legismerősebb — leírjuk, mit szoktunk ilyenkor megnézni.',
+  /**
+   * A jelölés helye az ablakillusztráción, a doboz szélességének és
+   * magasságának százalékában.
+   */
   items: [
     {
-      key: 'arak',
-      label: 'Átláthatatlan árak',
-      title: 'Az ajánlatból nem derül ki, mi fér bele',
-      body: '[Írd le konkrétan, milyen árazási bizonytalansággal találkoznak az ügyfeleid, mielőtt hozzád fordulnak.]',
+      key: 'huzat',
+      label: 'Huzat a zárt ablaknál',
+      short: 'Huzat',
+      title: 'Huzatot érzel, pedig az ablak zárva van',
+      body: 'Ha zárt szárny mellett is érezhető a légmozgás, az jöhet a tömítésből, a vasalat állításából vagy a fal és a tok csatlakozásából. Melyik, az kívülről nem látszik — ezt a helyszínen nézzük meg.',
+      hotspot: { x: 12, y: 46 },
     },
     {
-      key: 'hatarido',
-      label: 'Csúszó határidők',
-      title: 'A vállalt dátum és a valóság elválik',
-      body: '[Írd le, milyen határidő-problémákat tapasztalnak az ügyfeleid.]',
+      key: 'ho',
+      label: 'Télen hideg, nyáron forró',
+      short: 'Hőérzet',
+      title: 'A helyiség télen hideg, nyáron gyorsan felmelegszik',
+      body: 'A hőérzetet az üvegezés, a profil és a beépítés együtt határozza meg — és a tájolás is számít. Felméréskor azt is megnézzük, hol éri meg árnyékolással kiegészíteni.',
+      hotspot: { x: 29, y: 33 },
     },
     {
-      key: 'kommunikacio',
-      label: 'Néma szakasz',
-      title: 'Az ügyfél nem tudja, hol tart a munka',
-      body: '[Írd le, milyen kommunikációs hiányt élnek meg az ügyfeleid.]',
+      key: 'parasodas',
+      label: 'Párásodik az üveg',
+      short: 'Párásodás',
+      title: 'Rendszeresen párásodik az üveg',
+      body: 'Nem mindegy, hogy az üveg belső oldalán vagy a rétegek között csapódik ki a pára — más okot és más megoldást jelent. A szellőztetési szokások is beleszólnak, ezért ezt mindig együtt nézzük át.',
+      hotspot: { x: 71, y: 64 },
     },
     {
-      key: 'felelosseg',
-      label: 'Elmosódó felelősség',
-      title: 'Baj esetén nincs, aki felvegye a telefont',
-      body: '[Írd le, milyen felelősségvállalási problémákkal találkoznak.]',
+      key: 'nyitas',
+      label: 'Nehezen nyílik vagy záródik',
+      short: 'Nyitás',
+      title: 'Nehezen nyílik vagy záródik az ablak',
+      body: 'Néha elég a vasalat beállítása vagy egy kopott alkatrész cseréje, néha a szárny vagy a tok vetemedett meg. Megnézzük, hogy javítás vagy csere az ésszerűbb.',
+      hotspot: { x: 55, y: 50 },
+    },
+    {
+      key: 'zaj',
+      label: 'Behallatszik az utcai zaj',
+      short: 'Zaj',
+      title: 'Erősen behallatszik az utcai zaj',
+      body: 'A hanggátlásban az üvegszerkezet és a zárás minősége a meghatározó. Megnézzük, honnan jön a zaj, és milyen üvegezéssel lehet érdemben csökkenteni.',
+      hotspot: { x: 75, y: 26 },
+    },
+    {
+      key: 'zaras',
+      label: 'Nem zár megfelelően',
+      short: 'Zárás',
+      title: 'A régi szerkezet már nem zár rendesen',
+      body: 'Évek alatt a tömítés benyomódik, a vasalat kilazul, a fa dolgozik. Megnézzük, hogy a meglévő szerkezet felújítható-e, vagy a csere a hosszabb távon jobb megoldás.',
+      hotspot: { x: 50, y: 12 },
+    },
+    {
+      key: 'beazas',
+      label: 'Sérülés vagy beázás',
+      short: 'Beázás',
+      title: 'Az ablak körül sérülés vagy beázás látszik',
+      body: 'Ez lehet a párkány, a bádogozás vagy a tok körüli tömítés hibája, de lehet a falszerkezeté is. Mielőtt bármit javasolunk, megnézzük, honnan jön a nedvesség.',
+      hotspot: { x: 30, y: 82 },
     },
   ],
-  cta: 'Nézzük, nálad hogy lehet ezt elkerülni',
+  /** A szekció alatti figyelmeztetés — szándékosan hangsúlyos. */
+  disclaimer:
+    'Ezek tünetek, nem diagnózisok. A pontos okot — és azt, hogy javítás vagy csere az ésszerűbb — helyszíni felméréssel lehet meghatározni.',
+  cta: 'Szeretném felméretni',
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 6. MEGOLDÁS / SZOLGÁLTATÁS
- * ------------------------------------------------------------------------ */
+/* ===========================================================================
+ * 6. SZOLGÁLTATÁSOK
+ *
+ *  `enabled: false` → a szolgáltatás sehol nem jelenik meg, és az űrlap
+ *  választólistájából is kimarad. Csak azt hagyd bekapcsolva, amit a cég
+ *  tényleg vállal.
+ *
+ *  Az `options` mezők döntési szempontok, nem készletlista. Ha valamelyik
+ *  lehetőséget nem tudod biztosítani, töröld a sort.
+ * ======================================================================== */
+
+export interface Service {
+  key: string;
+  /** Megjelenik a kártyán, a szűrőben és az űrlap választólistájában. */
+  label: string;
+  enabled: boolean;
+  /** Egy mondat: mit takar. */
+  summary: string;
+  /** Kinek ajánlott. */
+  audience: string;
+  /** Milyen problémára adhat megoldást. */
+  solves: string;
+  /** Miből választhat az érdeklődő. */
+  options: readonly string[];
+  image: string;
+  imageAlt: string;
+}
+
+export const services: readonly Service[] = [
+  {
+    key: 'muanyag',
+    label: 'Műanyag nyílászárók',
+    enabled: true,
+    summary: 'A leggyakrabban választott megoldás lakóépületek ablakcseréjéhez.',
+    audience: 'Ha jó ár-érték arányt keresel, és nem akarsz évente festeni, karbantartani.',
+    solves: 'Huzat, rossz zárás, gyenge hő- és hangszigetelés a régi szerkezeteknél.',
+    options: [
+      'Profil: eltérő kamraszámú változatok',
+      'Üvegezés: két- vagy háromrétegű',
+      'Szín: fehér vagy fóliázott, fa- és egyéb dekorokkal',
+      'Nyitásmód: bukó-nyíló, tolóajtó, fix mező',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: műanyag nyílászáró]',
+  },
+  {
+    key: 'fa',
+    label: 'Fa nyílászárók',
+    enabled: true,
+    summary: 'Természetes anyag, ahol a megjelenés is szempont.',
+    audience: 'Régi vagy védett épületekhez, illetve ha a fa látványához ragaszkodsz.',
+    solves: 'Elöregedett fa ablakok cseréje az eredeti karakter megtartásával.',
+    options: [
+      'Alapanyag: boróka, fenyő vagy keményfa rétegelt szerkezet',
+      'Felületkezelés: lazúr vagy fedőfestés',
+      'Üvegezés: két- vagy háromrétegű',
+      'Osztás: valódi vagy felragasztott osztóléc',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: fa nyílászáró]',
+  },
+  {
+    key: 'alu',
+    label: 'Alumínium nyílászárók',
+    enabled: true,
+    summary: 'Nagy méretű, karcsú szerkezetekhez és erősebb igénybevételhez.',
+    audience: 'Nagy üvegfelület, emelt-toló ajtó vagy üzlethelyiség esetén.',
+    solves: 'Nagy nyílásméret, ahol a műanyag profil már túl vastag vagy nem elég erős.',
+    options: [
+      'Hőhídmentes vagy hőhidas szerkezet',
+      'Színválasztás RAL-skála szerint',
+      'Nagy méretű emelt-toló és harmonika megoldások',
+      'Vékony látszó keret a nagyobb üvegfelületért',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: alumínium nyílászáró]',
+  },
+  {
+    key: 'bejarati',
+    label: 'Bejárati ajtók',
+    enabled: true,
+    summary: 'A ház első benyomása — és egyben a legfontosabb zárási pont.',
+    audience: 'Ha a régi ajtó huzatos, nehezen zár, vagy már nem érzed biztonságosnak.',
+    solves: 'Huzat, gyenge zárás, elavult zárszerkezet, nem megfelelő hőszigetelés.',
+    options: [
+      'Anyag: műanyag, fa vagy alumínium',
+      'Panelezett vagy üvegezett kivitel',
+      'Zárszerkezet: többpontos záródás',
+      'Kilincs, küszöb és kiegészítők',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: bejárati ajtó]',
+  },
+  {
+    key: 'redony',
+    label: 'Redőnyök és árnyékolástechnika',
+    enabled: true,
+    summary: 'Nyári hővédelem, sötétítés és plusz zárás egyben.',
+    audience: 'Ha nyáron felmelegszik a helyiség, vagy sötétítésre van szükséged.',
+    solves: 'Nyári túlmelegedés, erős betűzés, hálószoba sötétítése.',
+    options: [
+      'Redőny: műanyag vagy alumínium lamella',
+      'Beépítés: tokos vagy utólag felszerelhető',
+      'Működtetés: gurtni, kézi hajtókar vagy motoros',
+      'Egyéb árnyékolás: reluxa, szalagfüggöny, napellenző',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: redőny vagy árnyékoló]',
+  },
+  {
+    key: 'szunyoghalo',
+    label: 'Szúnyoghálók',
+    enabled: true,
+    summary: 'Nyitott ablak rovarok nélkül.',
+    audience: 'Ha nyáron szellőztetnél, de nem akarsz rovarokat beengedni.',
+    solves: 'Szellőztetés rovarok nélkül, akár erkélyajtónál is.',
+    options: [
+      'Fix kerethálók ablakokra',
+      'Nyíló háló erkély- és bejárati ajtóhoz',
+      'Rolós vagy pliszé háló',
+      'Háziállat-biztos, erősített hálószövet',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: szúnyogháló]',
+  },
+  {
+    key: 'parkany',
+    label: 'Párkányok',
+    enabled: true,
+    summary: 'A nyílászáró befejező eleme kívül és belül.',
+    audience: 'Nyílászárócseréhez, illetve ha a meglévő párkány sérült vagy beázik.',
+    solves: 'Beázás, sérült külső párkány, hiányzó vagy nem illeszkedő belső párkány.',
+    options: [
+      'Külső: alumínium vagy horganyzott lemez',
+      'Belső: műanyag vagy műkő',
+      'Színválasztás a nyílászáróhoz igazítva',
+      'Mérethelyes, helyszínen igazított kivitel',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: párkány]',
+  },
+  {
+    key: 'csere',
+    label: 'Nyílászárócsere és beépítés',
+    enabled: true,
+    summary: 'A régi szerkezet kibontása és az új szakszerű beépítése.',
+    audience: 'Ha nem csak a nyílászárót vennéd meg, hanem a beépítést is ránk bíznád.',
+    solves: 'A nyílászáró minősége önmagában kevés — a beépítés dönti el az eredményt.',
+    options: [
+      'Régi szerkezet kibontása és elszállítása',
+      'Tokrögzítés és a csatlakozás tömítése',
+      'Vasalat beállítása, működés ellenőrzése átadáskor',
+      'Párkány és külső bádogozás igazítása',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: nyílászáró beépítése]',
+  },
+  {
+    key: 'helyreallitas',
+    label: 'Bontás utáni helyreállítás',
+    /**
+     * ELLENŐRIZD: csak akkor hagyd bekapcsolva, ha a cég ezt tényleg vállalja.
+     * Ha nem, állítsd `false`-ra — így sehol nem jelenik meg.
+     */
+    enabled: true,
+    summary: 'A beépítés után a nyílás széle visszakapja a kész felületet.',
+    audience: 'Ha nem akarsz külön mesterembert keresni a bontás utáni munkára.',
+    solves: 'A csere után maradó sérült vakolat, festetlen káva, hiányzó lezárás.',
+    options: [
+      'Káva javítása és glettelése',
+      'Festés a meglévő felülethez igazítva',
+      'Külső oldal lezárása',
+      'Takarítás és a törmelék elszállítása',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: helyreállítás beépítés után]',
+  },
+  {
+    key: 'javitas',
+    label: 'Javítás és szerviz',
+    /** ELLENŐRIZD: csak akkor `true`, ha a cég vállal javítási munkákat. */
+    enabled: true,
+    summary: 'Ha a meglévő szerkezet még megmenthető.',
+    audience: 'Ha nem akarsz azonnal cserélni, és előbb a javítási lehetőséget néznéd.',
+    solves: 'Rosszul záró szárny, kopott tömítés, elromlott vasalat vagy zár.',
+    options: [
+      'Vasalat beállítása',
+      'Tömítés cseréje',
+      'Zárszerkezet és kilincs cseréje',
+      'Üvegcsere törött üveg esetén',
+    ],
+    image: '',
+    imageAlt: '[Képaláírás: nyílászáró javítása]',
+  },
+];
 
 export const solution = {
-  eyebrow: 'Amit csinálunk',
-  title: `${company.mainService} — elejétől a végéig egy kézben`,
-  lead: company.intro,
-  body: '[Írd le 2–4 mondatban részletesebben, hogyan dolgoztok: mit vállaltok, mit nem, hogyan tartjátok a kapcsolatot az ügyféllel.]',
-  /**
-   * Interaktív fülek. Minden fülhöz tartozik egy cím, leírás és
-   * 3 kiemelt pont. Az `image` opcionális: tedd a fájlt a /public-ba.
-   */
-  tabs: [
-    {
-      key: 'tab-1',
-      label: '[SZOLGÁLTATÁS 1]',
-      title: '[SZOLGÁLTATÁS 1 — mit takar]',
-      body: '[Írd le, pontosan mit tartalmaz ez a szolgáltatás, és kinek való.]',
-      bullets: ['[Konkrét részlet]', '[Konkrét részlet]', '[Konkrét részlet]'],
-      image: '',
-      imageAlt: '[Képaláírás]',
-    },
-    {
-      key: 'tab-2',
-      label: '[SZOLGÁLTATÁS 2]',
-      title: '[SZOLGÁLTATÁS 2 — mit takar]',
-      body: '[Írd le, pontosan mit tartalmaz ez a szolgáltatás, és kinek való.]',
-      bullets: ['[Konkrét részlet]', '[Konkrét részlet]', '[Konkrét részlet]'],
-      image: '',
-      imageAlt: '[Képaláírás]',
-    },
-    {
-      key: 'tab-3',
-      label: '[SZOLGÁLTATÁS 3]',
-      title: '[SZOLGÁLTATÁS 3 — mit takar]',
-      body: '[Írd le, pontosan mit tartalmaz ez a szolgáltatás, és kinek való.]',
-      bullets: ['[Konkrét részlet]', '[Konkrét részlet]', '[Konkrét részlet]'],
-      image: '',
-      imageAlt: '[Képaláírás]',
-    },
-  ],
-  cta: 'Kérj rá ajánlatot',
+  eyebrow: 'Szolgáltatások',
+  title: 'Minden szükséges megoldás egy helyen',
+  lead: 'A megfelelő nyílászáró kiválasztásától a beépítés befejezéséig egy helyen intézhető. Nem kell külön kereskedőt, beépítőt és árnyékolós szakembert keresned.',
+  ctaText:
+    'Nem kell előre tudnod, pontosan milyen nyílászáróra van szükséged. Mondd el, mit szeretnél megoldani, és segítünk megtalálni a megfelelő lehetőséget.',
+  cta: 'Szakértői segítséget kérek',
 } as const;
 
-/* ---------------------------------------------------------------------------
+/** Csak a bekapcsolt szolgáltatások. Ezt használja az egész oldal. */
+export const activeServices = services.filter((service) => service.enabled);
+
+/* ===========================================================================
  * 7. REFERENCIÁK
  *
- *  FONTOS: ide csak valós, elvégzett munkák kerülhetnek. Amíg nincs
- *  referenciaanyag, hagyd a helyőrzőket — kitalált projekt megtévesztő.
- * ------------------------------------------------------------------------ */
+ *  IDE CSAK VALÓS, ELVÉGZETT MUNKA KERÜLHET. Amíg nincs referenciaanyag,
+ *  hagyd a helyőrzőket — kitalált projekt megtévesztő és jogilag is kockázatos.
+ *
+ *  A `category` értéke egy szolgáltatás `key`-e (lásd fentebb) — ebből
+ *  épül fel a szűrő automatikusan.
+ * ======================================================================== */
+
+export interface ReferenceItem {
+  id: string;
+  title: string;
+  /** Melyik szolgáltatáshoz tartozik. A szűrő ez alapján működik. */
+  category: string;
+  location: string;
+  /** Milyen munka készült el. */
+  work: string;
+  /** Milyen megoldás került beépítésre. */
+  installed: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  /** Előtte-utána képpár. Mindkettő megadva → összehasonlító csúszka. */
+  beforeImage: string;
+  beforeAlt: string;
+  afterImage: string;
+  afterAlt: string;
+}
+
+function emptyReference(index: number, category: string): ReferenceItem {
+  return {
+    id: `ref-${index}`,
+    title: '[PROJEKT CÍME]',
+    category,
+    location: '[HELYSZÍN]',
+    work: '[ELVÉGZETT MUNKA TÍPUSA]',
+    installed: '[BEÉPÍTETT MEGOLDÁS]',
+    description: '[Rövid projektleírás: mi volt a feladat és mi készült el.]',
+    image: '',
+    imageAlt: '[REFERENCIAKÉP leírása]',
+    beforeImage: '',
+    beforeAlt: '[ELŐTTE kép leírása]',
+    afterImage: '',
+    afterAlt: '[UTÁNA kép leírása]',
+  };
+}
 
 export const references = {
   eyebrow: 'Munkáink',
-  title: 'Néhány elkészült munka',
-  lead: '[Rövid felvezető: milyen jellegű munkákat mutattok itt be.]',
+  title: 'Korábbi munkáink',
+  lead: 'Nézd meg, milyen nyílászáró-beépítéseket és felújításokat valósítottunk meg.',
+  /** Hány elem látszik egy „oldalon”, mielőtt a Továbbiak gomb megjelenik. */
+  pageSize: 6,
+  /**
+   * Helyőrző elemek. Cseréld valós projektekre: töltsd ki a mezőket, és
+   * add meg a képek útvonalát. A `category` a szűrőhöz kell.
+   */
   items: [
-    {
-      id: 'ref-1',
-      title: '[PROJEKT CÍME]',
-      location: '[HELYSZÍN]',
-      description: '[Rövid leírás: mi volt a feladat és mi készült el.]',
-      image: '',
-      imageAlt: '[REFERENCIAKÉP leírása]',
-    },
-    {
-      id: 'ref-2',
-      title: '[PROJEKT CÍME]',
-      location: '[HELYSZÍN]',
-      description: '[Rövid leírás: mi volt a feladat és mi készült el.]',
-      image: '',
-      imageAlt: '[REFERENCIAKÉP leírása]',
-    },
-    {
-      id: 'ref-3',
-      title: '[PROJEKT CÍME]',
-      location: '[HELYSZÍN]',
-      description: '[Rövid leírás: mi volt a feladat és mi készült el.]',
-      image: '',
-      imageAlt: '[REFERENCIAKÉP leírása]',
-    },
-    {
-      id: 'ref-4',
-      title: '[PROJEKT CÍME]',
-      location: '[HELYSZÍN]',
-      description: '[Rövid leírás: mi volt a feladat és mi készült el.]',
-      image: '',
-      imageAlt: '[REFERENCIAKÉP leírása]',
-    },
-    {
-      id: 'ref-5',
-      title: '[PROJEKT CÍME]',
-      location: '[HELYSZÍN]',
-      description: '[Rövid leírás: mi volt a feladat és mi készült el.]',
-      image: '',
-      imageAlt: '[REFERENCIAKÉP leírása]',
-    },
-  ],
+    emptyReference(1, 'muanyag'),
+    emptyReference(2, 'muanyag'),
+    emptyReference(3, 'bejarati'),
+    emptyReference(4, 'fa'),
+    emptyReference(5, 'redony'),
+    emptyReference(6, 'csere'),
+    emptyReference(7, 'alu'),
+    emptyReference(8, 'parkany'),
+  ] as readonly ReferenceItem[],
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 8. FOLYAMAT
- * ------------------------------------------------------------------------ */
+/**
+ * Ügyfélvélemények.
+ *
+ * SZÁNDÉKOSAN ÜRES. Ne találj ki neveket és véleményeket. Ha van valós,
+ * hozzájárulással megosztható visszajelzésed, vedd fel ide — a blokk
+ * automatikusan megjelenik. Amíg üres, nem jelenik meg semmi.
+ */
+export const testimonials: readonly { name: string; location: string; text: string }[] = [];
+
+/* ===========================================================================
+ * 8. MUNKAFOLYAMAT
+ *
+ *  `enabled: false` → a lépés nem jelenik meg. Csak azt hagyd bent, ami
+ *  a cég tényleges folyamatának megfelel. A számozás automatikus.
+ * ======================================================================== */
 
 export const process = {
-  eyebrow: 'Hogyan dolgozunk',
-  title: 'Hat lépés a megkereséstől az átadásig',
-  lead: 'Így néz ki egy munka nálunk, az első hívástól a kész eredményig.',
+  eyebrow: 'Folyamat',
+  title: 'Így zajlik a közös munka',
+  lead: 'Az első megkereséstől a kész, beépített nyílászáróig. Minden lépésnél tudod, hol tartunk, és mi következik.',
   steps: [
-    { title: 'Kapcsolatfelvétel', body: '[Mi történik ebben a lépésben? Hogyan és mikor reagáltok?]' },
-    { title: 'Egyeztetés', body: '[Mit beszéltek át? Telefonon vagy személyesen?]' },
-    { title: 'Felmérés', body: '[Hogyan zajlik a helyszíni felmérés vagy igényfelmérés?]' },
-    { title: 'Ajánlat', body: '[Mit tartalmaz az ajánlat, és mennyi idő alatt készül el?]' },
-    { title: 'Kivitelezés', body: '[Hogyan zajlik a munka? Hogyan tájékoztatjátok az ügyfelet?]' },
-    { title: 'Átadás', body: '[Mi történik a befejezéskor? Van-e utókövetés?]' },
+    {
+      key: 'ajanlatkeres',
+      enabled: true,
+      title: 'Ajánlatkérés',
+      body: 'Kitöltöd az űrlapot, vagy telefonon felveszed velünk a kapcsolatot.',
+    },
+    {
+      key: 'egyeztetes',
+      enabled: true,
+      title: 'Egyeztetés',
+      body: 'Megismerjük az igényeidet, és bekérjük a szükséges alapinformációkat.',
+    },
+    {
+      key: 'tajekoztatas',
+      enabled: true,
+      title: 'Előzetes tájékoztatás',
+      body: 'Az elérhető információk alapján megtörténik az első szakmai egyeztetés.',
+    },
+    {
+      key: 'felmeres',
+      enabled: true,
+      title: 'Helyszíni felmérés',
+      body: 'Rögzítjük a pontos méreteket, a műszaki körülményeket és az igényeket.',
+    },
+    {
+      key: 'ajanlat',
+      enabled: true,
+      title: 'Részletes ajánlat',
+      body: 'A felmérés alapján elkészül a pontos, tételes ajánlat.',
+    },
+    {
+      key: 'megrendeles',
+      enabled: true,
+      title: 'Megrendelés és időpont-egyeztetés',
+      body: 'A részletek elfogadása után ütemezzük a kivitelezést.',
+    },
+    {
+      key: 'beepites',
+      enabled: true,
+      title: 'Beépítés és átadás',
+      body: 'Beépítjük a nyílászárókat, ellenőrizzük a működésüket, és átadjuk a munkát.',
+    },
   ],
 } as const;
 
-/* ---------------------------------------------------------------------------
- * 9. ZÁRÓ SZEKCIÓ
- * ------------------------------------------------------------------------ */
+export const activeSteps = process.steps.filter((step) => step.enabled);
 
-export const finalCta = {
-  eyebrow: 'Kapcsolat',
-  title: 'Mondd el, mire van szükséged',
-  lead: 'Nem kell kész tervvel érkezned. Írd le, mi a helyzet, és megmondjuk, mit tudunk kezdeni vele.',
-} as const;
-
-/* ---------------------------------------------------------------------------
- * 10. FOOTER ÉS JOGI SZÖVEGEK
- * ------------------------------------------------------------------------ */
+/* ===========================================================================
+ * 9. JOGI SZÖVEGEK ÉS SÜTIK
+ * ======================================================================== */
 
 export const legal = {
   /**
-   * A jogi szövegek modális ablakban jelennek meg. Cseréld a valós,
-   * jogásszal ellenőrzött szövegre. Ha külön aloldalra tennéd őket,
-   * add meg az `href` értéket — akkor linkként fog viselkedni.
+   * A jogi szövegek modális ablakban jelennek meg. Ha külön aloldalra
+   * tennéd őket, add meg az `href` értéket — akkor linkként viselkednek.
+   * JOGI ELLENŐRZÉS NÉLKÜL NE ÉLESÍTSD.
    */
   privacy: {
     title: 'Adatkezelési tájékoztató',
     href: '',
-    body: '[Ide kerül a teljes adatkezelési tájékoztató. Tartalmaznia kell legalább: az adatkezelő nevét és elérhetőségét, a kezelt adatok körét, az adatkezelés célját és jogalapját, a megőrzési időt, az adatfeldolgozókat, és az érintett jogait. Jogi ellenőrzés nélkül ne élesítsd.]',
+    body: '[Ide kerül a teljes adatkezelési tájékoztató. Tartalmaznia kell legalább: az adatkezelő nevét és elérhetőségét, a kezelt adatok körét, az adatkezelés célját és jogalapját, a megőrzési időt, az adatfeldolgozókat, és az érintett jogait.]',
   },
   imprint: {
     title: 'Impresszum',

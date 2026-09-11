@@ -1,207 +1,239 @@
-.solution {
-  background: var(--c-card);
-  border-block: 1px solid var(--c-line);
-}
+/* Szolgáltatáskártyák. */
 
 .solution__head {
+  max-width: 62ch;
+  margin-bottom: var(--sp-8);
+}
+
+.solution__grid {
   display: grid;
   gap: var(--sp-5);
+  list-style: none;
+  /*
+   * `start`, nem `stretch`: enélkül egy lenyitott kártya az egész sort
+   * magasra húzná, és a szomszédai üres, méteres dobozok lennének.
+   */
+  align-items: start;
 }
 
-.solution__title {
-  max-width: 20ch;
-}
-
-@media (min-width: 940px) {
-  .solution__head {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(2rem, 1rem + 4vw, 5rem);
-    align-items: end;
-  }
-  .solution__head .eyebrow {
-    grid-column: 1 / -1;
-    margin-bottom: 0;
+@media (min-width: 680px) {
+  .solution__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.solution__intro {
+@media (min-width: 1060px) {
+  .solution__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.svc {
+  display: flex;
+}
+
+.svc__card {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-lg);
+  background: var(--c-card);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
 }
 
-.solution__intro .section-lead {
-  margin-top: 0;
+.svc__card:hover {
+  border-color: var(--c-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.solution__body {
-  max-width: 58ch;
-  color: var(--text-muted);
+.svc.is-open .svc__card {
+  border-color: var(--c-cta);
+  box-shadow: var(--shadow-md);
 }
 
-/* --- Fülek --- */
-
-.solution__wrap {
-  margin-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+@media (prefers-reduced-motion: reduce) {
+  .svc__card:hover {
+    transform: none;
+  }
 }
 
-.solution__tabs {
+.svc__media {
+  border-bottom: 1px solid var(--c-line-soft);
+}
+
+.svc__body {
   display: flex;
-  gap: var(--sp-2);
-  overflow-x: auto;
-  padding-bottom: var(--sp-1);
-  border-bottom: 1px solid var(--c-line);
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--sp-5);
 }
 
-.solution__tab {
-  position: relative;
-  flex: none;
-  padding: 0.85rem 1.15rem;
-  border: 0;
-  background: none;
+.svc__title {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-2);
+}
+
+.svc__summary {
   color: var(--text-muted);
   font-size: var(--fs-sm);
-  font-weight: 600;
-  white-space: nowrap;
-  transition: color var(--dur) var(--ease-out);
+  /* Két sornyi hely, hogy a becsukott kártyák alja egy vonalba essen. */
+  min-height: 3.1em;
 }
 
-.solution__tab::after {
-  content: '';
-  position: absolute;
-  left: 0.4rem;
-  right: 0.4rem;
-  bottom: -1px;
-  height: 2px;
-  background: var(--c-brown-700);
-  transform: scaleX(0);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.solution__tab:hover {
-  color: var(--c-brown-800);
-}
-
-.solution__tab.is-active {
-  color: var(--c-brown-900);
-}
-
-.solution__tab.is-active::after {
-  transform: scaleX(1);
-}
-
-/* --- Panel: váltakozó kép–szöveg --- */
-
-.solution__panel {
-  display: grid;
-  gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+.svc__toggle {
+  display: inline-flex;
   align-items: center;
-  padding-top: clamp(2rem, 1.5rem + 2vw, 3.25rem);
-}
-
-.solution__panel:focus-visible {
-  outline-offset: 6px;
-}
-
-@media (min-width: 900px) {
-  .solution__panel {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-  /* Minden második fül tükrözött elrendezést kap — nem monoton a ritmus */
-  .solution__panel.is-reversed .solution__panel-copy {
-    order: 2;
-  }
-}
-
-.solution__panel-title {
-  font-size: var(--fs-2xl);
-  max-width: 18ch;
-}
-
-.solution__panel-body {
+  gap: var(--sp-2);
+  align-self: flex-start;
   margin-top: var(--sp-4);
-  max-width: 52ch;
-  font-size: var(--fs-lg);
-  color: var(--text-muted);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--c-accent-text);
+  font-size: var(--fs-sm);
+  font-weight: 700;
 }
 
-.solution__bullets {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  margin-top: var(--sp-6);
-  padding-top: var(--sp-5);
-  border-top: 1px solid var(--c-line-soft);
-  list-style: none;
-}
-
-.solution__bullets li {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-3);
-  font-size: var(--fs-base);
-  line-height: 1.5;
-  color: var(--c-brown-900);
-}
-
-.solution__bullet-icon {
+.svc__toggle-icon {
   display: grid;
   place-items: center;
   width: 22px;
   height: 22px;
-  flex: none;
-  margin-top: 2px;
+  border: 1px solid var(--c-line);
   border-radius: 50%;
-  background: var(--c-sand-light);
-  color: var(--c-brown-800);
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.solution__bullet-icon svg {
+.svc__toggle-icon svg {
   width: 13px;
   height: 13px;
 }
 
-.solution__panel-media .imgslot {
-  box-shadow: var(--shadow-md);
+.svc.is-open .svc__toggle-icon {
+  transform: rotate(45deg);
+  border-color: var(--c-cta);
 }
 
-.solution__panel:not([hidden]) > * {
-  animation: solution-in 420ms var(--ease-out) both;
-}
-.solution__panel:not([hidden]) > *:nth-child(2) {
-  animation-delay: 70ms;
+/* --- Lenyitott részletek ------------------------------------------------- */
+
+.svc__detail {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--c-line-soft);
 }
 
-@keyframes solution-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
+.svc__facts {
+  display: grid;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .solution__panel:not([hidden]) > * { animation: none; }
+.svc__facts dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-accent-text);
+  margin-bottom: var(--sp-1);
 }
 
-/* --- Záró CTA --- */
+.svc__facts dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.svc__options-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-accent-text);
+  margin-bottom: var(--sp-3);
+}
+
+.svc__options {
+  display: grid;
+  gap: var(--sp-2);
+  list-style: none;
+  margin-bottom: var(--sp-5);
+}
+
+.svc__options li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.svc__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  margin-top: 3px;
+  color: var(--c-cta);
+}
+
+.svc__check svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.2;
+}
+
+.svc__cta {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--c-cta);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--c-cta);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  transition:
+    background var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out);
+}
+
+.svc__cta:hover {
+  background: var(--c-cta);
+  color: #fff;
+}
+
+/* --- Záró CTA ------------------------------------------------------------ */
 
 .solution__cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
   gap: var(--sp-5);
-  margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
-  padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
-  background: var(--c-beige);
-  border: 1px solid var(--c-line);
+  margin-top: var(--sp-8);
+  padding: var(--sp-7);
+  border: 1px solid var(--c-line-soft);
   border-radius: var(--r-lg);
+  background: var(--c-card);
+  text-align: center;
+  justify-items: center;
 }
 
 .solution__cta-text {
-  max-width: 46ch;
-  font-family: var(--font-display);
+  max-width: 62ch;
   font-size: var(--fs-lg);
-  font-weight: 500;
-  color: var(--c-brown-900);
+  color: var(--text);
+}
+
+@media (max-width: 559px) {
+  .solution__cta {
+    padding: var(--sp-5);
+  }
+  .solution__cta .btn {
+    width: 100%;
+  }
 }

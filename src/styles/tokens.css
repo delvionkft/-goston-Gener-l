@@ -22,6 +22,16 @@
    */
   --c-accent-text: #7E5430;
 
+  /*
+   * CTA-szín.
+   * A teljes paletta meleg barna; ha a főgomb is barna, semmi nem emelkedik
+   * ki belőle. Ez a mély, visszafogott zöld egyetlen célt szolgál: a
+   * konverziós gombokat. Máshol nem használjuk, különben elveszti a súlyát.
+   * Kontraszt: fehér szöveggel 8.7:1, bézs háttéren szövegként 7.6:1 — mindkettő AA felett.
+   */
+  --c-cta: #16544F;
+  --c-cta-hover: #0F423E;
+
   /* Származtatott árnyalatok — a paletta kiterjesztése, nem új márkaszín */
   --c-brown-950: #2A1A10;
   --c-brown-800: #4E3220;
@@ -43,10 +53,17 @@
   --text-on-dark-muted: #C9B9A7;
   --border: var(--c-line);
   --accent: var(--c-brown-700);
+  --cta: var(--c-cta);
 
   /* --- Tipográfia --- */
-  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino,
-    'Times New Roman', serif;
+  /*
+   * Címsorokhoz Montserrat (geometrikus, határozott, jól működik nagy
+   * méretben), folyószöveghez Inter — hosszabb bekezdésben olvashatóbb,
+   * mint a Montserrat. Mindkettő ugyanabból a modern, semleges
+   * családból való, így a kettő nem üt el egymástól.
+   */
+  --font-display: 'Montserrat', 'Segoe UI', -apple-system, BlinkMacSystemFont,
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
 

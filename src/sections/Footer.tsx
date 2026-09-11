@@ -1,4 +1,4 @@
-import { company, contact, legal } from '../config/site';
+import { company, contact, isFilled, legal, socialLinks } from '../config/site';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
 import './Footer.css';
@@ -11,6 +11,8 @@ interface Props {
 
 export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
   const year = new Date().getFullYear();
+  /* Csak a tényleg megadott közösségi linkek jelennek meg — nincs üres gomb. */
+  const socials = socialLinks.filter((link) => isFilled(link.href));
 
   return (
     <footer className="footer on-dark">
@@ -23,12 +25,35 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
       <div className="container footer__inner">
         <div className="footer__top">
           <div className="footer__brand">
-            <p className="footer__name">
-              <PH value={company.name} />
-            </p>
-            <p className="footer__service">
-              <PH value={company.mainService} />
-            </p>
+            {/* Valós logó, ha a `company.logo` ki van töltve; különben a
+                cégnév szöveges változata. Törött képikon így nem fordulhat elő. */}
+            {isFilled(company.logo) ? (
+              <img
+                className="footer__logo-img"
+                src={company.logo}
+                alt={isFilled(company.logoAlt) ? company.logoAlt : company.name}
+                width={180}
+                height={44}
+                loading="lazy"
+              />
+            ) : (
+              <p className="footer__logo">
+                <PH value={company.name} />
+              </p>
+            )}
+            <p className="footer__service">Nyílászáró forgalmazás, csere és beépítés</p>
+
+            {socials.length > 0 ? (
+              <ul className="footer__social" aria-label="Közösségi oldalaink">
+                {socials.map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <div className="footer__col">
@@ -40,16 +65,30 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
               <li>
                 <EmailLink placement="footer" />
               </li>
+              {isFilled(contact.hours) ? <li className="footer__text">{contact.hours}</li> : null}
             </ul>
           </div>
 
           <div className="footer__col">
-            <h2 className="footer__heading">Hol dolgozunk</h2>
-            <p className="footer__text">
-              <PH value={company.serviceArea} />
-            </p>
-            {contact.address ? <p className="footer__text">{contact.address}</p> : null}
-            {contact.hours ? <p className="footer__text">{contact.hours}</p> : null}
+            <h2 className="footer__heading">Cégadatok</h2>
+            <ul className="footer__list footer__list--plain">
+              <li className="footer__text">
+                Szolgáltatási terület: <PH value={company.serviceArea} />
+              </li>
+              {isFilled(company.seat) || company.seat ? (
+                <li className="footer__text">
+                  Székhely: <PH value={company.seat} />
+                </li>
+              ) : null}
+              {isFilled(contact.address) ? (
+                <li className="footer__text">Telephely: {contact.address}</li>
+              ) : null}
+              {isFilled(company.taxNumber) || company.taxNumber ? (
+                <li className="footer__text">
+                  Adószám: <PH value={company.taxNumber} />
+                </li>
+              ) : null}
+            </ul>
           </div>
 
           <div className="footer__col">

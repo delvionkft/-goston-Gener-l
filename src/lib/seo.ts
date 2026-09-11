@@ -1,38 +1,77 @@
-import { company, contact, isPlaceholder, site } from '../config/site';
+import { activeServices, company, contact, isFilled, site } from '../config/site';
+
+/** A `{ceg}` helyőrző feloldása a cégnévvel. */
+function resolve(template: string): string {
+  const name = isFilled(company.name) ? company.name : '';
+  return template.replace('{ceg}', name).replace(/^\s*[—–-]\s*/, '').trim();
+}
+
+export function pageTitle(): string {
+  return isFilled(company.name)
+    ? resolve(site.title)
+    : 'Nyílászáró landing oldal — töltsd ki a cégadatokat';
+}
+
+export function pageDescription(): string {
+  return site.description;
+}
 
 /**
- * LocalBusiness / ProfessionalService strukturált adat.
+ * LocalBusiness strukturált adat.
  *
- * FONTOS: kizárólag a ténylegesen kitöltött mezőket adjuk ki. A Google
- * a hamis vagy helyőrző adatot tartalmazó strukturált adatot büntetheti,
- * ezért minden `[HELYŐRZŐ]` értéket kihagyunk a kimenetből. Ha a cégnév
- * sincs kitöltve, egyáltalán nem generálunk sémát.
+ * A `HomeAndConstructionBusiness` a LocalBusiness altípusa, így a
+ * LocalBusiness elvárásait teljesíti, de pontosabban írja le a
+ * tevékenységet.
+ *
+ * FONTOS: kizárólag a ténylegesen kitöltött mezőket adjuk ki. A Google a
+ * hamis vagy helyőrző adatot tartalmazó strukturált adatot büntetheti,
+ * ezért minden `[HELYŐRZŐ]` értéket kihagyunk. Ha a cégnév sincs kitöltve,
+ * egyáltalán nem generálunk sémát.
  */
 export function buildStructuredData(): string | null {
-  if (isPlaceholder(company.name)) return null;
+  if (!isFilled(company.name)) return null;
 
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
+    '@type': 'HomeAndConstructionBusiness',
     name: company.name,
     url: site.url,
+    description: site.description,
+    image: new URL(site.ogImage, site.url).href,
   };
 
-  if (!isPlaceholder(company.intro)) data.description = company.intro;
-  if (!isPlaceholder(company.mainService)) {
-    data.knowsAbout = company.mainService;
-    data.serviceType = company.mainService;
-  }
-  if (!isPlaceholder(contact.phoneDisplay)) data.telephone = contact.phoneDisplay;
-  if (!isPlaceholder(contact.email)) data.email = contact.email;
-  if (!isPlaceholder(company.serviceArea)) {
+  if (isFilled(company.legalName)) data.legalName = company.legalName;
+  if (isFilled(contact.phoneDisplay)) data.telephone = contact.phoneDisplay;
+  if (isFilled(contact.email)) data.email = contact.email;
+  if (isFilled(company.taxNumber)) data.taxID = company.taxNumber;
+
+  if (isFilled(company.serviceArea)) {
     data.areaServed = { '@type': 'Place', name: company.serviceArea };
   }
-  if (contact.address && !isPlaceholder(contact.address)) {
-    data.address = { '@type': 'PostalAddress', streetAddress: contact.address };
+
+  /* A cím csak akkor kerül be, ha van valós érték — a séma addressLocality
+     nélkül is érvényes, üres mezőkkel viszont hibás lenne. */
+  const street = isFilled(contact.address) ? contact.address : company.seat;
+  if (isFilled(street)) {
+    data.address = {
+      '@type': 'PostalAddress',
+      streetAddress: street,
+      addressCountry: 'HU',
+    };
   }
-  if (contact.hours && !isPlaceholder(contact.hours)) {
-    data.openingHours = contact.hours;
+
+  if (isFilled(contact.hours)) data.openingHours = contact.hours;
+
+  /* A kínált szolgáltatások — csak a ténylegesen bekapcsoltak. */
+  if (activeServices.length > 0) {
+    data.hasOfferCatalog = {
+      '@type': 'OfferCatalog',
+      name: 'Szolgáltatások',
+      itemListElement: activeServices.map((service) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: service.label, description: service.summary },
+      })),
+    };
   }
 
   return JSON.stringify(data);
@@ -43,32 +82,35 @@ export function buildStructuredData(): string | null {
  * (react-helmet és társai) — ez a pár sor mindent lefed, amire itt szükség van.
  */
 export function applyDocumentHead(): void {
-  const title = isPlaceholder(company.name)
-    ? 'Landing oldal — töltsd ki a cégadatokat'
-    : `${company.name}${isPlaceholder(company.mainService) ? '' : ` – ${company.mainService}`}`;
+  const title = pageTitle();
+  const description = pageDescription();
+  const ogImage = new URL(site.ogImage, site.url).href;
 
   document.title = title;
 
-  const description = isPlaceholder(company.intro)
-    ? 'Ajánlatkérés néhány kattintással.'
-    : company.intro;
-
   setMeta('name', 'description', description);
+  setMeta('property', 'og:site_name', isFilled(company.name) ? company.name : title);
   setMeta('property', 'og:title', title);
   setMeta('property', 'og:description', description);
   setMeta('property', 'og:type', 'website');
   setMeta('property', 'og:url', site.url);
   setMeta('property', 'og:locale', site.locale);
-  setMeta('property', 'og:image', new URL(site.ogImage, site.url).href);
+  setMeta('property', 'og:image', ogImage);
+  setMeta('property', 'og:image:alt', title);
   setMeta('name', 'twitter:card', 'summary_large_image');
+  setMeta('name', 'twitter:title', title);
+  setMeta('name', 'twitter:description', description);
+  setMeta('name', 'twitter:image', ogImage);
+
+  setCanonical(site.url);
 
   // Strukturált adat — csak valós mezőkből
   const json = buildStructuredData();
-  const existing = document.getElementById('ld-json');
+  const existing = document.getElementById('ld-json') as HTMLScriptElement | null;
   if (json) {
-    const script = (existing as HTMLScriptElement | null) ?? document.createElement('script');
+    const script = existing ?? document.createElement('script');
     script.id = 'ld-json';
-    (script as HTMLScriptElement).type = 'application/ld+json';
+    script.type = 'application/ld+json';
     script.textContent = json;
     if (!existing) document.head.appendChild(script);
   } else {
@@ -84,4 +126,14 @@ function setMeta(attr: 'name' | 'property', key: string, value: string): void {
     document.head.appendChild(tag);
   }
   tag.setAttribute('content', value);
+}
+
+function setCanonical(url: string): void {
+  let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'canonical';
+    document.head.appendChild(link);
+  }
+  link.href = url;
 }

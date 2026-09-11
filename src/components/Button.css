@@ -47,8 +47,15 @@
   width: 100%;
 }
 
-/* Elsődleges: sötétbarna alap, világos felirat (kontraszt ~12.9:1) */
+/*
+ * Elsődleges: a dedikált CTA-szín. Ez az egyetlen hely a világos
+ * felületeken, ahol ez a szín megjelenik — így a fő konverziós gomb
+ * ránézésre elkülönül minden mástól. Kontraszt fehér felirattal: 8.7:1.
+ */
 .btn--primary {
+  --btn-bg: var(--c-cta);
+  --btn-fg: #FFFFFF;
+  --btn-bg-hover: var(--c-cta-hover);
   box-shadow: var(--shadow-sm);
 }
 .btn--primary:hover {

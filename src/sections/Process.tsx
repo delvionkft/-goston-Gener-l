@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { ANCHOR, process as processCopy } from '../config/site';
+import { ANCHOR, activeSteps, process as processCopy } from '../config/site';
 import { track } from '../lib/analytics';
 import { useReveal } from '../hooks/useReveal';
-import { PH } from '../components/PlaceholderText';
 import './Process.css';
 
 /** Igaz, ha az idővonalat animáció nélkül, azonnal késznek kell mutatni. */
 function staticFallback(): boolean {
   if (typeof IntersectionObserver === 'undefined') return true;
   return (
-    typeof matchMedia !== 'undefined' &&
-    matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
   );
 }
 
@@ -30,8 +28,8 @@ export function Process() {
    * lépés azonnal aktív — ezt már a kezdőállapotban eldöntjük, hogy ne
    * legyen egy renderelésnyi „inaktív” villanás.
    */
-  const [activeSteps, setActiveSteps] = useState<Set<number>>(() =>
-    staticFallback() ? new Set(processCopy.steps.map((_, i) => i)) : new Set(),
+  const [reached, setReached] = useState<Set<number>>(() =>
+    staticFallback() ? new Set(activeSteps.map((_, index) => index)) : new Set(),
   );
 
   useEffect(() => {
@@ -41,20 +39,19 @@ export function Process() {
     const items = Array.from(list.querySelectorAll<HTMLElement>('.process__step'));
     const observer = new IntersectionObserver(
       (entries) => {
-        const reached: number[] = [];
+        const seen: number[] = [];
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          const index = Number((entry.target as HTMLElement).dataset.index);
-          reached.push(index);
+          seen.push(Number((entry.target as HTMLElement).dataset.index));
           observer.unobserve(entry.target);
         }
-        if (reached.length === 0) return;
-        setActiveSteps((prev) => {
+        if (seen.length === 0) return;
+        setReached((prev) => {
           const next = new Set(prev);
-          reached.forEach((i) => next.add(i));
+          seen.forEach((index) => next.add(index));
           return next;
         });
-        track('process_step_view', { step: Math.max(...reached) + 1 });
+        track('process_step_view', { step: Math.max(...seen) + 1 });
       },
       { rootMargin: '0px 0px -22% 0px', threshold: 0.35 },
     );
@@ -65,8 +62,8 @@ export function Process() {
 
   /** A kitöltött vonal hossza az aktivált lépések arányában. */
   const progress =
-    processCopy.steps.length > 1
-      ? (Math.max(-1, ...Array.from(activeSteps)) / (processCopy.steps.length - 1)) * 100
+    activeSteps.length > 1
+      ? (Math.max(-1, ...Array.from(reached)) / (activeSteps.length - 1)) * 100
       : 0;
 
   return (
@@ -83,11 +80,11 @@ export function Process() {
           ref={listRef}
           style={{ '--progress': `${Math.max(0, progress)}%` } as React.CSSProperties}
         >
-          {processCopy.steps.map((step, index) => (
+          {activeSteps.map((step, index) => (
             <li
-              key={step.title}
+              key={step.key}
               data-index={index}
-              className={`process__step ${activeSteps.has(index) ? 'is-active' : ''}`}
+              className={`process__step ${reached.has(index) ? 'is-active' : ''}`}
             >
               <span className="process__marker" aria-hidden="true">
                 <span className="process__dot" />
@@ -98,12 +95,8 @@ export function Process() {
                 <span className="process__num" aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h3 className="process__title">
-                  <PH value={step.title} />
-                </h3>
-                <p className="process__text">
-                  <PH value={step.body} />
-                </p>
+                <h3 className="process__title">{step.title}</h3>
+                <p className="process__text">{step.body}</p>
               </div>
             </li>
           ))}

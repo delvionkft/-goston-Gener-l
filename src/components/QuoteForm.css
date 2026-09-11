@@ -401,3 +401,27 @@
   background: var(--c-sand);
   color: var(--c-brown-950);
 }
+
+/* A siker-visszajelzés alatti közvetlen elérhetőségek. */
+.qform__done-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-3) var(--sp-6);
+  margin-bottom: var(--sp-5);
+}
+
+/* Az űrlap alatti megjegyzés ikonnal is működjön. */
+.qform__note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.qform__note svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}

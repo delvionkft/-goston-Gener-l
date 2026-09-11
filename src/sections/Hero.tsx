@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { ANCHOR, company, hero } from '../config/site';
+import { ANCHOR, company, hero, isFilled } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
+import { Hotspots } from '../components/Hotspots';
 import { PH } from '../components/PlaceholderText';
 import { telHref } from '../lib/contact';
 import { ArrowDownIcon, PhoneIcon } from '../components/Icons';
@@ -157,13 +158,22 @@ export function Hero() {
               priority
               sizes="(min-width: 1100px) 46vw, (min-width: 700px) 60vw, 100vw"
             />
+            {/* Információs pontok a képen — érintéssel és billentyűzettel is nyílnak. */}
+            <Hotspots items={hero.hotspots} label="Információs pontok a nyílászárón" />
           </div>
+
           {/* Lebegő réteg: a képre részben rácsúszó adatkártya */}
           <div className="hero__badge">
             <span className="hero__badge-label">Szolgáltatási terület</span>
             <span className="hero__badge-value">
               <PH value={company.serviceArea} />
             </span>
+            {/* Tapasztalat csak akkor, ha valós szám van megadva. */}
+            {isFilled(company.experienceYears) ? (
+              <span className="hero__badge-extra">
+                {company.experienceYears} éve a szakmában
+              </span>
+            ) : null}
           </div>
         </div>
       </div>
