@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import './ScrollProgress.css';
 
 /**
- * Olvasási előrehaladás sávja az oldal tetején.
+ * Olvasási előrehaladás csíkja a fejléc alsó élén.
  *
  * Közvetlenül a DOM-ra ír egy CSS-változót, nem React-állapotra — így a
  * görgetés nem indít újrarenderelést. A számolás rAF-ben fut, tehát

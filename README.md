@@ -258,9 +258,16 @@ szemcseréteg ül (`body::after` a `base.css`-ben). Ez adja az anyagszerű
 hatást; nincs hozzá képfájl, és nem fogja el a kattintást. Erősségét az
 `opacity` szabályozza.
 
-**Szekciósorszám:** a szekciócímkék elé CSS-számláló írja a sorszámot
-(`01`, `02`, …). Nem kell kézzel karbantartani: új szekciónál magától
-újraszámozódik.
+**Szekciósorszám:** minden szekció jobb felső sarkában körvonalas sorszám
+áll (`01`, `02`, …). CSS-számláló készíti a `.section > .container::before`
+elemen, ezért a komponenseket nem kell módosítani, és új szekció
+beszúrásakor magától újraszámozódik. Feltétele, hogy a szekciónak legyen
+pontosan egy közvetlen `.container` gyereke.
+
+**Görgetéscsík:** a fejléc alsó élén fut (`ScrollProgress`, a `Header`-en
+belül). `scaleX`-szel skálázódik, nem szélességgel, és CSS-változóra ír,
+nem React-állapotra — így a görgetés nem indít sem újratördelést, sem
+újrarenderelést.
 
 **Világos–sötét ritmus:** a problémafelvetés, a szolgáltatások záró CTA-ja,
 a záró ajánlatkérő és a footer sötét. Enélkül az egész oldal egyetlen bézs

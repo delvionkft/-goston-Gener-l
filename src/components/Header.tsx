@@ -5,6 +5,7 @@ import { scrollToId } from '../lib/scroll';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { Button } from './Button';
 import { PhoneLink } from './ContactLinks';
+import { ScrollProgress } from './ScrollProgress';
 import { PH } from './PlaceholderText';
 import { CloseIcon, MenuIcon } from './Icons';
 import './Header.css';
@@ -70,6 +71,9 @@ export function Header() {
 
   return (
     <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
+      {/* Görgetéscsík a fejléc alsó élén — a fejléc része, nem külön sáv. */}
+      <ScrollProgress />
+
       <div className="header__inner container">
         <a
           className="header__brand"

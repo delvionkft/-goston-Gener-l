@@ -42,9 +42,9 @@ export function isFilled(value: string | undefined | null): value is string {
 
 export const company = {
   /** Cég teljes neve, ahogy a fejlécben és a footerben megjelenik. */
-  name: '[CÉGNÉV]',
+  name: 'Ágoston-Generál',
   /** Rövid név / logószöveg. A footer háttérfelirata is ebből készül. */
-  shortName: '[CÉGNÉV]',
+  shortName: 'Ágoston-Generál',
   /** Cégjegyzékbe bejegyzett név, ha eltér. Üresen hagyható. */
   legalName: '',
   /**

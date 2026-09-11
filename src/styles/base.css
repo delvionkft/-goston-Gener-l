@@ -290,28 +290,82 @@ body::after {
   color: var(--c-brown-700);
 }
 
-/*
- * Automatikus szekciósorszám CSS-számlálóval — nem kell hozzá a
- * komponenseket módosítani, és új szekciónál sem csúszik el.
- * A hero címkéje kimarad, mert az nem `.section`.
- */
+/* Kis jelzőpont a címke elején. */
+.eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-cta);
+}
+
+.section--dark .eyebrow::before {
+  background: var(--c-sand);
+}
+
+/* ===========================================================================
+   SZEKCIÓSORSZÁM A JOBB FELSŐ SAROKBAN
+
+   CSS-számlálóval készül, ezért a komponenseket nem kell módosítani, és
+   új szekció beszúrásakor magától újraszámozódik.
+
+   A `.container`-re akasztjuk, nem a `.section`-re: így a szám pontosan a
+   tartalom jobb szélével igazodik minden képernyőméreten, a konténer
+   saját belső margóját követve.
+   =========================================================================== */
+
 body {
   counter-reset: szekcio;
 }
 
-.section .eyebrow::before {
+.section > .container::before {
   counter-increment: szekcio;
   content: counter(szekcio, decimal-leading-zero);
-  display: grid;
-  place-items: center;
-  min-width: 1.55rem;
-  height: 1.55rem;
-  border-radius: var(--r-pill);
-  background: var(--c-cta);
-  color: #fff;
-  font-size: 0.68rem;
+  position: absolute;
+  top: -0.18em;
+  right: var(--gutter);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 1.6rem + 5.4vw, 7rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: var(--tracking-tighter);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
+  /*
+   * Körvonalas szám: jelen van, de nem versenyez a címsorral.
+   * A körvonal vastagsága és színe úgy van belőve, hogy ránézésre
+   * szándékos dizájnelemnek látsszon, ne elmosódott maradéknak.
+   */
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(107, 68, 35, 0.3);
+}
+
+/* Sötét szekcióban világos körvonal kell. */
+.section--dark > .container::before {
+  -webkit-text-stroke-color: rgba(216, 194, 168, 0.34);
+}
+
+/*
+ * Ahol a böngésző nem ismeri a text-stroke-ot, a szám átlátszó maradna,
+ * azaz eltűnne. Ilyenkor halvány kitöltött számot adunk helyette.
+ */
+@supports not (-webkit-text-stroke: 1px red) {
+  .section > .container::before {
+    color: rgba(107, 68, 35, 0.22);
+  }
+  .section--dark > .container::before {
+    color: rgba(216, 194, 168, 0.26);
+  }
+}
+
+/* Kis kijelzőn a szám a címke mellé kerül, kisebb méretben. */
+@media (max-width: 599px) {
+  .section > .container::before {
+    font-size: 2.5rem;
+    top: -0.1em;
+  }
 }
 
 .section--dark .eyebrow {

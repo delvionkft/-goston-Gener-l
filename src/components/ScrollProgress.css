@@ -1,13 +1,40 @@
+/*
+ * Görgetéscsík a fejléc alsó élén.
+ *
+ * A fejléc `position: fixed`, ezért ez abszolút pozícióval pontosan a
+ * fejléc aljára ül — nem külön sávként a képernyő tetején, hanem a
+ * fejléc részeként.
+ *
+ * A szélességet `scaleX` adja, nem a `width`: így a böngésző csak
+ * kompozitál, nem tördel újra minden görgetési képkockánál.
+ */
 .scrollprog {
-  position: fixed;
-  top: 0;
+  position: absolute;
   left: 0;
   right: 0;
-  height: 2px;
-  z-index: calc(var(--z-header) + 1);
+  bottom: -1.5px;
+  height: 3px;
+  z-index: 2;
   pointer-events: none;
   transform-origin: 0 50%;
-  /* scaleX-szel skálázunk, nem szélességgel: így nincs újratördelés. */
   transform: scaleX(var(--scrolled, 0));
-  background: linear-gradient(90deg, var(--c-cta), var(--c-brown-400));
+  background: linear-gradient(
+    90deg,
+    var(--c-cta) 0%,
+    var(--c-brown-500) 55%,
+    var(--c-brown-400) 100%
+  );
+}
+
+/* A csík jobb végén egy halvány fénypont — jelzi a haladás élét. */
+.scrollprog::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  transform: translate(50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(166, 124, 82, 0.55), transparent 68%);
 }

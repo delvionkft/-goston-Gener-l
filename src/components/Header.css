@@ -2,6 +2,8 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: var(--z-header);
+  /* A görgetéscsík az alsó élre lóg ki, ezért nem vághatjuk le. */
+  overflow: visible;
   background: color-mix(in srgb, var(--c-beige) 82%, transparent);
   backdrop-filter: blur(14px) saturate(1.1);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
