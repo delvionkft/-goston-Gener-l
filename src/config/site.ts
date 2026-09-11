@@ -66,20 +66,38 @@ export const company = {
   /** Adószám. Üresen hagyható, ha nem kell megjeleníteni. */
   taxNumber: '[ADÓSZÁM]',
   /** Székhely vagy telephely. Üresen hagyható. */
-  seat: '[SZÉKHELY]',
+  seat: '8648 Balatonkeresztúr, Iskola utca 4/I',
 } as const;
 
 export const contact = {
-  /** Megjelenített telefonszám, pl. '+36 30 123 4567'. */
-  phoneDisplay: '[TELEFONSZÁM]',
+  /**
+   * ELSŐDLEGES telefonszám. Minden hívásgomb — a hero „Telefonálok",
+   * a fejléc és a mobil CTA-sáv — ezt tárcsázza.
+   *
+   * Ha két szám van, az egyiket ki kell nevezni elsődlegesnek: a hívás
+   * pillanatában felkínált választás plusz döntés, és minden plusz döntés
+   * elvisz hívásokat. A másodlagos szám az elérhetőségi listákban jelenik
+   * meg, gombon nem.
+   */
+  phoneDisplay: '+36 30 463 8726',
   /**
    * Tárcsázható formátum a `tel:` linkhez, szóköz nélkül: '+36301234567'.
    * Amíg helyőrző, a hívásgombok szövegként jelennek meg link helyett —
    * így nincs az oldalon működésképtelen gomb.
    */
-  phoneHref: '[TELEFONSZÁM]',
-  email: '[E-MAIL-CÍM]',
-  /** Telephely címe a footerhez. Üres = nem jelenik meg. */
+  phoneHref: '+36304638726',
+  /**
+   * MÁSODLAGOS telefonszám. Csak az elérhetőségi felsorolásokban jelenik
+   * meg (űrlap melletti blokk, záró szekció, footer), CTA-gombon soha.
+   * Üresen hagyva sehol nem jelenik meg.
+   */
+  phoneSecondaryDisplay: '+36 70 547 9595',
+  phoneSecondaryHref: '+36705479595',
+  email: 'info@agostongeneral.hu',
+  /**
+   * Telephely címe a footerhez, ha eltér a székhelytől.
+   * Üres = csak a székhely jelenik meg.
+   */
   address: '',
   /**
    * Elérhetőségi idő, pl. 'Hétfő–péntek 8:00–17:00'.

@@ -1,5 +1,5 @@
 import { contact } from '../config/site';
-import { telHref, mailHref } from '../lib/contact';
+import { mailHref, telHref, telHrefSecondary } from '../lib/contact';
 import { track } from '../lib/analytics';
 import { PhoneIcon, MailIcon } from './Icons';
 import './ContactLinks.css';
@@ -10,13 +10,22 @@ interface Props {
   className?: string;
 }
 
+interface PhoneProps extends Props {
+  /**
+   * Melyik szám. A másodlagos csak felsorolásokban jelenhet meg,
+   * CTA-gombon soha — lásd a `contact` megjegyzését a site.ts-ben.
+   */
+  variant?: 'primary' | 'secondary';
+}
+
 /**
  * Kattintható telefonszám. Ha a szám még helyőrző, nem linkként, hanem
  * megjelölt szövegként renderel — így nem lesz működésképtelen `tel:` link.
  */
-export function PhoneLink({ placement, className }: Props) {
-  const href = telHref();
-  const label = contact.phoneDisplay;
+export function PhoneLink({ placement, className, variant = 'primary' }: PhoneProps) {
+  const secondary = variant === 'secondary';
+  const href = secondary ? telHrefSecondary() : telHref();
+  const label = secondary ? contact.phoneSecondaryDisplay : contact.phoneDisplay;
 
   if (!href) {
     return (
@@ -31,7 +40,7 @@ export function PhoneLink({ placement, className }: Props) {
     <a
       href={href}
       className={`contact-link ${className ?? ''}`}
-      onClick={() => track('phone_click', { placement })}
+      onClick={() => track('phone_click', { placement, variant })}
     >
       <PhoneIcon />
       <span>{label}</span>

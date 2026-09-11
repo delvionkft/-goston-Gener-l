@@ -2,6 +2,7 @@ import { ANCHOR, contact, form as formCopy, isFilled } from '../config/site';
 import { QuoteForm } from '../components/QuoteForm';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { useReveal } from '../hooks/useReveal';
+import { hasSecondaryPhone } from '../lib/contact';
 import { CheckIcon, ClockIcon } from '../components/Icons';
 import './QuickQuote.css';
 
@@ -24,6 +25,9 @@ export function QuickQuote({ onOpenPrivacy }: Props) {
 
             <div className="quick__contacts">
               <PhoneLink placement="urlap-felso" />
+              {hasSecondaryPhone() ? (
+                <PhoneLink placement="urlap-felso" variant="secondary" />
+              ) : null}
               <EmailLink placement="urlap-felso" />
               {/* Csak akkor jelenik meg, ha valós vállalás áll mögötte. */}
               {isFilled(contact.responseTime) ? (

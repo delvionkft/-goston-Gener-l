@@ -50,7 +50,7 @@ maradt ilyen — CI-ba is beköthető.
 
 1. `company` — cégnév, szolgáltatási terület, tapasztalat, adószám, székhely
 2. `contact` — telefonszám (megjelenített **és** `tel:` formátum), e-mail,
-   nyitvatartás, válaszidő
+   nyitvatartás, válaszidő. Két szám esetén lásd lentebb.
 3. `socialLinks` — csak a ténylegesen létező oldalak
 4. `site.url` — az éles domain (canonical és Open Graph)
 5. `site.title` / `site.description` — böngészőfül és meta description
@@ -59,6 +59,23 @@ maradt ilyen — CI-ba is beköthető.
 8. `references.items` — **csak valós, elvégzett munkák**
 9. `process.steps` — a tényleges munkafolyamat
 10. `legal` — adatkezelési tájékoztató és impresszum (jogi ellenőrzéssel)
+
+### Két telefonszám
+
+A `contact` elsődleges és másodlagos számot különböztet meg:
+
+| Mező | Hol jelenik meg |
+| --- | --- |
+| `phoneDisplay` / `phoneHref` | **Minden hívásgomb**: hero, fejléc, mobil CTA-sáv, és az elérhetőségi listák |
+| `phoneSecondaryDisplay` / `phoneSecondaryHref` | Csak az elérhetőségi felsorolásokban (űrlap melletti blokk, záró szekció, footer) |
+
+Ez szándékos: a hívásgomb egyetlen számot tárcsáz. Ha a látogatónak a hívás
+pillanatában két szám közül kell választania, az plusz döntés — és minden
+plusz döntés elvisz hívásokat. A másodlagos szám elérhető marad, csak nem
+gombon.
+
+A másodlagos mezőt üresen hagyva sehol nem jelenik meg. A strukturált
+adatban mindkét szám szerepel.
 
 ### Az `enabled` kapcsoló
 
@@ -252,6 +269,15 @@ CSS-változóként. A márkapaletta változtatásához elég ez az egy fájl.
 
 **Betűtípus:** címsorokhoz Montserrat, folyószöveghez Inter. A Montserrat nagy
 méretben határozott, de hosszabb bekezdésben az Inter olvashatóbb.
+
+**Footer háttérfelirat:** a cégnév nagy, halvány felirata (`Wordmark`) nem
+fix betűmérettel készül, hanem megméri a szöveg természetes szélességét, és
+pontosan akkorára kicsinyíti, hogy kiférjen. Egy fix `clamp(…, 20vw, …)`
+hosszabb névnél két-három képernyőnyi széles lenne, és a felirat eleje-vége
+levágódna. A mérés `offsetWidth`-tel megy, nem `getBoundingClientRect()`-tel:
+az utóbbi a transzformált szélességet adná vissza, tehát a saját
+kicsinyítését mérné újra. Újramér átméretezéskor és a betűtípus betöltése
+után is.
 
 **Szemcse:** az egész oldal fölött egy rögzített, SVG-zajból generált
 szemcseréteg ül (`body::after` a `base.css`-ben). Ez adja az anyagszerű

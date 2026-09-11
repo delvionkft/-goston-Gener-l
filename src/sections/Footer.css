@@ -16,25 +16,6 @@
    Nagyon alacsony kontrasztú, a tartalom mögött. A footer szövege
    külön rétegen ül, így az olvashatóság nem romlik. */
 
-.footer__wordmark {
-  position: absolute;
-  inset: auto 0 -0.14em;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  user-select: none;
-  overflow: hidden;
-  line-height: 0.78;
-}
-
-.footer__wordmark span {
-  font-family: var(--font-display);
-  font-size: clamp(5rem, 20vw, 19rem);
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-  color: rgba(216, 194, 168, 0.07);
-}
 
 .footer__inner {
   position: relative;

@@ -1,0 +1,38 @@
+/* Nagyméretű, halvány háttérfelirat. */
+
+.wordmark {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  user-select: none;
+  /* A méretezés a szélességre szól; az alsó nyúlványokat itt vágjuk le. */
+  overflow: hidden;
+}
+
+.wordmark__text {
+  display: block;
+  /*
+   * Nagy alapméret, amit a JS méretaránnyal kicsinyít. A transform
+   * vektoros marad, tehát a felirat minden méretben éles.
+   */
+  font-family: var(--font-display);
+  font-size: 16rem;
+  font-weight: 600;
+  line-height: 0.76;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: rgba(216, 194, 168, 0.08);
+  transform: scale(var(--fit, 0.2));
+  transform-origin: bottom center;
+  /* Amíg a JS nem mért, ne villanjon fel teljes méretben. */
+  transition: transform 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark__text {
+    transition: none;
+  }
+}

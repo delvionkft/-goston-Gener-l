@@ -3,6 +3,7 @@ import { QuoteForm } from '../components/QuoteForm';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
 import { useReveal } from '../hooks/useReveal';
+import { hasSecondaryPhone } from '../lib/contact';
 import './FinalCta.css';
 
 interface Props {
@@ -36,6 +37,11 @@ export function FinalCta({ onOpenPrivacy }: Props) {
                 <dd>
                   <PhoneLink placement="urlap-also" />
                 </dd>
+                {hasSecondaryPhone() ? (
+                  <dd>
+                    <PhoneLink placement="urlap-also" variant="secondary" />
+                  </dd>
+                ) : null}
               </div>
               <div>
                 <dt>E-mail</dt>

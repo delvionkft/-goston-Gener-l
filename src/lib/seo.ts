@@ -41,7 +41,10 @@ export function buildStructuredData(): string | null {
   };
 
   if (isFilled(company.legalName)) data.legalName = company.legalName;
-  if (isFilled(contact.phoneDisplay)) data.telephone = contact.phoneDisplay;
+  /* A schema.org telephone mezője több értéket is elfogad tömbként. */
+  const phones = [contact.phoneDisplay, contact.phoneSecondaryDisplay].filter(isFilled);
+  if (phones.length === 1) data.telephone = phones[0];
+  else if (phones.length > 1) data.telephone = phones;
   if (isFilled(contact.email)) data.email = contact.email;
   if (isFilled(company.taxNumber)) data.taxID = company.taxNumber;
 

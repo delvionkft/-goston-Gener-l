@@ -1,5 +1,7 @@
 import { company, contact, isFilled, legal, socialLinks } from '../config/site';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
+import { Wordmark } from '../components/Wordmark';
+import { hasSecondaryPhone } from '../lib/contact';
 import { PH } from '../components/PlaceholderText';
 import './Footer.css';
 
@@ -17,10 +19,9 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
   return (
     <footer className="footer on-dark">
       {/* Nagyméretű, halvány cégnév a háttérben. Dekoratív, ezért a
-          képernyőolvasó elől el van rejtve, és nem takarja a szöveget. */}
-      <div className="footer__wordmark" aria-hidden="true">
-        <span>{company.shortName}</span>
-      </div>
+          képernyőolvasó elől el van rejtve. A méret automatikusan a
+          képernyő szélességéhez igazodik, így a felirat nem lóg ki. */}
+      <Wordmark text={company.shortName} />
 
       <div className="container footer__inner">
         <div className="footer__top">
@@ -62,6 +63,11 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
               <li>
                 <PhoneLink placement="footer" />
               </li>
+              {hasSecondaryPhone() ? (
+                <li>
+                  <PhoneLink placement="footer" variant="secondary" />
+                </li>
+              ) : null}
               <li>
                 <EmailLink placement="footer" />
               </li>
