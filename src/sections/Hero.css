@@ -3,8 +3,14 @@
   display: flex;
   align-items: center;
   min-height: 100svh;
-  padding-top: calc(var(--header-h) + clamp(2rem, 1rem + 5vw, 5rem));
-  padding-bottom: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+  /*
+   * A korábbi térközök miatt a hero 1077 px magas lett egy 900 px-es
+   * képernyőn, tehát a bizalmi csempék mindig a hajtás alá estek.
+   * Ezek az értékek úgy vannak belőve, hogy a teljes hero elférjen
+   * 720 px képernyőmagasságtól fölfelé.
+   */
+  padding-top: calc(var(--header-h) + clamp(1rem, 0.5rem + 1.6vw, 2.5rem));
+  padding-bottom: clamp(1.5rem, 1rem + 1.6vw, 3rem);
   overflow: hidden;
 }
 
@@ -54,7 +60,7 @@
 .hero__inner {
   position: relative;
   display: grid;
-  gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
   align-items: center;
 }
 
@@ -98,7 +104,7 @@
 
 .hero__lead {
   max-width: 52ch;
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-4);
   font-size: var(--fs-lg);
   color: var(--text-muted);
 }
@@ -107,7 +113,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-4);
-  margin-top: var(--sp-7);
+  margin-top: var(--sp-5);
 }
 
 .hero__phone-missing {
@@ -133,7 +139,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--sp-3);
-  margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  margin-top: clamp(1.25rem, 0.9rem + 1.2vw, 2rem);
   list-style: none;
 }
 
@@ -141,8 +147,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding: var(--sp-4) var(--sp-5);
+  gap: 0.22rem;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--glass-border);
   border-radius: var(--r-md);
   background: var(--glass);
@@ -162,13 +168,13 @@
 /* Kis pipajel minden csempe tetején — vizuális horgony szöveg nélkül. */
 .hero__point::before {
   content: '';
-  width: 18px;
-  height: 18px;
-  margin-bottom: var(--sp-2);
+  width: 12px;
+  height: 12px;
+  margin-bottom: 0.3rem;
   border-radius: 50%;
   background:
     linear-gradient(135deg, var(--c-cta), #2A7F78);
-  box-shadow: 0 0 0 4px rgba(22, 84, 79, 0.1);
+  box-shadow: 0 0 0 3px rgba(53, 196, 181, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -187,8 +193,39 @@
 
 .hero__point-text {
   font-size: var(--fs-sm);
-  line-height: 1.5;
+  line-height: 1.42;
   color: var(--text-muted);
+}
+
+/* ===========================================================================
+   ALACSONY KÉPERNYŐ
+
+   Laptopon (720–820 px magasság) a hero tartalma a fenti tömörítés után
+   is a hajtás alá csúszna. Ilyenkor a csempék magyarázó szövege elmarad —
+   az üzenetet a címük hordozza —, és a címsor is kisebb lesz. Nagyobb
+   képernyőn minden visszajön.
+   =========================================================================== */
+
+@media (min-width: 1000px) and (max-height: 860px) {
+  .hero__point-text {
+    display: none;
+  }
+
+  .hero__title {
+    font-size: clamp(2rem, 1.2rem + 2.2vw, 3.25rem);
+  }
+
+  .hero__lead {
+    font-size: var(--fs-base);
+  }
+
+  .hero__points {
+    gap: var(--sp-2);
+  }
+
+  .hero__point {
+    padding: 0.7rem 0.9rem;
+  }
 }
 
 /* --- Képoszlop --- */
@@ -379,5 +416,17 @@
 @media (min-width: 1240px) {
   .hero__inner {
     gap: 5.5rem;
+  }
+}
+
+
+/*
+ * Görgetésjelzés: most, hogy a hero pontosan egy képernyőnyi, alacsony
+ * kijelzőn a tartalomhoz tapadna. Ott elhagyjuk — dekoratív elem, a hely
+ * a tartalomnak kell. Magas képernyőn, ahol van levegő, marad.
+ */
+@media (max-height: 950px) {
+  .hero__scrollhint {
+    display: none;
   }
 }

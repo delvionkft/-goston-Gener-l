@@ -323,7 +323,11 @@ alapon mérve.
 
 ## 7. Amit tudni érdemes a szekciókról
 
-- **Hero** — az oldal egyetlen `<h1>`-e. A képen információs pontok vannak
+- **Hero** — pontosan egy képernyőnyi. A tartalom 720 px képernyőmagasságtól
+  fölfelé elfér a hajtás fölött; 860 px alatt a bizalmi csempék magyarázó
+  szövege elmarad (`@media (max-height: 860px)`), mert az üzenetet a
+  címük hordozza. Ha új elemet teszel a heróba, mérd le 1280×720-on.
+  Az oldal egyetlen `<h1>`-e. A képen információs pontok vannak
   (`hero.hotspots`); ezek valódi gombok, érintéssel és billentyűzettel is
   működnek. Ha nem kellenek, ürítsd ki a tömböt.
 - **Problémák** — az ablakrajz vektoros (`WindowFigure`), nem fotó: nulla
