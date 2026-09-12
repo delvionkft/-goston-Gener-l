@@ -25,7 +25,7 @@
   padding: 0.55rem var(--sp-4);
   border: 1px solid var(--c-line);
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--glass);
   backdrop-filter: blur(6px);
   color: var(--text-muted);
   font-size: var(--fs-sm);
@@ -42,10 +42,10 @@
 }
 
 .refs__filter.is-active {
-  background: var(--c-ink-deep);
-  border-color: var(--c-ink-deep);
-  color: var(--text-on-dark);
-  box-shadow: var(--shadow-sm);
+  background: var(--c-sand);
+  border-color: var(--c-sand);
+  color: #14100D;
+  box-shadow: 0 0 0 1px rgba(216, 194, 168, 0.3);
 }
 
 .refs__filter-count {
@@ -146,7 +146,7 @@
   height: 34px;
   border-radius: 50%;
   background: rgba(255, 253, 249, 0.9);
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   opacity: 0;
   transform: scale(0.9);
   transition:
@@ -184,7 +184,7 @@
   font-family: var(--font-display);
   font-size: var(--fs-lg);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   margin-bottom: var(--sp-2);
 }
 
@@ -231,10 +231,10 @@
   align-items: center;
   gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-6);
-  border: 1px solid var(--c-brown-700);
+  border: 1px solid var(--c-line);
   border-radius: var(--r-pill);
-  background: transparent;
-  color: var(--c-brown-700);
+  background: var(--glass);
+  color: var(--c-ink);
   font-weight: 700;
   transition:
     background var(--dur) var(--ease-out),

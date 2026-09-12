@@ -60,7 +60,7 @@ h4 {
   font-weight: 600;
   line-height: var(--lh-snug);
   letter-spacing: var(--tracking-tight);
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   text-wrap: balance;
 }
 
@@ -114,19 +114,19 @@ button {
 }
 
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--c-brown-700);
+  outline: 2px solid var(--c-cta);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Sötét felületen világos fókuszgyűrű, hogy megmaradjon a kontraszt */
-.on-dark :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline-color: var(--c-sand);
+/* Homokszínű gyűrű ott, ahol a türkiz beleolvadna */
+.on-sand :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: var(--c-brown-900);
 }
 
 ::selection {
-  background: var(--c-sand);
-  color: var(--c-brown-900);
+  background: var(--c-cta);
+  color: var(--c-cta-ink);
 }
 
 /* ===========================================================================
@@ -143,8 +143,8 @@ body::after {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: multiply;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -172,23 +172,23 @@ body::after {
 }
 
 .mesh::before {
-  width: 46vw;
-  height: 46vw;
-  max-width: 620px;
-  max-height: 620px;
-  top: -16%;
-  right: -10%;
-  background: radial-gradient(circle, rgba(166, 124, 82, 0.34), transparent 68%);
+  width: 52vw;
+  height: 52vw;
+  max-width: 720px;
+  max-height: 720px;
+  top: -20%;
+  right: -12%;
+  background: radial-gradient(circle, var(--glow-amber), transparent 68%);
 }
 
 .mesh::after {
-  width: 38vw;
-  height: 38vw;
-  max-width: 520px;
-  max-height: 520px;
-  bottom: -18%;
-  left: -12%;
-  background: radial-gradient(circle, rgba(22, 84, 79, 0.16), transparent 68%);
+  width: 44vw;
+  height: 44vw;
+  max-width: 620px;
+  max-height: 620px;
+  bottom: -22%;
+  left: -14%;
+  background: radial-gradient(circle, var(--glow-teal), transparent 68%);
 }
 
 /* A szekciók tartalma a fényfoltok fölött marad */
@@ -238,9 +238,58 @@ body::after {
   background: var(--c-card);
 }
 
+/* ===========================================================================
+   ÚJRAHASZNÁLHATÓ FELÜLETEK
+   =========================================================================== */
+
+/*
+ * Üvegpanel világító hajszálkerettel. A keret nem tömör vonal, hanem
+ * színátmenet: felül világosabb, alul elhal — így a panel megvilágított
+ * tárgynak látszik, nem kivágott doboznak.
+ */
+.glass {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    160deg,
+    rgba(231, 216, 196, 0.26),
+    rgba(231, 216, 196, 0.05) 42%,
+    rgba(231, 216, 196, 0.02)
+  );
+}
+
+/* Világító elválasztó vonal */
+.hairline {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--c-line) 20%,
+    var(--c-line) 80%,
+    transparent
+  );
+}
+
+/*
+ * Mivel az egész oldal sötét, a „sötét szekció" már nem színnel válik el,
+ * hanem mélységgel: egy fokkal lejjebb ülő felület, felül fénycsíkkal.
+ */
 .section--dark {
   background: var(--c-ink-deep);
-  color: var(--text-on-dark);
 }
 
 /*
@@ -255,15 +304,10 @@ body::after {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(216, 194, 168, 0.42) 32%,
-    rgba(216, 194, 168, 0.42) 68%,
+    rgba(53, 196, 181, 0.5) 30%,
+    rgba(216, 194, 168, 0.45) 70%,
     transparent
   );
-}
-
-.section--dark h2,
-.section--dark h3 {
-  color: var(--text-on-dark);
 }
 
 /* --- Szekciófejléc -------------------------------------------------------- */
@@ -278,29 +322,36 @@ body::after {
   gap: var(--sp-3);
   margin: 0 0 var(--sp-5);
   padding: 0.42rem 0.9rem 0.42rem 0.72rem;
-  border: 1px solid var(--c-line);
+  border: 1px solid var(--glass-border);
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(6px);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
   font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--c-brown-700);
+  color: var(--c-sand);
 }
 
-/* Kis jelzőpont a címke elején. */
+/* Lüktető jelzőpont a címke elején. */
 .eyebrow::before {
   content: '';
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--c-cta);
+  box-shadow: 0 0 0 0 var(--c-cta);
+  animation: eyebrow-pulse 2.6s var(--ease-out) infinite;
 }
 
-.section--dark .eyebrow::before {
-  background: var(--c-sand);
+@keyframes eyebrow-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(53, 196, 181, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(53, 196, 181, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow::before { animation: none; }
 }
 
 /* ===========================================================================
@@ -339,12 +390,7 @@ body {
    * szándékos dizájnelemnek látsszon, ne elmosódott maradéknak.
    */
   color: transparent;
-  -webkit-text-stroke: 2px rgba(107, 68, 35, 0.3);
-}
-
-/* Sötét szekcióban világos körvonal kell. */
-.section--dark > .container::before {
-  -webkit-text-stroke-color: rgba(216, 194, 168, 0.34);
+  -webkit-text-stroke: 2px rgba(231, 216, 196, 0.2);
 }
 
 /*
@@ -353,10 +399,7 @@ body {
  */
 @supports not (-webkit-text-stroke: 1px red) {
   .section > .container::before {
-    color: rgba(107, 68, 35, 0.22);
-  }
-  .section--dark > .container::before {
-    color: rgba(216, 194, 168, 0.26);
+    color: rgba(231, 216, 196, 0.16);
   }
 }
 
@@ -368,11 +411,7 @@ body {
   }
 }
 
-.section--dark .eyebrow {
-  border-color: rgba(216, 194, 168, 0.26);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--c-sand);
-}
+
 
 .section-lead {
   max-width: 62ch;
@@ -432,9 +471,9 @@ body {
 }
 
 html[data-dev='true'] .ph {
-  background: #ffe9a8;
-  color: #4a3a00;
-  box-shadow: 0 0 0 2px #ffe9a8;
+  background: #4a3a00;
+  color: #ffe9a8;
+  box-shadow: 0 0 0 2px #4a3a00;
   border-radius: 2px;
   font-style: normal;
   opacity: 1;
@@ -474,4 +513,68 @@ html[data-dev='true'] .ph {
     opacity: 1;
     transform: none;
   }
+}
+
+
+/* ===========================================================================
+   SZEKCIÓRITMUS
+
+   Sötét oldalon a szekciókat nem szín, hanem MÉLYSÉG és FÉNY választja el.
+   Minden második szekció egy fokkal feljebb ül, és mindegyik más
+   helyről kap egy halvány fényfoltot — így görgetés közben érezhető a
+   tagolás anélkül, hogy a paletta megtörne.
+   =========================================================================== */
+
+.section {
+  isolation: isolate;
+}
+
+.section:nth-of-type(even) {
+  background: var(--c-card);
+}
+
+.section:nth-of-type(odd) {
+  background: var(--c-beige);
+}
+
+/* Szekciónkénti fényfolt. A ::after nem ütközik a --dark ::before-jával. */
+.section::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: min(60vw, 780px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.7;
+}
+
+.section:nth-of-type(4n + 1)::after {
+  top: -22%;
+  right: -8%;
+  background: radial-gradient(circle, var(--glow-amber), transparent 66%);
+}
+
+.section:nth-of-type(4n + 2)::after {
+  top: -18%;
+  left: -10%;
+  background: radial-gradient(circle, var(--glow-teal), transparent 66%);
+}
+
+.section:nth-of-type(4n + 3)::after {
+  bottom: -24%;
+  right: -12%;
+  background: radial-gradient(circle, var(--glow-sand), transparent 66%);
+}
+
+.section:nth-of-type(4n)::after {
+  bottom: -20%;
+  left: -8%;
+  background: radial-gradient(circle, var(--glow-teal), transparent 66%);
+}
+
+/* Hajszálvékony elválasztó a szekciók között */
+.section + .section {
+  border-top: 1px solid var(--c-line-soft);
 }

@@ -150,7 +150,7 @@
 .svc__toggle:hover .svc__toggle-icon {
   background: var(--c-cta);
   border-color: var(--c-cta);
-  color: #fff;
+  color: var(--c-cta-ink);
 }
 
 .svc__toggle-icon svg {
@@ -248,7 +248,7 @@
 
 .svc__cta:hover {
   background: var(--c-cta);
-  color: #fff;
+  color: var(--c-cta-ink);
 }
 
 /* --- Záró CTA ------------------------------------------------------------ */
@@ -266,9 +266,9 @@
   margin-top: var(--sp-8);
   padding: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
   border-radius: var(--r-xl);
-  background: var(--c-ink-deep);
-  color: var(--text-on-dark);
-  box-shadow: var(--shadow-lg);
+  background: linear-gradient(165deg, var(--c-card-hi), var(--c-beige-deep));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg), 0 0 100px -40px rgba(53, 196, 181, 0.4);
   text-align: center;
   justify-items: center;
 }
@@ -282,7 +282,7 @@
   left: 50%;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(166, 124, 82, 0.3), transparent 66%);
+  background: radial-gradient(circle, rgba(53, 196, 181, 0.22), transparent 66%);
   pointer-events: none;
 }
 
@@ -298,7 +298,7 @@
   font-weight: 600;
   line-height: var(--lh-snug);
   letter-spacing: var(--tracking-tight);
-  color: var(--text-on-dark);
+  color: var(--c-ink);
   text-wrap: balance;
 }
 

@@ -52,6 +52,31 @@ export function QuoteForm({
     mountedAt.current = Date.now();
   }, []);
 
+  /*
+   * Az asszisztens által összegyűjtött válaszok átvétele. Eseményen
+   * keresztül megy, nem közös állapoton: így az űrlap semmit nem tud az
+   * asszisztensről, és fordítva — bármelyik eltávolítható a másik nélkül.
+   * A látogató által már beírt mezőt nem írjuk felül.
+   */
+  useEffect(() => {
+    const onPrefill = (event: Event) => {
+      const detail = (event as CustomEvent<Record<string, string>>).detail ?? {};
+      setValues((prev) => ({
+        ...prev,
+        service: prev.service || detail.service || '',
+        city: prev.city || detail.city || '',
+        message:
+          prev.message ||
+          [detail.scope && `Mennyiség: ${detail.scope}`, detail.timing && `Időzítés: ${detail.timing}`]
+            .filter(Boolean)
+            .join('\n'),
+      }));
+      startTracked.current = true;
+    };
+    window.addEventListener('lead-prefill', onPrefill);
+    return () => window.removeEventListener('lead-prefill', onPrefill);
+  }, []);
+
   const fid = (name: string) => `${uid}-${name}`;
   const eid = (name: string) => `${uid}-${name}-hiba`;
 

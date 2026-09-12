@@ -14,21 +14,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(
-      68% 58% at 78% 18%,
-      rgba(216, 194, 168, 0.55) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      52% 46% at 8% 92%,
-      rgba(22, 84, 79, 0.11) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      40% 34% at 96% 84%,
-      rgba(166, 124, 82, 0.2) 0%,
-      transparent 72%
-    ),
+    radial-gradient(64% 54% at 76% 14%, var(--glow-amber) 0%, transparent 64%),
+    radial-gradient(52% 46% at 6% 88%, var(--glow-teal) 0%, transparent 70%),
+    radial-gradient(40% 34% at 96% 86%, var(--glow-sand) 0%, transparent 72%),
     var(--c-beige);
 }
 
@@ -42,8 +30,8 @@
   inset: 0;
   opacity: 0.5;
   background-image:
-    linear-gradient(to right, rgba(59, 38, 24, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 38, 24, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(231, 216, 196, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(231, 216, 196, 0.05) 1px, transparent 1px);
   background-size: 76px 76px;
   mask-image: radial-gradient(72% 62% at 50% 36%, #000 0%, transparent 78%);
 }
@@ -88,8 +76,8 @@
  * megy, ott is olvasható marad a szöveg.
  */
 .hero__title-em {
-  color: var(--c-brown-700);
-  background: linear-gradient(96deg, var(--c-brown-700) 8%, var(--c-cta) 92%);
+  color: var(--c-sand);
+  background: linear-gradient(96deg, var(--c-sand) 4%, var(--c-cta) 96%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -157,8 +145,8 @@
   padding: var(--sp-4) var(--sp-5);
   border: 1px solid var(--glass-border);
   border-radius: var(--r-md);
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
   transition:
     background var(--dur) var(--ease-out),
     transform var(--dur) var(--ease-out),
@@ -166,7 +154,7 @@
 }
 
 .hero__point:hover {
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--glass-strong);
   border-color: var(--c-brown-400);
   transform: translateY(-2px);
 }
@@ -193,7 +181,7 @@
   font-family: var(--font-display);
   font-size: var(--fs-base);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   letter-spacing: -0.01em;
 }
 
@@ -224,7 +212,7 @@
   inset: 6% -3% -4% 5%;
   z-index: -1;
   border-radius: var(--r-xl);
-  background: linear-gradient(150deg, var(--c-sand), rgba(216, 194, 168, 0.2));
+  background: linear-gradient(150deg, rgba(216, 194, 168, 0.24), rgba(53, 196, 181, 0.1));
   transform: rotate(-2.4deg);
 }
 
@@ -275,9 +263,9 @@
   gap: 0.15rem;
   padding: var(--sp-4) var(--sp-5);
   max-width: 62%;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(14px) saturate(1.1);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(22, 17, 14, 0.82);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-lg);
   transform: translate3d(0, calc(var(--parallax) * -0.45), 0);
@@ -296,7 +284,7 @@
   font-family: var(--font-display);
   font-size: var(--fs-base);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 /* Tapasztalat — csak akkor renderelődik, ha valós év van megadva. */
@@ -335,7 +323,7 @@
 }
 
 .hero__scrollhint:hover {
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 @keyframes hero-nudge {

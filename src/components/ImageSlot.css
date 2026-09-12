@@ -19,7 +19,7 @@
   display: grid;
   place-items: center;
   background:
-    linear-gradient(135deg, #E9DFD1 0%, #DCCDB8 46%, #CBB89F 100%);
+    linear-gradient(150deg, #1C1613 0%, #14100D 52%, #100C0A 100%);
   border: 1px solid var(--c-line);
 }
 
@@ -30,7 +30,7 @@
   background-image:
     repeating-linear-gradient(
       135deg,
-      rgba(59, 38, 24, 0.05) 0 1px,
+      rgba(231, 216, 196, 0.045) 0 1px,
       transparent 1px 11px
     );
   opacity: 0.7;
@@ -49,10 +49,10 @@
 
 .imgslot__label {
   padding: 0.4rem 0.85rem;
-  border: 1px dashed var(--c-brown-700);
+  border: 1px dashed rgba(216, 194, 168, 0.45);
   border-radius: var(--r-sm);
-  background: rgba(255, 253, 249, 0.72);
-  color: var(--c-brown-900);
+  background: rgba(231, 216, 196, 0.07);
+  color: var(--c-sand);
   font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 0.09em;
@@ -60,7 +60,7 @@
 }
 
 .imgslot__hint {
-  color: var(--c-brown-800);
+  color: var(--c-muted);
   font-size: var(--fs-xs);
   line-height: 1.45;
   max-width: 34ch;

@@ -299,16 +299,25 @@ nem React-állapotra — így a görgetés nem indít sem újratördelést, sem
 a záró ajánlatkérő és a footer sötét. Enélkül az egész oldal egyetlen bézs
 felületté folyna össze — az értékkontraszt tagolja a szekciókat.
 
-**CTA-szín (`--c-cta`, `#16544F`):** a paletta egyébként végig meleg barna. Ha a
-főgomb is barna lenne, semmi nem emelkedne ki belőle. Ez a mély zöld kizárólag
-az elsődleges konverziós gombokon jelenik meg — ha máshol is használod, elveszti
-a súlyát.
+**Sötét alap, ugyanazzal a palettával.** A barna–homok–bézs márkaszínek nem
+változtak, csak az értékstruktúra fordult meg: mély, meleg feketésbarna az
+alap (`--c-beige: #0E0B09`), és a homok/bézs lett az akcentus. A
+változónevek szándékosan ugyanazok maradtak, ezért az egész oldal
+automatikusan követi a váltást — nem kellett minden komponenst átírni.
 
-**Kontraszt:** a `#A67C52` világos háttéren csak 3.3:1, ami szöveghez kevés
-(a WCAG AA 4.5:1-et vár). Ezért ez a szín kizárólag dekorációra megy — ikon,
-keret, elválasztó vonal —, ahol a küszöb 3:1. Szöveghez a `--c-accent-text`
-(`#7E5430`, 5.7:1) van beállítva. A CTA-szín fehér felirattal 8.7:1, bézs
-háttéren szövegként 7.6:1.
+Világos változatra visszaállni egy lépés: a `tokens.css` felső
+színpaletta-blokkját kell visszaírni világos értékekre.
+
+**CTA-szín (`--c-cta`, `#35C4B5`):** a paletta végig meleg barna, így a
+türkiz az egyetlen hideg szín az oldalon — kizárólag az elsődleges
+konverziós gombokon és a fókuszállapotokon jelenik meg. Ha máshol is
+használod, elveszti a súlyát.
+
+**Kontraszt — fontos buktató:** a CTA világos türkiz, ezért FEHÉR felirat
+nem mehet rá (2,2:1 lenne). A gomb saját sötét feliratszíne a
+`--c-cta-ink` (`#06201E`), ezzel 7,9:1. Az alapszövegek: `--c-ink` 17,6:1,
+`--c-muted` 6,9:1, `--c-sand` 11,4:1, `--c-accent-text` 8,4:1 — mind az
+alapon mérve.
 
 ---
 
@@ -339,6 +348,40 @@ háttéren szövegként 7.6:1.
 - **Fényfolt a kártyákon** (`useSpotlight`) — kurzorkövető fény a
   szolgáltatás- és referenciakártyákon. Egyetlen figyelő ül a rácson, nem
   kártyánként egy. Érintőképernyőn és csökkentett mozgásnál ki van kapcsolva.
+
+### Ajánlatkérő asszisztens
+
+A jobb alsó sarokban lebegő gomb nyit egy vezetett párbeszédet: négy kérdés
+(szolgáltatás, mennyiség, időzítés, település), majd a válaszokat átadja az
+ajánlatkérő űrlapnak, és odagörget.
+
+**Miért vezetett párbeszéd, és nem szabad szövegű AI-chat?**
+
+1. Nyelvi modellhez API-kulcs és szerveroldal kell. Kulcsot a böngészőbe
+   tenni azonnali visszaélés — bárki elolvassa és elhasználja a kereted.
+2. Szabad szövegű modell olyan terméket, árat, határidőt vagy garanciát is
+   ígérhet, amit a cég nem vállal. Nyílászáróknál ez nem elméleti kockázat.
+3. Konverzióra ez a forma erősebb: a cél nem a beszélgetés, hanem
+   minősített ajánlatkérés. Négy kattintás gyorsabb, mint gépelni.
+
+A forgatókönyv a `src/config/assistant.ts` fájlban szerkeszthető; az első
+kérdés opciói automatikusan a bekapcsolt szolgáltatásokból állnak össze.
+
+**Ha később valódi AI kell:** a `src/lib/assistantAi.ts` az egyetlen
+módosítandó fájl. Saját szerveroldali végpontot vár
+(`VITE_ASSISTANT_ENDPOINT`), nem közvetlen modellhívást. A fájl fejlécében
+ott van, mit kell a rendszerpromptban tiltani.
+
+**Átadás az űrlapnak:** `lead-prefill` CustomEventtel megy, nem közös
+állapoton. Így az űrlap semmit nem tud az asszisztensről és fordítva —
+bármelyik eltávolítható a másik nélkül. A látogató által már beírt mezőt
+nem írja felül.
+
+### Mérési események
+
+Az asszisztens négy új eseményt küld: `assistant_open`, `assistant_answer`
+(lépésenként), `assistant_restart`, `assistant_handoff`. Az `answer`
+eseményből kiderül, hol morzsolódnak le a látogatók a folyamatban.
 
 ### Hosszú magyar szavak
 

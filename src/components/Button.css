@@ -1,7 +1,7 @@
 .btn {
-  --btn-bg: var(--c-brown-900);
-  --btn-fg: #FDFBF7;
-  --btn-bg-hover: var(--c-brown-700);
+  --btn-bg: var(--c-card-hi);
+  --btn-fg: var(--c-ink);
+  --btn-bg-hover: var(--c-card);
   --btn-border: transparent;
 
   position: relative;
@@ -74,32 +74,37 @@
  * felületeken, ahol ez a szín megjelenik — így a fő konverziós gomb
  * ránézésre elkülönül minden mástól. Kontraszt fehér felirattal: 8.7:1.
  */
+/*
+ * Elsődleges gomb: világító türkiz, sötét felirattal. Sötét oldalon a
+ * fehér feliratú világos gomb kontrasztja 2,2:1 lenne — olvashatatlan.
+ * A saját sötét felirattal 7,9:1.
+ */
 .btn--primary {
   --btn-bg: var(--c-cta);
-  --btn-fg: #FFFFFF;
+  --btn-fg: var(--c-cta-ink);
   --btn-bg-hover: var(--c-cta-hover);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 0 0 1px rgba(53, 196, 181, 0.3), 0 10px 30px -10px rgba(53, 196, 181, 0.5);
 }
 .btn--primary:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 0 0 1px rgba(53, 196, 181, 0.5), 0 16px 42px -12px rgba(53, 196, 181, 0.6);
 }
 
-/* Másodlagos: körvonalas, világos felületen */
+/* Másodlagos: körvonalas, áttetsző */
 .btn--secondary {
   --btn-bg: transparent;
-  --btn-fg: var(--c-brown-900);
-  --btn-bg-hover: rgba(107, 68, 35, 0.07);
-  --btn-border: var(--c-brown-400);
+  --btn-fg: var(--c-ink);
+  --btn-bg-hover: rgba(231, 216, 196, 0.07);
+  --btn-border: var(--c-line);
 }
 .btn--secondary:hover {
-  --btn-border: var(--c-brown-700);
+  --btn-border: var(--c-sand);
 }
 
-/* Sötét háttéren: homokszín alap, sötétbarna felirat (kontraszt ~9.5:1) */
+/* Homokszín alap, sötét felirat (kontraszt ~11:1) */
 .btn--onDark {
   --btn-bg: var(--c-sand);
-  --btn-fg: var(--c-brown-950);
-  --btn-bg-hover: #E7D8C4;
+  --btn-fg: #14100D;
+  --btn-bg-hover: var(--c-sand-light);
 }
 
 .btn--ghost {

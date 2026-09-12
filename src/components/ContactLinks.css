@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-3);
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   font-weight: 600;
   font-size: var(--fs-base);
   text-decoration: none;

@@ -64,7 +64,7 @@
   border: 1px solid var(--c-line);
   border-radius: var(--r-md);
   background: var(--c-card);
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   transition: background-color var(--dur) var(--ease-out);
 }
 

@@ -110,3 +110,10 @@ export const SlidersIcon = () => (
     <circle cx="10" cy="16" r="2" />
   </svg>
 );
+
+export const SparkIcon = () => (
+  <svg {...base}>
+    <path d="M12 3.2l1.9 4.9 4.9 1.9-4.9 1.9L12 16.8l-1.9-4.9L5.2 10l4.9-1.9L12 3.2Z" />
+    <path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2Z" />
+  </svg>
+);

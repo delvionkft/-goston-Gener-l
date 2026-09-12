@@ -37,7 +37,7 @@
 .qfield__label {
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 .qform__req {
@@ -109,8 +109,9 @@
 
 /* A telefonszám az elsődleges mező — vizuálisan is az */
 .qfield.is-primary input {
-  border-color: var(--c-brown-400);
-  background-color: #FFFCF6;
+  /* A telefon az elsődleges csatorna — türkiz fénykerettel kiemelve. */
+  border-color: var(--c-cta);
+  background-color: var(--c-cta-dim);
 }
 
 .qfield__hint {
@@ -233,7 +234,7 @@
 }
 
 .qform__link:hover {
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 .qform__note {
@@ -277,7 +278,7 @@
   height: 52px;
   border-radius: 50%;
   background: var(--c-brown-900);
-  color: #FDFBF7;
+  color: var(--c-cta-ink);
 }
 
 .qform__done-icon svg {

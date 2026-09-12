@@ -41,7 +41,7 @@
   font-family: var(--font-display);
   font-size: var(--fs-base);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 .cookiebar__actions,
@@ -91,7 +91,7 @@
   display: block;
   font-size: var(--fs-base);
   font-weight: 600;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
   cursor: pointer;
 }
 

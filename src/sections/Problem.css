@@ -46,10 +46,10 @@
 
 .problem__tab {
   padding: 0.55rem var(--sp-4);
-  border: 1px solid rgba(216, 194, 168, 0.22);
+  border: 1px solid var(--c-line);
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-on-dark-muted);
+  background: var(--glass);
+  color: var(--c-muted);
   font-size: var(--fs-sm);
   font-weight: 600;
   transition:
@@ -75,7 +75,7 @@
   padding: var(--sp-6);
   border: 1px solid rgba(216, 194, 168, 0.16);
   border-radius: var(--r-lg);
-  background: rgba(255, 255, 255, 0.045);
+  background: var(--glass);
   backdrop-filter: blur(8px);
   /* A magasság a leghosszabb szöveghez igazodik, hogy váltáskor ne ugráljon. */
   min-height: 190px;

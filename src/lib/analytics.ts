@@ -31,6 +31,10 @@ export type AnalyticsEvent =
   | 'reference_open'
   | 'reference_filter'
   | 'service_open'
+  | 'assistant_open'
+  | 'assistant_answer'
+  | 'assistant_restart'
+  | 'assistant_handoff'
   | 'nav_click'
   | 'process_step_view';
 

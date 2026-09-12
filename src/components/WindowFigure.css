@@ -50,10 +50,11 @@
   border-color: var(--c-brown-400);
 }
 
+/* Világos türkiz alapon sötét felirat kell — fehérrel 2,2:1 lenne. */
 .winmarker.is-active {
   background: var(--c-cta);
   border-color: var(--c-cta);
-  color: #fff;
+  color: var(--c-cta-ink);
   z-index: 2;
 }
 
@@ -67,8 +68,8 @@
 }
 
 .winmarker.is-active .winmarker__dot {
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  background: var(--c-cta-ink);
+  box-shadow: 0 0 0 3px rgba(6, 32, 30, 0.25);
 }
 
 /*

@@ -12,6 +12,7 @@ import { FinalCta } from './sections/FinalCta';
 import { Footer } from './sections/Footer';
 import { StickyContact } from './components/StickyContact';
 import { Marquee } from './components/Marquee';
+import { Assistant } from './components/Assistant';
 import { CookieConsent } from './components/CookieConsent';
 import { Modal } from './components/Modal';
 
@@ -54,6 +55,8 @@ export function App() {
       />
 
       <StickyContact />
+
+      <Assistant />
 
       <CookieConsent
         settingsOpen={cookieSettings}

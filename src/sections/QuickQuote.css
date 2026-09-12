@@ -1,6 +1,5 @@
 .quick {
-  background: var(--c-card);
-  border-block: 1px solid var(--c-line);
+  border-block: 1px solid var(--c-line-soft);
 }
 
 .quick__grid {
@@ -32,7 +31,7 @@
   font-size: var(--fs-base);
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--c-brown-900);
+  color: var(--c-ink);
 }
 
 .quick__steps {
@@ -61,8 +60,9 @@
   flex: none;
   margin-top: 1px;
   border-radius: 50%;
-  background: var(--c-beige-deep);
-  color: var(--c-brown-800);
+  background: var(--glass);
+  border: 1px solid var(--c-line);
+  color: var(--c-ink);
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -73,23 +73,26 @@
 }
 
 .quick__steps li:last-child .quick__step-num {
-  background: var(--c-brown-900);
-  color: #FDFBF7;
+  background: var(--c-cta);
+  border-color: var(--c-cta);
+  color: var(--c-cta-ink);
 }
 
-/* Az űrlappanel — a bézs alapból kiemelkedő, de nem árnyékkal túltolt felület */
 /*
- * Az űrlap az oldal legfontosabb eleme, ezért a legmagasabban ülő
- * felület: fehér alap, nagy sugár, erős árnyék. Ránézésre elkülönül
- * minden más blokktól.
+ * Az űrlap az oldal legfontosabb eleme, ezért a legmagasabban ülő és
+ * legvilágosabb felület: megemelt alap, türkiz fénykeret, erős árnyék.
+ * Sötét oldalon a „megvilágított tárgy" hatás a hierarchia eszköze.
  */
 .quick__panel {
   position: relative;
   padding: clamp(1.5rem, 1rem + 2.4vw, 2.75rem);
-  background: var(--surface-raised);
-  border: 1px solid var(--c-line-soft);
+  background: linear-gradient(165deg, var(--c-card-hi), var(--c-card));
+  border: 1px solid var(--glass-border);
   border-radius: var(--r-xl);
-  box-shadow: var(--shadow-xl);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 0 1px rgba(53, 196, 181, 0.12),
+    0 0 90px -30px rgba(53, 196, 181, 0.35);
 }
 
 /* Vékony színes csík a panel tetején — jelzi, hogy ez a fő cél. */
@@ -99,7 +102,7 @@
   inset: 0 clamp(2rem, 12%, 5rem) auto;
   height: 3px;
   border-radius: 0 0 var(--r-pill) var(--r-pill);
-  background: linear-gradient(90deg, var(--c-cta), var(--c-brown-400));
+  background: linear-gradient(90deg, var(--c-cta), var(--c-sand));
 }
 
 /* Válaszidő — csak valós vállalás esetén jelenik meg. */

@@ -4,65 +4,85 @@
    =========================================================================== */
 
 :root {
-  /* --- Színpaletta (megadott márkaszínek) --- */
-  --c-brown-900: #3B2618; /* elsődleges sötétbarna */
-  --c-brown-700: #6B4423; /* fő barna */
-  --c-brown-400: #A67C52; /* világosabb barna akcentus */
-  --c-sand: #D8C2A8;      /* homokszín */
-  --c-beige: #F4EFE8;     /* világos bézs háttér */
-  --c-card: #FFFDF9;      /* kártyák, világos felületek */
-  --c-ink: #241A14;       /* sötét szöveg */
-  --c-muted: #74665C;     /* halvány szöveg */
+  /* --- Színpaletta ---
+   SÖTÉT ALAP, ugyanazokkal a márkahuesokkal.
+
+   A korábbi világos bézs alapon minden szekció egymásba folyt, és a
+   nagy világos felületek miatt az oldal „dokumentumnak" hatott, nem
+   terméknek. Itt ugyanaz a barna–homok–bézs paletta van, csak
+   megfordított értékstruktúrával: mély, meleg feketésbarna az alap, és
+   a homok/bézs lett az akcentus. A változónevek szándékosan
+   ugyanazok, hogy az egész oldal automatikusan kövesse. */
+
+  /* Alapfelületek — mélytől a megemeltig */
+  --c-beige: #0E0B09;       /* oldal alapja */
+  --c-beige-deep: #0A0807;  /* mélyebb sáv */
+  --c-card: #16110E;        /* kártya, panel */
+  --c-card-hi: #1E1814;     /* megemelt kártya, hover */
+
+  /* Szöveg */
+  --c-ink: #F7F2EC;         /* fő szöveg */
+  --c-muted: #A79685;       /* halvány szöveg — 6.9:1 az alapon */
+
+  /* Márkahuesok — ezek nem változtak, csak most akcentusként működnek */
+  --c-sand: #D8C2A8;
+  --c-sand-light: #E7D8C4;
+  --c-brown-400: #B98E5F;
+  --c-brown-700: #D2A778;   /* akcentus szöveg sötéten */
+  --c-brown-900: #0A0807;   /* „legsötétebb felület" szerep */
+
+  /* Vonalak — sötéten nem szín, hanem áttetsző fény */
+  --c-line: rgba(231, 216, 196, 0.13);
+  --c-line-soft: rgba(231, 216, 196, 0.07);
 
   /*
-   * Szövegre használható akcentszín.
-   * A megadott #A67C52 világos háttéren csak 3.3:1 kontrasztot ad, ezért
-   * kizárólag dekorációra (ikon, elválasztó, keret) használjuk, ahol a
-   * WCAG 3:1-et vár. Szöveghez ez a sötétebb változat megy: 5.7:1 bézsen.
+   * Szövegre használható akcentszín sötét alapon. 8.4:1 — bőven AA fölött.
    */
-  --c-accent-text: #7E5430;
+  --c-accent-text: #E0B98C;
 
   /*
    * CTA-szín.
    * A teljes paletta meleg barna; ha a főgomb is barna, semmi nem emelkedik
-   * ki belőle. Ez a mély, visszafogott zöld egyetlen célt szolgál: a
-   * konverziós gombokat. Máshol nem használjuk, különben elveszti a súlyát.
-   * Kontraszt: fehér szöveggel 8.7:1, bézs háttéren szövegként 7.6:1 — mindkettő AA felett.
+   * ki belőle. Ez a világos türkiz egyetlen célt szolgál: a konverziós
+   * gombokat. Máshol nem használjuk, különben elveszti a súlyát.
+   * Kontraszt: az alapon 9.1:1, a saját sötét feliratával 7.9:1.
    */
-  --c-cta: #16544F;
-  --c-cta-hover: #0F423E;
+  --c-cta: #35C4B5;        /* 9.1:1 az alapon, sötét felirattal 7.9:1 */
+  --c-cta-hover: #4AD8C9;
+  --c-cta-ink: #06201E;    /* felirat a CTA-gombon */
+  --c-cta-dim: rgba(53, 196, 181, 0.14);
 
-  /* Származtatott árnyalatok — a paletta kiterjesztése, nem új márkaszín */
-  /* Mélyebb, melegebb feketésbarna a sötét szekciókhoz. A korábbi
-     #3B2618 világos volt: nem adott elég értékkontrasztot a bézzsel
-     szemben, ezért a szekciók egymásba folytak. */
-  --c-ink-deep: #14100D;
-  --c-ink-deep-2: #1E1813;
-  --c-brown-950: #2A1A10;
-  --c-brown-800: #4E3220;
-  --c-brown-600: #7E5430;
-  --c-brown-500: #916240;
-  --c-sand-light: #E7D8C4;
-  --c-beige-deep: #EBE3D8;
-  --c-line: #DFD4C6;
-  --c-line-soft: #EDE5DA;
+  /* Származtatott árnyalatok */
+  --c-ink-deep: #0A0807;
+  --c-ink-deep-2: #120E0C;
+  --c-brown-950: #080605;
+  --c-brown-800: #241B14;
+  --c-brown-600: #C89A69;
+  --c-brown-500: #8A6844;
 
   /* --- Szerepkör szerinti színek --- */
   --bg: var(--c-beige);
   --bg-alt: var(--c-card);
   --bg-deep: var(--c-ink-deep);
-  /* Enyhén megemelt felület világos háttéren — a lapos fehér kártyák
-     helyett ez adja a rétegzettséget. */
-  --surface-raised: #FFFFFF;
-  --surface-sunken: #EFE8DE;
-  /* Üveghatású felület (fejléc, lebegő elemek) */
-  --glass: rgba(250, 246, 240, 0.72);
-  --glass-border: rgba(59, 38, 24, 0.09);
+  --surface-raised: var(--c-card-hi);
+  --surface-sunken: var(--c-beige-deep);
+
+  /* Üveghatású felület */
+  --glass: rgba(231, 216, 196, 0.045);
+  --glass-strong: rgba(231, 216, 196, 0.08);
+  --glass-border: rgba(231, 216, 196, 0.12);
+
+  /* Sötét felületen a „világos szöveg" és a sima szöveg ugyanaz */
+  --text-on-dark: var(--c-ink);
+  --text-on-dark-muted: var(--c-muted);
+
+  /* --- Fény és ragyogás --- */
+  --glow-teal: rgba(53, 196, 181, 0.16);
+  --glow-sand: rgba(216, 194, 168, 0.13);
+  --glow-amber: rgba(185, 142, 95, 0.16);
   --surface: var(--c-card);
   --text: var(--c-ink);
   --text-muted: var(--c-muted);
-  --text-on-dark: #F6F1EA;
-  --text-on-dark-muted: #C9B9A7;
   --border: var(--c-line);
   --accent: var(--c-brown-700);
   --cta: var(--c-cta);
@@ -134,23 +154,22 @@
   /* --- Árnyék ---
      Több rétegű, barnás alapú. Egyetlen éles árnyék helyett egy szoros
      kontaktárnyék + egy nagy, lágy szórás adja a mélységet. */
-  --shadow-xs: 0 1px 2px rgba(59, 38, 24, 0.06);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-sm:
-    0 1px 2px rgba(42, 26, 16, 0.05),
-    0 4px 12px -4px rgba(42, 26, 16, 0.07);
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 4px 14px -4px rgba(0, 0, 0, 0.5);
   --shadow-md:
-    0 2px 4px rgba(42, 26, 16, 0.05),
-    0 12px 28px -10px rgba(42, 26, 16, 0.16);
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 14px 34px -12px rgba(0, 0, 0, 0.65);
   --shadow-lg:
-    0 4px 8px rgba(42, 26, 16, 0.05),
-    0 32px 64px -24px rgba(42, 26, 16, 0.26);
+    0 6px 12px rgba(0, 0, 0, 0.5),
+    0 36px 72px -28px rgba(0, 0, 0, 0.75);
   --shadow-xl:
-    0 6px 12px rgba(42, 26, 16, 0.06),
-    0 48px 96px -32px rgba(42, 26, 16, 0.34);
-  /* Emelkedő kártya hoverre */
+    0 8px 16px rgba(0, 0, 0, 0.55),
+    0 56px 110px -36px rgba(0, 0, 0, 0.8);
   --shadow-lift:
-    0 2px 4px rgba(42, 26, 16, 0.05),
-    0 24px 48px -16px rgba(42, 26, 16, 0.22);
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 28px 56px -18px rgba(0, 0, 0, 0.72);
 
   /* --- Mozgás --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
