@@ -112,3 +112,59 @@
     padding-inline: 1.25rem;
   }
 }
+
+/* --- Fényvillanás rámutatásra -------------------------------------------
+   Egy ferde fénycsík fut végig a gombon, mint amikor megcsillan egy él.
+   Csak egérrel használt eszközön fut le, és a csökkentett mozgás
+   beállítást a globális szabály automatikusan semlegesíti. */
+
+.btn {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: -70%;
+  width: 42%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Világos hátterű gombokon a fehér csík nem látszana — meleg barna a fény. */
+.btn--secondary::after,
+.btn--ghost::after {
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(90, 58, 37, 0.16) 50%,
+    transparent 100%
+  );
+}
+
+@media (hover: hover) {
+  .btn:hover::after {
+    animation: btn-sheen 650ms linear;
+  }
+}
+
+@keyframes btn-sheen {
+  from {
+    opacity: 1;
+    transform: skewX(-18deg) translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: skewX(-18deg) translateX(420%);
+  }
+}
