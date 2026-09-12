@@ -84,7 +84,7 @@ export function Hero() {
         <div className="hero__badge">
           <span className="hero__badge-label">Működési terület</span>
           <span className="hero__badge-value">
-            <PH value={company.serviceArea} />
+            <PH value={company.serviceAreaShort} />
           </span>
         </div>
       </div>

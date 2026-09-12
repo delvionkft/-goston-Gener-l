@@ -206,3 +206,10 @@
   background: rgba(226, 210, 190, 0.1);
   border-color: var(--c-sand);
 }
+
+.footer__who {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--text-on-dark-muted);
+}

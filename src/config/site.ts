@@ -37,28 +37,36 @@ export function containsPlaceholder(value: string | undefined | null): boolean {
 
 export const company = {
   /** Cég teljes neve, ahogy a fejlécben és a footerben megjelenik. */
-  name: '[CÉGNÉV]' as MaybePlaceholder,
+  name: 'Ágoston-Generál Kft.',
   /** Rövid név / logószöveg a fejléchez. */
-  shortName: '[CÉGNÉV]' as MaybePlaceholder,
+  shortName: 'Ágoston-Generál',
   /** A fő szolgáltatás rövid megnevezése. Ez kerül a meta titlebe is. */
   mainService: 'nyílászárócsere és beépítés',
   /** 1–2 mondatos bemutatkozás. A meta descriptionbe is ez kerül. */
   intro:
-    'Műanyag nyílászárók, bejárati ajtók, redőnyök és árnyékolás — pontos helyszíni felméréssel, átlátható ajánlattal és szakszerű beépítéssel.',
-  /** Szolgáltatási terület, pl. „Budapest és Pest vármegye”. */
-  serviceArea: '[SZOLGÁLTATÁSI TERÜLET]' as MaybePlaceholder,
+    'Ablakok és ajtók cseréje és beépítése a Balaton déli partján: felmérés, beszerzés, bontás, beépítés és helyreállítás egy kézből, 25 év építőipari tapasztalattal.',
+  /** Szolgáltatási terület — a footerben és a strukturált adatban. */
+  serviceArea: 'Balaton déli partja — Keszthely, Marcali, Balatonboglár, Fonyód térsége',
+  /** Rövid változat szűk helyre (hero címke, lebegő kártya). */
+  serviceAreaShort: 'Balaton déli partja',
   /** Logó a fejlécbe és a footerbe. Tedd a fájlt a /public mappába. Pl. '/logo.svg'. */
   logo: '',
 } as const;
 
 export const contact = {
-  /** Megjelenített telefonszám. */
-  phoneDisplay: '[TELEFONSZÁM]' as MaybePlaceholder,
-  /** Tárcsázható formátum a `tel:` linkhez, szóköz nélkül. Pl. '+36301234567'. */
-  phoneHref: '[TELEFONSZÁM]' as MaybePlaceholder,
-  email: '[E-MAIL-CÍM]' as MaybePlaceholder,
-  /** Opcionális. Ha üres, nem jelenik meg. */
-  address: '',
+  /** Megjelenített telefonszám — Ágoston Zsolt ügyvezető. */
+  phoneDisplay: '+36 30 463 8726',
+  /** Tárcsázható formátum a `tel:` linkhez, szóköz nélkül. */
+  phoneHref: '+36304638726',
+  /** Második szám — Böröndi Szabina irodavezető. Üresen hagyva nem jelenik meg. */
+  phoneDisplay2: '+36 70 547 9595',
+  phoneHref2: '+36705479595',
+  /** Kihez tartoznak a számok — a footerben a szám mellett jelenik meg. */
+  phoneLabel: 'Ágoston Zsolt, ügyvezető',
+  phoneLabel2: 'Böröndi Szabina, irodavezető',
+  email: 'info@agostongeneral.hu',
+  /** Székhely. Üresen hagyva nem jelenik meg. */
+  address: '8648 Balatonkeresztúr, Iskola utca 4/I',
   /** Elérhetőségi idő rövid szövege. Ha üres, nem jelenik meg. */
   hours: '',
 } as const;
@@ -68,13 +76,13 @@ export const contact = {
  * az üres `href` mezőjű sorokat az oldal kihagyja.
  */
 export const social = [
-  { label: 'Facebook', href: '' },
+  { label: 'Facebook', href: 'https://www.facebook.com/agoston.general.kft' },
   { label: 'Instagram', href: '' },
 ] as const;
 
 export const site = {
   /** Éles URL. A canonical linkhez és az Open Graph adatokhoz kell. */
-  url: 'https://example.hu',
+  url: 'https://agostongeneral.hu',
   locale: 'hu_HU',
   /** OG kép a /public mappában. Ajánlott: 1200×630 px. */
   ogImage: '/og-image.png',
@@ -83,14 +91,11 @@ export const site = {
 /**
  * Meta címke szövegek. Ezek kerülnek a böngészőfülre, a Google
  * találati listájába és a közösségi megosztás előnézetébe.
- *
- * Ajánlott hossz: cím 50–60, leírás 140–160 karakter. Írj bele
- * településnevet vagy régiót — helyi szolgáltatónál ez hoz találatot.
  */
 export const seo = {
-  title: '[META TITLE — pl. Nyílászárócsere és beépítés | CÉGNÉV]' as MaybePlaceholder,
+  title: 'Nyílászáró csere és beépítés – Ágoston-Generál Kft.',
   description:
-    '[META DESCRIPTION — pl. Műanyag nyílászárók, bejárati ajtók és redőnyök beépítéssel TELEPÜLÉS és környéke területén. Ingyenes helyszíni felmérés, tételes ajánlat.]' as MaybePlaceholder,
+    'Ablak- és ajtócsere, beépítés a Balaton déli partján, Keszthely–Marcali–Balatonboglár–Fonyód térségében. VEKA nyílászárók, bontás és helyreállítás egy kézből.',
 } as const;
 
 /* ---------------------------------------------------------------------------
@@ -102,9 +107,9 @@ export const seo = {
 
 export const cta = {
   /** A fő ajánlatkérő gomb szövege mindenhol. */
-  primary: 'Ingyenes felmérést kérek',
+  primary: 'Ajánlatot kérek',
   /** Rövidített változat szűk helyre (fejléc, mobil sáv). */
-  short: 'Ingyenes felmérés',
+  short: 'Ajánlatkérés',
   /** A hero másodlagos gombja. */
   secondary: 'Megnézem a szolgáltatásokat',
 } as const;
@@ -160,7 +165,7 @@ export function sectionNumber(id: string): string {
  * ------------------------------------------------------------------------ */
 
 export const hero = {
-  eyebrow: company.serviceArea,
+  eyebrow: company.serviceAreaShort,
   title: 'Modern nyílászárók, precíz beépítéssel',
   lead:
     'Segítünk megtalálni az otthonodhoz és igényeidhez illő megoldást, a felméréstől egészen a szakszerű beépítésig.',
@@ -171,15 +176,15 @@ export const hero = {
   trust: [
     {
       title: 'Személyre szabott megoldások',
-      text: 'Ahhoz igazítjuk a javaslatot, amilyen az épület és amire használod.',
+      text: 'VEKA profilrendszerek, igény esetén más gyártó terméke — az épület adottságaihoz igazítva.',
     },
     {
       title: 'Precíz helyszíni felmérés',
-      text: 'Milliméterre pontos méretek, a beépítés körülményeivel együtt.',
+      text: 'Pontos méretek és szakmai tanácsadás. A felmérés díját megrendelés esetén jóváírjuk.',
     },
     {
-      title: 'Szakszerű beépítés',
-      text: 'A beépítés ugyanolyan fontos, mint maga az ablak — nálunk egy kézben van.',
+      title: 'Mindent egy kézből',
+      text: 'Felmérés, beszerzés, bontás, beépítés és helyreállítás — 25 év tapasztalattal.',
     },
   ],
   /**
@@ -260,14 +265,14 @@ export const services = {
   eyebrow: 'Szolgáltatások',
   title: 'Amiben segíteni tudunk',
   lead:
-    'Egy helyen a teljes nyílászáró-kör: a nyílászárótól az árnyékoláson át a beépítésig. Így nem neked kell több kivitelezőt összehangolnod.',
+    'Egy helyen a teljes nyílászáró-kör: a nyílászárótól az árnyékoláson át a beépítésig és a helyreállításig. Így nem neked kell több kivitelezőt összehangolnod.',
   items: [
     {
       key: 'muanyag',
       icon: 'window' as const,
       title: 'Műanyag nyílászárók',
       body:
-        'Ablakok és erkélyajtók családi házba, lakásba, felújításba és új építésbe. A profilt, a vasalatot és az üvegezést ahhoz igazítjuk, amit az adott helyiségtől elvársz.',
+        'Elsősorban VEKA profilrendszerekkel készült ablakok és erkélyajtók, A osztályú profilokból. Igény esetén fa, alumínium és fa–alumínium nyílászárót is beszerzünk.',
       image: '',
       imageAlt: '[Képaláírás: műanyag ablak beépítve]',
     },
@@ -276,7 +281,7 @@ export const services = {
       icon: 'door' as const,
       title: 'Bejárati ajtók',
       body:
-        'Hőszigetelt bejárati ajtók, ahol a biztonság, a zárhatóság és a megjelenés egyszerre számít. Az ajtólap, a tok és a zárszerkezet együtt adja a végeredményt.',
+        'Bejárati és erkélyajtók, ahol a biztonság, a zárhatóság és a megjelenés egyszerre számít. Az ajtólap, a tok és a vasalat együtt adja a végeredményt.',
       image: '',
       imageAlt: '[Képaláírás: bejárati ajtó]',
     },
@@ -285,7 +290,7 @@ export const services = {
       icon: 'shutter' as const,
       title: 'Redőnyök és árnyékolástechnika',
       body:
-        'Redőnyök kézi és motoros működtetéssel, valamint egyéb árnyékolási megoldások. Nyáron a hőterhelés ellen, télen plusz szigetelő réteg az ablakon.',
+        'Redőnyök, redőnytokos rendszerek, rolók és zsalugáterek. A nyílászáróval egy időben beépítve nem kell később külön kivitelezőt hívni.',
       image: '',
       imageAlt: '[Képaláírás: redőny]',
     },
@@ -294,7 +299,7 @@ export const services = {
       icon: 'mesh' as const,
       title: 'Szúnyoghálók',
       body:
-        'Fix, nyíló és rolós kivitelben, ablakra és ajtóra. Méretre készítve, hogy szellőztetés közben is nyugodtan nyitva lehessen hagyni a nyílászárót.',
+        'Ablakra és ajtóra, a nyílászáró típusához igazítva. Méretre készítve, hogy szellőztetés közben is nyugodtan nyitva lehessen hagyni a nyílászárót.',
       image: '',
       imageAlt: '[Képaláírás: szúnyogháló]',
     },
@@ -303,16 +308,16 @@ export const services = {
       icon: 'sill' as const,
       title: 'Párkányok és kiegészítők',
       body:
-        'Külső és belső párkányok, takarólécek, vízvetők és a beépítéshez tartozó kiegészítők — ezek zárják le tisztán a nyílászáró és a fal találkozását.',
+        'Belső és külső párkányok, takarólécek és biztonsági kiegészítők — ezek zárják le tisztán a nyílászáró és a fal találkozását.',
       image: '',
       imageAlt: '[Képaláírás: külső párkány]',
     },
     {
       key: 'csere',
       icon: 'install' as const,
-      title: 'Nyílászárócsere és szakszerű beépítés',
+      title: 'Nyílászárócsere és beépítés',
       body:
-        'A régi szerkezet bontásától a beépítésen át a helyreállításig. A beépítés minősége határozza meg, mennyit ér a megvásárolt nyílászáró.',
+        'Meglévő épületben bontással és helyreállítással, új építésnél a konszignációs terv szerint. A régi nyílászárót elszállítjuk, a munkaterületet rendezetten adjuk át.',
       image: '',
       imageAlt: '[Képaláírás: beépítés közben]',
     },
@@ -327,7 +332,7 @@ export const why = {
   eyebrow: 'Miért minket',
   title: 'Mit kapsz tőlünk a nyílászárón kívül?',
   lead:
-    'A nyílászáró önmagában termék. Az alábbiak azok, amiktől a végeredmény is jó lesz — és amiért az ügyfeleink ajánlanak minket tovább.',
+    'A nyílászáró önmagában termék. A teljesítményét legalább annyira eldönti a beépítés, mint a gyártó — az alábbiak erről szólnak.',
   items: [
     {
       title: 'Segítünk kiválasztani a megfelelő műszaki megoldást',
@@ -337,27 +342,27 @@ export const why = {
     {
       title: 'Pontos helyszíni felmérést végzünk',
       body:
-        'A méreteket a helyszínen vesszük fel, a falszerkezettel és a beépítés körülményeivel együtt. Így nem a kivitelezés napján derül ki, hogy valami nem stimmel.',
+        'A méreteket a helyszínen vesszük fel, a falszerkezettel és a beépítés körülményeivel együtt. A felmérés díjas, de megrendelés esetén jóváírjuk, így nem jelent többletköltséget.',
     },
     {
-      title: 'Átlátható, részletes ajánlatot készítünk',
+      title: 'Mindent egy kézből intézünk',
       body:
-        'Tételesen látod, mi mibe kerül, és mi az, ami nincs benne. Így össze tudod hasonlítani más ajánlatokkal, és nincs utólagos meglepetés.',
+        'Felmérés, beszerzés, kiszállítás, bontás, beépítés és helyreállítás. Nem fordulhat elő, hogy a forgalmazó és a kivitelező egymásra mutogat, ha valami nem stimmel.',
     },
     {
-      title: 'Az egyeztetett feltételek szerint dolgozunk',
+      title: 'A saját nyílászáródat is beépítjük',
       body:
-        'Amiben megállapodunk — tartalom, ütemezés, feltételek —, az szerint haladunk. Ha valami változik, előre szólunk, nem utólag.',
+        'Ha te szerzed be az ablakokat, mi csak a bontást és a beépítést végezzük. A kivitelezés előtt ellenőrizzük a méreteket és a beépíthetőséget.',
     },
     {
-      title: 'Precíz beépítést és rendezett munkaterületet biztosítunk',
+      title: 'Precíz beépítés és rendezett munkaterület',
       body:
-        'A beépítést a szakma szabályai szerint végezzük, és a munka végén rendet hagyunk magunk után. Ez nem extra, hanem az alapelvárás.',
+        'A bontási törmeléket, a régi nyílászárókat és a csomagolóanyagot elszállítjuk és leadjuk a hulladékudvarban. A munkaterület tiszta állapotban kerül átadásra.',
     },
     {
-      title: 'A kivitelezés után sem hagyjuk magára az ügyfelet',
+      title: 'Pályázatokban is eligazítunk',
       body:
-        'Ha kérdés vagy beállítási igény merül fel a munka után, elérhetők maradunk. Az ablak évekig veled marad — a kapcsolat is maradjon meg.',
+        'Tájékoztatást adunk az aktuális nyílászáró-korszerűsítési támogatásokról, és segítünk a műszaki dokumentáció összeállításában. Pályázatíró partnerekkel is kapcsolatban állunk.',
     },
   ],
 } as const;
@@ -377,23 +382,23 @@ export const process = {
     },
     {
       title: 'Telefonos egyeztetés',
-      body: 'Felhívunk, és átbeszéljük az elképzeléseidet, a helyszínt és a várható kereteket.',
+      body: 'Két munkanapon belül keresünk, és átbeszéljük az elképzeléseidet és a helyszínt.',
     },
     {
       title: 'Helyszíni felmérés',
-      body: 'Kimegyünk, pontos méretet veszünk, és megnézzük a beépítés körülményeit.',
+      body: 'Pontos méretet veszünk és tanácsot adunk. A felmérés díját megrendelés esetén jóváírjuk.',
     },
     {
       title: 'Pontos ajánlat',
       body: 'Tételes, összehasonlítható ajánlatot készítünk a felmérés alapján.',
     },
     {
-      title: 'Részletek egyeztetése',
-      body: 'Véglegesítjük a tartalmat, az ütemezést és a kivitelezés feltételeit.',
+      title: 'Szerződés és ütemezés',
+      body: 'Rögzítjük a tartalmat, a határidőt, a garanciát és a kivitelezés feltételeit.',
     },
     {
-      title: 'Beépítés',
-      body: 'Szakszerűen beépítjük a kiválasztott nyílászárókat, és rendet hagyunk magunk után.',
+      title: 'Bontás, beépítés, helyreállítás',
+      body: 'Beépítjük a nyílászárókat, elvégezzük a javításokat, és rendet hagyunk magunk után.',
     },
   ],
 } as const;
@@ -475,28 +480,31 @@ export const references = {
 export const testimonials = {
   eyebrow: 'Ügyfélvélemények',
   title: 'Mit mondanak az ügyfeleink?',
-  lead: 'Valós, az ügyfelektől engedélyezett visszajelzések.',
-  /** Az oldalon megjelenő figyelmeztetés, amíg a vélemények helyőrzők. */
+  lead: 'Valós, nyilvános Google-értékelésekből.',
+  /** Csak akkor jelenik meg, ha a vélemények még helyőrzők. */
   sampleNotice:
     'Mintatartalom — cseréld valós, az ügyféltől engedélyezett véleményre, mielőtt élesíted az oldalt.',
   items: [
     {
       id: 'tes-1',
-      quote: '[ÜGYFÉLVÉLEMÉNY 1 — a kommunikációról: mennyire volt követhető az egyeztetés.]',
-      author: '[KERESZTNÉV]',
-      meta: '[TELEPÜLÉS] · [ELVÉGZETT MUNKA]',
+      quote:
+        'Egyedülállóan korrekt, tisztességes és jó szakember. Részletes árajánlatot kaptam, gyors és pontos munkát. Az építési területet tisztán, rendben kaptam vissza. Csak ajánlani tudom mindenkinek.',
+      author: 'Viktor Goldschmidt',
+      meta: 'Google-értékelés',
     },
     {
       id: 'tes-2',
-      quote: '[ÜGYFÉLVÉLEMÉNY 2 — a pontosságról: az egyeztetett feltételek tartásáról.]',
-      author: '[KERESZTNÉV]',
-      meta: '[TELEPÜLÉS] · [ELVÉGZETT MUNKA]',
+      quote:
+        'Köszönjük a gyors, szakszerű munkát. Maximálisan elégedettek vagyunk az ügyintézéssel és a kivitelezéssel.',
+      author: 'Edit Gazdáné Ott',
+      meta: 'Google-értékelés',
     },
     {
       id: 'tes-3',
-      quote: '[ÜGYFÉLVÉLEMÉNY 3 — a kivitelezés minőségéről és a végeredményről.]',
-      author: '[KERESZTNÉV]',
-      meta: '[TELEPÜLÉS] · [ELVÉGZETT MUNKA]',
+      quote:
+        'Megbízható, pontos kivitelező, ajánlani tudom mindenkinek. Amiben megegyeztünk, azt maradéktalanul teljesítette. További munkákat is rá fogok bízni.',
+      author: 'Endre Peter',
+      meta: 'Google-értékelés',
     },
   ],
 } as const;
@@ -515,31 +523,31 @@ export const faq = {
   items: [
     {
       q: 'Mennyibe kerül egy nyílászárócsere?',
-      a: 'Az ár a mérettől, a nyílászáró típusától, az üvegezéstől, a vasalattól és a beépítés körülményeitől függ, ezért felmérés nélkül csak félrevezető szám adható. A felmérés után tételes ajánlatot kapsz, amiben látod az egyes tételek árát. Tájékoztató nagyságrend: [ÁRSÁV — töltsd ki a saját árszintednek megfelelően, vagy hagyd ki].',
+      a: 'Az ár a mérettől, a nyílászáró típusától, az üvegezéstől, a vasalattól és a beépítés körülményeitől függ, ezért felmérés nélkül csak félrevezető szám adható. A felmérés után tételes ajánlatot kapsz, amiben látod az egyes tételek árát, és azt is, mi nincs benne.',
     },
     {
       q: 'Mennyi idő alatt készül el a kivitelezés?',
-      a: 'Két külön szakaszból áll: a nyílászárók gyártási ideje és a helyszíni beépítés. A beépítés általában lényegesen rövidebb, mint a gyártás. A rád vonatkozó időzítést az ajánlatban rögzítjük. Jelenlegi tájékoztató határidők: [GYÁRTÁSI IDŐ] és [BEÉPÍTÉSI IDŐ].',
+      a: 'A helyszíni munka rövidebb, mint amire a legtöbben számítanak: egy átlagos ablak vagy ajtó cseréje általában 1–3 óra. A teljes átfutást a nyílászárók gyártási ideje határozza meg, ezt az ajánlatban rögzítjük. A pontos ütemezést a helyszíni felmérés után tudjuk megadni.',
     },
     {
       q: 'Szükséges helyszíni felmérés?',
-      a: 'Igen. A meglévő nyílás mérete, a falszerkezet és a beépítés körülményei nélkül nem lehet pontos ajánlatot adni, és a rendelés is kockázatos lenne. A felmérés a mi oldalunkról [FELMÉRÉS FELTÉTELE — pl. díjmentes megrendelés esetén / díjmentes és kötelezettségmentes].',
+      a: 'Pontos méretek nélkül nem lehet rendelni. A méretvételt útmutatásunk alapján magad is elvégezheted — ilyenkor az adatok pontosságáért te felelsz —, vagy kérheted a helyszíni felmérésünket szakmai tanácsadással. Ez utóbbi díjas, de megrendelés esetén a díját jóváírjuk, így nem jelent többletköltséget.',
     },
     {
       q: 'Két- vagy háromrétegű üvegezést érdemes választani?',
-      a: 'Nincs egy jó válasz mindenre. A háromrétegű üvegezés jobb hőszigetelést ad, de nehezebb és drágább, és nem minden helyzetben térül meg — például kevéssé fűtött vagy északi tájolású helyiségeknél másképp éri meg, mint egy nagy üvegfelületű nappaliban. A felmérésen helyiségenként átbeszéljük, hol melyiknek van értelme.',
+      a: 'Nincs egy jó válasz mindenre. A háromrétegű üvegezés jobb hőszigetelést ad, de nehezebb és drágább, és nem minden helyzetben térül meg — egy kevéssé fűtött vagy északi tájolású helyiségnél másképp éri meg, mint egy nagy üvegfelületű nappaliban. A felmérésen helyiségenként átbeszéljük, hol melyiknek van értelme.',
     },
     {
       q: 'A régi nyílászárók bontását is vállaljátok?',
-      a: 'Igen, a régi szerkezet bontása és a beépítés utáni helyreállítás is elvégezhető a munka részeként. Hogy pontosan mi tartozik bele — bontás, elszállítás, kőműves helyreállítás, festés —, azt tételesen az ajánlat rögzíti. Az elszállítás nálunk: [BONTOTT ANYAG ELSZÁLLÍTÁSA — pl. az ajánlat tartalmazza / külön tétel].',
+      a: 'Igen. A bontást úgy végezzük, hogy a környező falazat, vakolat és burkolat a lehető legkevésbé sérüljön, majd elvégezzük a szükséges javításokat és a helyreállítást. A régi nyílászárókat és a bontási törmeléket elszállítjuk és leadjuk a hulladékudvarban. Hogy pontosan mi tartozik bele, azt tételesen az ajánlat rögzíti.',
     },
     {
       q: 'Redőny és szúnyogháló is kérhető?',
-      a: 'Igen, az árnyékolás és a szúnyogháló ugyanannak a megrendelésnek a része lehet. Érdemes együtt tervezni a nyílászáróval, mert így a méretek és a beépítés összehangolhatók, és nem kell később külön kivitelezőt hívni.',
+      a: 'Igen, az árnyékolás és a szúnyogháló ugyanannak a megrendelésnek a része lehet — redőny, redőnytok, roló, zsalugáter vagy szúnyogháló. Érdemes együtt tervezni a nyílászáróval, mert így a méretek és a beépítés összehangolhatók, és nem kell később külön kivitelezőt hívni.',
     },
     {
       q: 'Milyen garancia vonatkozik a munkára?',
-      a: 'Két dolgot érdemes külön nézni: a termékre a gyártó vállal garanciát, a beépítésre pedig a kivitelező. Mindkettőt az ajánlat és a szerződés rögzíti írásban. A mi feltételeink: [TERMÉKGARANCIA] és [BEÉPÍTÉSI GARANCIA]. A jogszabályi szavatossági jogaid ettől függetlenül megilletnek.',
+      a: 'Két dolgot érdemes külön nézni. A beépítésre kivitelezési garanciát vállalunk, amelynek részleteit a szerződésben rögzítjük, a beépített nyílászárók típusához és a kivitelezés jellegéhez igazítva. Magukra a nyílászárókra a gyártó termékgaranciája vonatkozik. A jogszabályi szavatossági jogaid ettől függetlenül megilletnek.',
     },
   ],
 } as const;
@@ -552,28 +560,28 @@ export const form = {
   eyebrow: 'Ajánlatkérés',
   title: 'Szeretnéd megtudni, milyen megoldás illik az otthonodhoz?',
   lead:
-    'Töltsd ki az űrlapot, és felvesszük veled a kapcsolatot az elképzeléseid egyeztetéséhez.',
+    'Töltsd ki az űrlapot, és két munkanapon belül felvesszük veled a kapcsolatot az elképzeléseid egyeztetéséhez.',
   /** „Mi történik a beküldés után” — az űrlap mellett jelenik meg. */
   afterSubmit: [
     'Megnézzük, amit írtál, és összeállítjuk a kérdéseinket.',
-    'Felhívunk a megadott telefonszámon, és átbeszéljük az elképzeléseidet.',
+    'Két munkanapon belül felhívunk a megadott telefonszámon.',
     'Időpontot egyeztetünk a helyszíni felmérésre.',
     'A felmérés után elkészítjük a tételes ajánlatot.',
   ],
   /** A „Milyen megoldás érdekel?” választó opciói. */
   serviceOptions: [
-    'Műanyag nyílászárók',
+    'Nyílászárócsere meglévő épületben',
+    'Nyílászáró beépítés új épületbe',
+    'Műanyag nyílászárók vásárlása (VEKA)',
     'Bejárati ajtó',
     'Redőny, árnyékolástechnika',
-    'Szúnyogháló',
-    'Párkányok, kiegészítők',
-    'Teljes nyílászárócsere',
+    'Szúnyogháló, párkány, kiegészítők',
     'Még nem tudom',
   ],
   /** A köszönőüzenet szövege sikeres beküldés után. */
   thankYou: {
     title: 'Köszönjük, megkaptuk a kérésed!',
-    lead: 'Felvesszük veled a kapcsolatot a megadott telefonszámon.',
+    lead: 'Két munkanapon belül felvesszük veled a kapcsolatot a megadott telefonszámon.',
     points: [
       'A megkeresésedet rögzítettük, nem vész el.',
       'Ha sürgős, hívj minket nyugodtan közvetlenül is.',
@@ -582,8 +590,7 @@ export const form = {
   /**
    * Opcionális külön köszönőoldal. Ha megadsz egy útvonalat (pl.
    * '/koszonjuk'), sikeres beküldés után az oldal oda navigál — hasznos,
-   * ha a GA4-ben oldalletöltés-alapú konverziót mérsz. Üresen hagyva a
-   * köszönőüzenet az űrlap helyén jelenik meg.
+   * ha a GA4-ben oldalletöltés-alapú konverziót mérsz.
    */
   thankYouUrl: '',
 } as const;
@@ -595,14 +602,14 @@ export const form = {
 export const legal = {
   privacy: {
     title: 'Adatkezelési tájékoztató',
-    /** Ha külön aloldalra tennéd, add meg az URL-t — akkor linkként viselkedik. */
+    /** Ha külön aloldalon van, add meg az URL-t — akkor linkként viselkedik. */
     href: '',
-    body: '[Ide kerül a teljes adatkezelési tájékoztató: az adatkezelő neve és elérhetősége, a kezelt adatok köre, az adatkezelés célja és jogalapja, a megőrzési idő, az adatfeldolgozók, és az érintett jogai. Jogi ellenőrzés nélkül ne élesítsd.]',
+    body: '[Ide kerül a teljes adatkezelési tájékoztató — a meglévő agostongeneral.hu tájékoztató szövege átemelhető. Tartalmaznia kell: az adatkezelő nevét és elérhetőségét, a kezelt adatok körét, az adatkezelés célját és jogalapját, a megőrzési időt, az adatfeldolgozókat és az érintett jogait.]',
   },
   imprint: {
     title: 'Impresszum',
     href: '',
-    body: '[Ide kerül az impresszum: cégnév, székhely, cégjegyzékszám, adószám, képviselő neve, elérhetőségek, tárhelyszolgáltató adatai.]',
+    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: info@agostongeneral.hu · Telefon: +36 30 463 8726 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
   },
 } as const;
 

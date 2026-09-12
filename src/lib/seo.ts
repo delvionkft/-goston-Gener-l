@@ -29,7 +29,7 @@ export function pageTitle(): string {
      index.html statikus címe, hogy ne váltson betöltés közben. */
   const base = 'Nyílászárócsere és beépítés';
   return isPlaceholder(company.name)
-    ? `${base} — ingyenes helyszíni felmérés`
+    ? base
     : `${base} – ${company.name}`;
 }
 

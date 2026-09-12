@@ -8,15 +8,20 @@ interface Props {
   /** Honnan kattintottak — a mérésnél megkülönbözteti a helyeket. */
   placement: string;
   className?: string;
+  /** Melyik szám: az elsődleges (1) vagy a második (2). */
+  which?: 1 | 2;
 }
 
 /**
  * Kattintható telefonszám. Ha a szám még helyőrző, nem linkként, hanem
  * megjelölt szövegként renderel — így nem lesz működésképtelen `tel:` link.
  */
-export function PhoneLink({ placement, className }: Props) {
-  const href = telHref();
-  const label = contact.phoneDisplay;
+export function PhoneLink({ placement, className, which = 1 }: Props) {
+  const href = telHref(which);
+  const label = which === 2 ? contact.phoneDisplay2 : contact.phoneDisplay;
+
+  // A második szám csak akkor jelenik meg, ha ki van töltve.
+  if (which === 2 && !label.trim()) return null;
 
   if (!href) {
     return (
@@ -31,7 +36,7 @@ export function PhoneLink({ placement, className }: Props) {
     <a
       href={href}
       className={`contact-link ${className ?? ''}`}
-      onClick={() => track('phone_click', { placement })}
+      onClick={() => track('phone_click', { placement, which })}
     >
       <PhoneIcon />
       <span>{label}</span>

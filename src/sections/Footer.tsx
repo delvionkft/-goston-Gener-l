@@ -73,7 +73,18 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
             <ul className="footer__list">
               <li>
                 <PhoneLink placement="footer" />
+                {contact.phoneLabel ? (
+                  <span className="footer__who">{contact.phoneLabel}</span>
+                ) : null}
               </li>
+              {contact.phoneDisplay2 ? (
+                <li>
+                  <PhoneLink placement="footer" which={2} />
+                  {contact.phoneLabel2 ? (
+                    <span className="footer__who">{contact.phoneLabel2}</span>
+                  ) : null}
+                </li>
+              ) : null}
               <li>
                 <EmailLink placement="footer" />
               </li>

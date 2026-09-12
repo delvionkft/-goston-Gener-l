@@ -5,8 +5,10 @@ import { contact, isPlaceholder } from '../config/site';
  * `undefined`, ha a szám még kitöltetlen helyőrző — ilyenkor a felület
  * szöveget mutat link helyett, hogy ne legyen működésképtelen gomb.
  */
-export function telHref(): string | undefined {
-  const raw = isPlaceholder(contact.phoneHref) ? contact.phoneDisplay : contact.phoneHref;
+export function telHref(which: 1 | 2 = 1): string | undefined {
+  const href = which === 2 ? contact.phoneHref2 : contact.phoneHref;
+  const display = which === 2 ? contact.phoneDisplay2 : contact.phoneDisplay;
+  const raw = isPlaceholder(href) || !href.trim() ? display : href;
   if (isPlaceholder(raw) || !raw.trim()) return undefined;
   const cleaned = raw.replace(/[^\d+]/g, '');
   return cleaned ? `tel:${cleaned}` : undefined;
