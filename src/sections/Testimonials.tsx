@@ -2,6 +2,7 @@ import { ANCHOR, containsPlaceholder, testimonials } from '../config/site';
 import { useReveal } from '../hooks/useReveal';
 import { PH } from '../components/PlaceholderText';
 import { QuoteIcon } from '../components/Icons';
+import { SectionMark } from '../components/SectionMark';
 import './Testimonials.css';
 
 /**
@@ -24,6 +25,7 @@ export function Testimonials() {
       id={ANCHOR.testimonials}
       aria-labelledby="testimonials-cim"
     >
+      <SectionMark id={ANCHOR.testimonials} />
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{testimonials.eyebrow}</p>

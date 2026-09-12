@@ -249,3 +249,16 @@
   width: auto;
   max-width: 150px;
 }
+
+/* --- Haladásjelző csík --- */
+
+.header__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: var(--scroll-progress, 0%);
+  background: linear-gradient(to right, var(--c-brown-700), var(--c-brown-400));
+  border-radius: 0 2px 2px 0;
+  pointer-events: none;
+}

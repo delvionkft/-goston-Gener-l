@@ -3,6 +3,7 @@ import { ANCHOR, process as processCopy } from '../config/site';
 import { track } from '../lib/analytics';
 import { useReveal } from '../hooks/useReveal';
 import { PH } from '../components/PlaceholderText';
+import { SectionMark } from '../components/SectionMark';
 import './Process.css';
 
 /** Igaz, ha az idővonalat animáció nélkül, azonnal késznek kell mutatni. */
@@ -71,6 +72,7 @@ export function Process() {
 
   return (
     <section className="section process" id={ANCHOR.process} aria-labelledby="process-cim">
+      <SectionMark id={ANCHOR.process} />
       <div className="container">
         <div className="process__head" ref={headRef}>
           <p className="eyebrow">{processCopy.eyebrow}</p>

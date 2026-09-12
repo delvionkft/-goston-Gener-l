@@ -1,0 +1,121 @@
+.toc {
+  display: none;
+}
+
+/* Csak akkor jelenik meg, ha a konténer mellett tényleg van szabad sáv. */
+@media (min-width: 1320px) {
+  .toc {
+    position: fixed;
+    top: 50%;
+    left: clamp(0.75rem, -1rem + 2vw, 1.75rem);
+    z-index: var(--z-float);
+    display: block;
+    transform: translateY(-50%);
+  }
+}
+
+/* Halvány, áttetsző kapszula: így a sáv a világos és a sötét szekciók
+   fölött is olvasható marad, anélkül hogy a színeit váltogatni kellene. */
+.toc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.35rem;
+  list-style: none;
+  background: color-mix(in srgb, var(--c-white) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-line) 70%, transparent);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .toc__list {
+    background: var(--c-white);
+  }
+}
+
+.toc__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.35rem;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.toc__num {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.55;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+/* A pont mérete és kitöltése jelzi az aktív szekciót — nem csak a szín,
+   így színtévesztéssel is látszik, hol tart a látogató. */
+.toc__dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--c-brown-400);
+  background: transparent;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.toc__label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-brown-900);
+  opacity: 0;
+  transition:
+    max-width var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.toc__item:hover .toc__num,
+.toc__item.is-active .toc__num {
+  opacity: 1;
+}
+
+.toc__item:hover .toc__dot {
+  border-color: var(--c-brown-700);
+  transform: scale(1.25);
+}
+
+.toc__item.is-active .toc__dot {
+  background: var(--c-brown-700);
+  border-color: var(--c-brown-700);
+  transform: scale(1.35);
+}
+
+.toc__item.is-active {
+  color: var(--c-brown-900);
+}
+
+/* A címke csak rámutatásra és billentyűzetes fókuszra jelenik meg, hogy
+   ne lógjon rá folyamatosan a tartalomra. */
+.toc__item:hover .toc__label,
+.toc__item:focus-visible .toc__label {
+  max-width: 12rem;
+  opacity: 1;
+}
+
+.toc__item:hover,
+.toc__item:focus-visible {
+  background: color-mix(in srgb, var(--c-white) 88%, transparent);
+  box-shadow: var(--shadow-sm);
+}

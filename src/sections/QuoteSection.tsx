@@ -4,6 +4,7 @@ import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
 import { useReveal } from '../hooks/useReveal';
 import { CheckIcon } from '../components/Icons';
+import { SectionMark } from '../components/SectionMark';
 import './QuoteSection.css';
 
 interface Props {
@@ -25,6 +26,7 @@ export function QuoteSection({ onOpenPrivacy }: Props) {
       id={ANCHOR.form}
       aria-labelledby="quote-cim"
     >
+      <SectionMark id={ANCHOR.form} />
       <div className="quote__glow" aria-hidden="true" />
 
       <div className="container">

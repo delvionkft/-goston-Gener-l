@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ANCHOR, company, cta, navLinks } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
+import { useActiveSection } from '../hooks/useActiveSection';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { Button } from './Button';
 import { PhoneLink } from './ContactLinks';
@@ -9,42 +10,47 @@ import { PH } from './PlaceholderText';
 import { CloseIcon, MenuIcon } from './Icons';
 import './Header.css';
 
+const NAV_IDS = navLinks.map((link) => link.id);
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeId, setActiveId] = useState<string>('');
+  const activeId = useActiveSection(NAV_IDS);
   const panelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   useFocusTrap(panelRef, menuOpen, closeMenu);
 
-  /* A fejléc tömörebb lesz, amint elhagyjuk a hero tetejét. */
+  /*
+   * Két dolgot intéz egyetlen görgetésfigyelő:
+   *  - a fejléc tömörebb lesz, amint elhagyjuk a hero tetejét,
+   *  - a haladásjelző csík szélességét CSS-változóban állítja.
+   * A csík nem React-állapot: így a görgetés nem indít újrarenderelést.
+   */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      headerRef.current?.style.setProperty('--scroll-progress', `${(ratio * 100).toFixed(2)}%`);
+      setScrolled(window.scrollY > 24);
+    };
+
+    const onScroll = () => {
+      frame ||= requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  /* Aktív menüpont jelölése — melyik szekció van épp a nézetben. */
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
-    const sections = navLinks
-      .map((l) => document.getElementById(l.id))
-      .filter((el): el is HTMLElement => el !== null);
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveId(visible.target.id);
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: [0, 0.25, 0.5] },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    window.addEventListener('resize', onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   /* Ha desktop nézetre váltunk, a mobilmenü ne maradjon nyitva. */
@@ -69,7 +75,10 @@ export function Header() {
   };
 
   return (
-    <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
+    <header ref={headerRef} className={`header ${scrolled ? 'is-scrolled' : ''}`}>
+      {/* Haladásjelző: megmutatja, hol tart a látogató az oldalon. */}
+      <span className="header__progress" aria-hidden="true" />
+
       <div className="header__inner container">
         <a
           className="header__brand"

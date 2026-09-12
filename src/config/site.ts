@@ -133,6 +133,28 @@ export const navLinks = [
   { id: ANCHOR.faq, label: 'Kérdések' },
 ] as const;
 
+/**
+ * A számozott szekciók sorrendben. Ebből jön a jobb felső sarokban látható
+ * sorszám (01, 02…), a tartalomjegyzék és a fejléc menüje is — így nem
+ * csúszhatnak szét egymástól.
+ */
+export const SECTIONS = [
+  { id: ANCHOR.problem, label: 'Problémák' },
+  { id: ANCHOR.services, label: 'Szolgáltatások' },
+  { id: ANCHOR.why, label: 'Miért minket' },
+  { id: ANCHOR.process, label: 'Folyamat' },
+  { id: ANCHOR.references, label: 'Referenciák' },
+  { id: ANCHOR.testimonials, label: 'Vélemények' },
+  { id: ANCHOR.faq, label: 'Kérdések' },
+  { id: ANCHOR.form, label: 'Ajánlatkérés' },
+] as const;
+
+/** Egy szekció kétjegyű sorszáma, pl. '03'. Ismeretlen azonosítóra üres. */
+export function sectionNumber(id: string): string {
+  const index = SECTIONS.findIndex((section) => section.id === id);
+  return index < 0 ? '' : String(index + 1).padStart(2, '0');
+}
+
 /* ---------------------------------------------------------------------------
  * 4. HERO
  * ------------------------------------------------------------------------ */

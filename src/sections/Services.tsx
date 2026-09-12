@@ -7,6 +7,7 @@ import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon } from '../components/Icons';
 import { SERVICE_ICONS } from '../components/serviceIcons';
+import { SectionMark } from '../components/SectionMark';
 import './Services.css';
 
 /**
@@ -27,6 +28,7 @@ export function Services() {
 
   return (
     <section className="section services" id={ANCHOR.services} aria-labelledby="services-cim">
+      <SectionMark id={ANCHOR.services} />
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{services.eyebrow}</p>

@@ -7,6 +7,7 @@ import { ImageSlot } from '../components/ImageSlot';
 import { Lightbox, type LightboxItem } from '../components/Lightbox';
 import { PH } from '../components/PlaceholderText';
 import { ExpandIcon, PinIcon } from '../components/Icons';
+import { SectionMark } from '../components/SectionMark';
 import './References.css';
 
 /**
@@ -43,6 +44,7 @@ export function References() {
 
   return (
     <section className="section refs" id={ANCHOR.references} aria-labelledby="refs-cim">
+      <SectionMark id={ANCHOR.references} />
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{references.eyebrow}</p>

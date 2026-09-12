@@ -13,6 +13,7 @@ import { Faq } from './sections/Faq';
 import { QuoteSection } from './sections/QuoteSection';
 import { Footer } from './sections/Footer';
 import { StickyContact } from './components/StickyContact';
+import { TocRail } from './components/TocRail';
 import { CookieConsent } from './components/CookieConsent';
 import { Modal } from './components/Modal';
 
@@ -60,6 +61,8 @@ export function App() {
         onOpenImprint={() => setLegalDoc('imprint')}
         onOpenCookies={() => setCookieSettings(true)}
       />
+
+      <TocRail />
 
       <StickyContact />
 

@@ -6,6 +6,7 @@ import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon } from '../components/Icons';
+import { SectionMark } from '../components/SectionMark';
 import './Problem.css';
 
 /**
@@ -43,6 +44,7 @@ export function Problem() {
 
   return (
     <section className="section problem" id={ANCHOR.problem} aria-labelledby="problem-cim">
+      <SectionMark id={ANCHOR.problem} />
       <div className="container">
         <div className="problem__head" ref={revealRef}>
           <p className="eyebrow">{problem.eyebrow}</p>

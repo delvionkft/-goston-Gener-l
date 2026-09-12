@@ -5,6 +5,7 @@ import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon, ChevronDownIcon } from '../components/Icons';
+import { SectionMark } from '../components/SectionMark';
 import './Faq.css';
 
 /**
@@ -20,6 +21,7 @@ export function Faq() {
 
   return (
     <section className="section faq" id={ANCHOR.faq} aria-labelledby="faq-cim">
+      <SectionMark id={ANCHOR.faq} />
       <div className="container faq__inner">
         <div className="faq__head" ref={headRef}>
           <p className="eyebrow">{faq.eyebrow}</p>

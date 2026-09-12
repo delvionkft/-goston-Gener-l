@@ -1,0 +1,40 @@
+.section-mark {
+  position: absolute;
+  top: clamp(1.75rem, 1.2rem + 1.6vw, 3rem);
+  right: var(--gutter);
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-brown-400);
+  pointer-events: none;
+}
+
+/* Rövid vonal a szám előtt — ugyanaz a jel, mint a szekciócímkéknél. */
+.section-mark::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  margin-right: 0.55rem;
+  vertical-align: 0.28em;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.section--dark .section-mark {
+  color: var(--c-sand);
+  opacity: 0.55;
+}
+
+@media (max-width: 599px) {
+  .section-mark {
+    font-size: var(--fs-xs);
+  }
+
+  .section-mark::before {
+    width: 14px;
+  }
+}

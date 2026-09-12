@@ -1,5 +1,6 @@
 import { ANCHOR, why } from '../config/site';
 import { useReveal } from '../hooks/useReveal';
+import { SectionMark } from '../components/SectionMark';
 import './WhyUs.css';
 
 /**
@@ -12,6 +13,7 @@ export function WhyUs() {
 
   return (
     <section className="section why" id={ANCHOR.why} aria-labelledby="why-cim">
+      <SectionMark id={ANCHOR.why} />
       <div className="container why__inner">
         <div className="why__head" ref={headRef}>
           <p className="eyebrow">{why.eyebrow}</p>

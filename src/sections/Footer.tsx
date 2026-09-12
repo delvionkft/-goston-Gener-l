@@ -1,4 +1,6 @@
-import { company, contact, legal, social } from '../config/site';
+import { ANCHOR, company, contact, legal, social } from '../config/site';
+import { scrollToId } from '../lib/scroll';
+import { ArrowDownIcon } from '../components/Icons';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
 import './Footer.css';
@@ -21,6 +23,23 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
       </div>
 
       <div className="container footer__inner">
+        {/* Választóvonal az ajánlatkérő szekció és a footer között: mindkettő
+            sötét, e nélkül egybefolynának. A sor egyben hasznos is — hosszú
+            oldalról egy kattintással vissza lehet jutni a tetejére. */}
+        <div className="footer__seam">
+          <p className="footer__seam-text">
+            <PH value={company.serviceArea} /> — <PH value={company.mainService} />
+          </p>
+          <button
+            type="button"
+            className="footer__totop"
+            onClick={() => scrollToId(ANCHOR.hero)}
+          >
+            <span>Vissza a tetejére</span>
+            <ArrowDownIcon />
+          </button>
+        </div>
+
         <div className="footer__top">
           <div className="footer__brand">
             {company.logo ? (
