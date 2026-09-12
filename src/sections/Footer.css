@@ -133,9 +133,11 @@
 }
 
 .footer__logo {
-  height: auto;
-  max-width: 160px;
-  margin-bottom: var(--sp-3);
+  width: auto;
+  height: 72px;
+  max-width: 200px;
+  object-fit: contain;
+  margin-bottom: var(--sp-4);
 }
 
 .footer__social {

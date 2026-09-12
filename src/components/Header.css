@@ -245,9 +245,16 @@
 }
 
 .header__logo {
-  height: 32px;
+  height: 46px;
   width: auto;
   max-width: 150px;
+  object-fit: contain;
+}
+
+@media (min-width: 980px) {
+  .header__logo {
+    height: 58px;
+  }
 }
 
 /* --- Haladásjelző csík --- */

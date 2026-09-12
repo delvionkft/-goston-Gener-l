@@ -49,8 +49,12 @@ export const company = {
   serviceArea: 'Balaton déli partja — Keszthely, Marcali, Balatonboglár, Fonyód térsége',
   /** Rövid változat szűk helyre (hero címke, lebegő kártya). */
   serviceAreaShort: 'Balaton déli partja',
-  /** Logó a fejlécbe és a footerbe. Tedd a fájlt a /public mappába. Pl. '/logo.svg'. */
-  logo: '',
+  /**
+   * Logó a fejlécbe és a footerbe (a /public mappából).
+   * Ha ki van töltve, a cégnév szövege helyette a logóban jelenik meg —
+   * a képernyőolvasó továbbra is megkapja.
+   */
+  logo: '/agoston-general-gold-logo.webp',
 } as const;
 
 export const contact = {

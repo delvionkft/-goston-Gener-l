@@ -121,14 +121,14 @@
   --z-toast: 400;
 
   /* Fejléc magassága — a horgonyok scroll-margin-topja ezzel számol */
-  --header-h: 68px;
+  --header-h: 72px;
   /* Mobil alsó CTA-sáv magassága */
   --mobilebar-h: 0px;
 }
 
 @media (min-width: 980px) {
   :root {
-    --header-h: 78px;
+    --header-h: 88px;
   }
 }
 

@@ -89,13 +89,26 @@ export function Header() {
           }}
         >
           {company.logo ? (
-            <img className="header__logo" src={company.logo} alt="" width="140" height="32" />
+            <>
+              <img
+                className="header__logo"
+                src={company.logo}
+                alt={company.name}
+                width="700"
+                height="460"
+              />
+              <span className="visually-hidden">
+                <PH value={company.name} />
+              </span>
+            </>
           ) : (
-            <span className="header__mark" aria-hidden="true" />
+            <>
+              <span className="header__mark" aria-hidden="true" />
+              <span className="header__name">
+                <PH value={company.shortName} />
+              </span>
+            </>
           )}
-          <span className="header__name">
-            <PH value={company.shortName} />
-          </span>
         </a>
 
         <nav className="header__nav" aria-label="Fő navigáció">
