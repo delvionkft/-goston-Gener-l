@@ -43,7 +43,7 @@ h3,
 h4 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   line-height: var(--lh-snug);
   letter-spacing: var(--tracking-tight);
   color: var(--c-brown-900);
@@ -105,7 +105,7 @@ button {
 }
 
 /* Sötét felületen világos fókuszgyűrű, hogy megmaradjon a kontraszt */
-.on-dark :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+.on-dark :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline-color: var(--c-sand);
 }
 
@@ -139,11 +139,15 @@ button {
 }
 
 .section--light {
-  background: var(--c-card);
+  background: var(--c-white);
+}
+
+.section--beige {
+  background: var(--bg-beige);
 }
 
 .section--dark {
-  background: var(--c-brown-900);
+  background: var(--bg-deep);
   color: var(--text-on-dark);
 }
 
@@ -159,12 +163,12 @@ button {
   align-items: center;
   gap: var(--sp-2);
   margin: 0 0 var(--sp-4);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--c-brown-700);
+  color: var(--c-accent-text);
 }
 
 .eyebrow::before {
@@ -192,6 +196,30 @@ button {
   color: var(--text-on-dark-muted);
 }
 
+/** Középre igazított szekciófejléc — a kártyás szekciók fölé. */
+.section-head {
+  max-width: 68ch;
+  margin-inline: auto;
+  margin-bottom: clamp(2.5rem, 1.8rem + 2.5vw, 4rem);
+  text-align: center;
+}
+
+.section-head .eyebrow {
+  justify-content: center;
+}
+
+.section-head .section-lead {
+  margin-inline: auto;
+}
+
+/** Közös kártyafelület: lekerekített, finom keret, alig látható árnyék. */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
 /* --- Akadálymentességi segédek -------------------------------------------- */
 
 .visually-hidden {
@@ -212,7 +240,7 @@ button {
   left: var(--sp-3);
   z-index: 999;
   padding: var(--sp-3) var(--sp-5);
-  background: var(--c-brown-900);
+  background: var(--c-espresso);
   color: var(--text-on-dark);
   border-radius: var(--r-md);
   font-weight: 600;
@@ -264,7 +292,7 @@ html[data-dev='true'] .ph {
 
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(20px);
   transition:
     opacity var(--dur-slow) var(--ease-out),
     transform var(--dur-slow) var(--ease-out);

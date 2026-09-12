@@ -1,4 +1,4 @@
-import { company, contact, legal } from '../config/site';
+import { company, contact, legal, social } from '../config/site';
 import { EmailLink, PhoneLink } from '../components/ContactLinks';
 import { PH } from '../components/PlaceholderText';
 import './Footer.css';
@@ -23,12 +23,30 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
       <div className="container footer__inner">
         <div className="footer__top">
           <div className="footer__brand">
+            {company.logo ? (
+              <img className="footer__logo" src={company.logo} alt="" width="160" height="40" />
+            ) : null}
             <p className="footer__name">
               <PH value={company.name} />
             </p>
             <p className="footer__service">
               <PH value={company.mainService} />
             </p>
+
+            {/* Csak a ténylegesen kitöltött közösségi oldalak jelennek meg. */}
+            {social.some((item) => item.href) ? (
+              <ul className="footer__social">
+                {social
+                  .filter((item) => item.href)
+                  .map((item) => (
+                    <li key={item.label}>
+                      <a href={item.href} target="_blank" rel="noopener noreferrer">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            ) : null}
           </div>
 
           <div className="footer__col">
@@ -44,7 +62,7 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
           </div>
 
           <div className="footer__col">
-            <h2 className="footer__heading">Hol dolgozunk</h2>
+            <h2 className="footer__heading">Működési terület</h2>
             <p className="footer__text">
               <PH value={company.serviceArea} />
             </p>

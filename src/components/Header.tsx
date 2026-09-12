@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ANCHOR, company, navLinks } from '../config/site';
+import { ANCHOR, company, cta, navLinks } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useFocusTrap } from '../hooks/useFocusTrap';
@@ -50,7 +50,7 @@ export function Header() {
   /* Ha desktop nézetre váltunk, a mobilmenü ne maradjon nyitva. */
   useEffect(() => {
     if (typeof matchMedia === 'undefined') return;
-    const mql = matchMedia('(min-width: 900px)');
+    const mql = matchMedia('(min-width: 980px)');
     const onChange = () => mql.matches && setMenuOpen(false);
     mql.addEventListener('change', onChange);
     return () => mql.removeEventListener('change', onChange);
@@ -65,7 +65,7 @@ export function Header() {
   const openQuote = (placement: string) => {
     setMenuOpen(false);
     track('cta_quote_click', { placement });
-    scrollToId(ANCHOR.quickForm);
+    scrollToId(ANCHOR.form);
   };
 
   return (
@@ -79,7 +79,11 @@ export function Header() {
             go(ANCHOR.hero, 'logó');
           }}
         >
-          <span className="header__mark" aria-hidden="true" />
+          {company.logo ? (
+            <img className="header__logo" src={company.logo} alt="" width="140" height="32" />
+          ) : (
+            <span className="header__mark" aria-hidden="true" />
+          )}
           <span className="header__name">
             <PH value={company.shortName} />
           </span>
@@ -108,7 +112,7 @@ export function Header() {
         <div className="header__actions">
           <PhoneLink placement="header" className="header__phone" />
           <Button size="md" onClick={() => openQuote('header')}>
-            Ajánlatot kérek
+            {cta.short}
           </Button>
         </div>
 
@@ -160,7 +164,7 @@ export function Header() {
         </nav>
         <div className="header__panel-foot">
           <Button size="lg" fullWidth onClick={() => openQuote('mobil-menu')}>
-            Ajánlatot kérek
+            {cta.primary}
           </Button>
           <PhoneLink placement="mobil-menu" />
         </div>

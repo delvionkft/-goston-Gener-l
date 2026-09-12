@@ -21,13 +21,15 @@
  */
 
 export type AnalyticsEvent =
+  /** Bármelyik ajánlatkérő gombra kattintás. A `placement` mondja meg, hol. */
   | 'cta_quote_click'
   | 'phone_click'
   | 'email_click'
-  | 'form_submit_top'
-  | 'form_submit_bottom'
+  /** Sikeres űrlapbeküldés — ez a fő konverzió. */
+  | 'form_submit'
   | 'form_error'
   | 'reference_open'
+  | 'faq_open'
   | 'nav_click'
   | 'process_step_view';
 
@@ -50,8 +52,7 @@ declare global {
 
 /** Meta Pixel standard eseménynevek a saját eseményekhez rendelve. */
 const META_PIXEL_MAP: Partial<Record<AnalyticsEvent, string>> = {
-  form_submit_top: 'Lead',
-  form_submit_bottom: 'Lead',
+  form_submit: 'Lead',
   phone_click: 'Contact',
   email_click: 'Contact',
 };

@@ -1,0 +1,143 @@
+.quote {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Halvány, meleg fényfolt a sötét háttéren — mélységet ad, nem hivalkodó. */
+.quote__glow {
+  position: absolute;
+  top: -25%;
+  right: -10%;
+  width: min(70vw, 780px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(126, 84, 48, 0.42) 0%,
+    rgba(126, 84, 48, 0) 62%
+  );
+  pointer-events: none;
+}
+
+.quote__grid {
+  position: relative;
+  display: grid;
+  gap: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+  align-items: start;
+}
+
+@media (min-width: 940px) {
+  .quote__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+    gap: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+}
+
+.quote__title {
+  max-width: 20ch;
+}
+
+/* --- Mi történik a beküldés után --- */
+
+.quote__after {
+  margin-top: clamp(2rem, 1.6rem + 1.5vw, 3rem);
+}
+
+.quote__after-title {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-sand);
+}
+
+.quote__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+  list-style: none;
+  counter-reset: quote-step;
+}
+
+.quote__steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--text-on-dark-muted);
+}
+
+.quote__step-num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(226, 210, 190, 0.34);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--c-sand);
+}
+
+.quote__step-num svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* --- Elérhetőségek --- */
+
+.quote__contacts {
+  display: grid;
+  gap: var(--sp-4);
+  margin: clamp(2rem, 1.6rem + 1.5vw, 3rem) 0 0;
+  padding-top: var(--sp-6);
+  border-top: 1px solid rgba(226, 210, 190, 0.22);
+}
+
+@media (min-width: 560px) {
+  .quote__contacts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.quote__contacts dt {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-dark-muted);
+}
+
+.quote__contacts dd {
+  margin: 0.35rem 0 0;
+  font-weight: 500;
+}
+
+.quote__area {
+  font-family: var(--font-display);
+  color: var(--text-on-dark);
+}
+
+/* --- Űrlappanel --- */
+
+.quote__panel {
+  padding: clamp(1.5rem, 1.1rem + 1.8vw, 2.75rem);
+  background: var(--c-offwhite);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* A világos panel a sötét szekció öröklött szabályait kapná meg
+   (világos címsor, világos fókuszgyűrű) — a panel világos hátterén ez
+   olvashatatlan lenne, ezért itt visszaállítjuk a sötét változatra. */
+.quote .quote__panel :is(h2, h3, h4) {
+  color: var(--c-brown-900);
+}
+
+.quote .quote__panel :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: var(--c-brown-700);
+}

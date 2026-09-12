@@ -1,6 +1,5 @@
 .process {
-  background: var(--c-card);
-  border-block: 1px solid var(--c-line);
+  background: var(--c-beige);
 }
 
 .process__head {
@@ -70,7 +69,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--c-card);
+  background: var(--c-white);
   box-shadow: 0 0 0 2px var(--c-line);
   transition: box-shadow var(--dur) var(--ease-out);
 }

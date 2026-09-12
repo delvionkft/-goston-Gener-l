@@ -8,27 +8,73 @@
          Ajánlott: favicon.svg (skálázható) + apple-touch-icon.png 180×180. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#F4EFE8" />
+    <meta name="theme-color" content="#FBF8F4" />
 
     <!-- CANONICAL URL — írd át az éles domainre.
          Ugyanezt az értéket állítsd be a src/config/site.ts `site.url` mezőjében is. -->
     <link rel="canonical" href="https://example.hu/" />
 
-    <!-- A címet, a meta descriptiont, az Open Graph adatokat és a
+    <!-- A végleges címet, meta descriptiont, Open Graph adatokat és a
          strukturált adatot a src/lib/seo.ts állítja be a konfigurációból,
          hogy egyetlen helyen kelljen szerkeszteni. Az itteni értékek a
          betöltés előtti állapotra és a JS nélküli feldolgozókra szolgálnak. -->
-    <title>Ajánlatkérés</title>
-    <meta name="description" content="Kérj ajánlatot néhány kattintással." />
+    <title>Nyílászárócsere és beépítés — ingyenes helyszíni felmérés</title>
+    <meta
+      name="description"
+      content="Műanyag nyílászárók, bejárati ajtók, redőnyök és szúnyoghálók — pontos helyszíni felméréssel, átlátható ajánlattal és szakszerű beépítéssel. Kérj ingyenes felmérést."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="hu_HU" />
 
-    <!-- Betűtípusok. A preconnect a kapcsolatfelépítést előre elvégzi,
-         a display=swap pedig megakadályozza a láthatatlan szöveget. -->
+    <!-- Betűtípusok. A preconnect előre felépíti a kapcsolatot, a
+         display=swap megakadályozza a láthatatlan szöveget betöltés közben.
+         Csak a ténylegesen használt vastagságok töltődnek le. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap&subset=latin,latin-ext"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap&subset=latin,latin-ext"
     />
+
+    <!-- =====================================================================
+         MÉRŐKÓDOK HELYE (Google Analytics 4 / Google Tag Manager / Meta Pixel)
+         =====================================================================
+         Az oldal kódjában semmit nem kell módosítani: minden konverziós
+         esemény a src/lib/analytics.ts `track()` függvényén megy át, és
+         a window.dataLayer / gtag / fbq felé továbbítódik, amint a
+         látogató hozzájárult a sütikhez.
+
+         FONTOS a sorrend: a Consent Mode alapértelmezését a mérőkód ELŐTT
+         kell beállítani, különben a hozzájárulás előtt is történhet mérés.
+         Az oldal a hozzájárulás megadásakor automatikusan küld egy
+         `consent update` jelzést.
+
+         1) Consent Mode v2 alapértelmezés — másold be, ahogy van:
+
+         <script>
+           window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);}
+           gtag('consent', 'default', {
+             ad_storage: 'denied',
+             ad_user_data: 'denied',
+             ad_personalization: 'denied',
+             analytics_storage: 'denied',
+             wait_for_update: 500
+           });
+         </script>
+
+         2) GA4 (vagy helyette GTM konténer):
+
+         <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+         <script>
+           gtag('js', new Date());
+           gtag('config', 'G-XXXXXXX');
+         </script>
+
+         3) Meta Pixel: illeszd be a Meta által adott kódot, majd a
+            src/lib/analytics.ts META_PIXEL_MAP táblájában rendeld hozzá a
+            saját eseményeidhez a Meta standard eseményeit.
+         ================================================================== -->
   </head>
   <body>
     <div id="root"></div>

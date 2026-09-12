@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from 'react';
-import { ANCHOR, problem } from '../config/site';
+import { ANCHOR, cta, problem } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
@@ -105,16 +105,17 @@ export function Problem() {
           ))}
         </div>
 
-        <div className="problem__cta">
+        <div className="problem__bridge">
+          <p className="problem__bridge-text">{problem.bridge}</p>
           <Button
             size="lg"
             icon={<ArrowDownIcon />}
             onClick={() => {
               track('cta_quote_click', { placement: 'problema', context: current.key });
-              scrollToId(ANCHOR.quickForm);
+              scrollToId(ANCHOR.form);
             }}
           >
-            {problem.cta}
+            {cta.primary}
           </Button>
         </div>
       </div>

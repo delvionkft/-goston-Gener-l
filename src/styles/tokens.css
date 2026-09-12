@@ -1,71 +1,74 @@
 /* ===========================================================================
    Design tokenek
-   Egyetlen forrás a színekhez, tipográfiához, térközökhöz.
+   Egyetlen forrás a színekhez, tipográfiához, térközökhöz, mozgáshoz.
+   A márkamegjelenés megváltoztatásához elég ez az egy fájl.
    =========================================================================== */
 
 :root {
-  /* --- Színpaletta (megadott márkaszínek) --- */
-  --c-brown-900: #3B2618; /* elsődleges sötétbarna */
-  --c-brown-700: #6B4423; /* fő barna */
-  --c-brown-400: #A67C52; /* világosabb barna akcentus */
-  --c-sand: #D8C2A8;      /* homokszín */
-  --c-beige: #F4EFE8;     /* világos bézs háttér */
-  --c-card: #FFFDF9;      /* kártyák, világos felületek */
-  --c-ink: #241A14;       /* sötét szöveg */
-  --c-muted: #74665C;     /* halvány szöveg */
+  /* --- Színpaletta ---------------------------------------------------------
+     Fehér → törtfehér → bézs alapokon meleg, barnás skála.
+     Az akcentus egy mély, telített barna: elegáns, és sötét tónusa miatt
+     fehér szöveggel is bőven a WCAG AA fölött marad. */
+  --c-espresso: #2E1D14; /* legmélyebb barna — sötét szekciók háttere */
+  --c-brown-900: #3A2419; /* címsorok színe */
+  --c-brown-800: #4A2F20;
+  --c-brown-700: #5A3A25; /* FŐ AKCENTUS — gombok, kiemelések (10.2:1 fehérrel) */
+  --c-brown-600: #6E4728;
+  --c-brown-500: #7E5430; /* sötét háttéren és dekorációnál */
+  --c-brown-400: #A98263; /* világos, dekoratív barna — csak vonal, ikon, keret */
 
-  /*
-   * Szövegre használható akcentszín.
-   * A megadott #A67C52 világos háttéren csak 3.3:1 kontrasztot ad, ezért
-   * kizárólag dekorációra (ikon, elválasztó, keret) használjuk, ahol a
-   * WCAG 3:1-et vár. Szöveghez ez a sötétebb változat megy: 5.7:1 bézsen.
-   */
+  --c-sand: #E2D2BE;      /* homok — sötét háttéren kiemelés */
+  --c-sand-light: #EFE4D6;
+  --c-beige: #F3ECE2;     /* bézs szekcióháttér */
+  --c-offwhite: #FBF8F4;  /* törtfehér — az oldal alaphátere */
+  --c-white: #FFFFFF;
+
+  --c-ink: #241A14;       /* fő szövegszín */
+  --c-muted: #6E6058;     /* másodlagos szöveg */
+  --c-line: #E4DACD;      /* keretek */
+  --c-line-soft: #EFE8DE;
+
+  /* Szövegre használható akcentszín világos háttéren (5.7:1). A dekoratív
+     --c-brown-400 szöveghez kevés, azt csak vonalra és ikonra használjuk. */
   --c-accent-text: #7E5430;
 
-  /* Származtatott árnyalatok — a paletta kiterjesztése, nem új márkaszín */
-  --c-brown-950: #2A1A10;
-  --c-brown-800: #4E3220;
-  --c-brown-600: #7E5430;
-  --c-brown-500: #916240;
-  --c-sand-light: #E7D8C4;
-  --c-beige-deep: #EBE3D8;
-  --c-line: #DFD4C6;
-  --c-line-soft: #EDE5DA;
-
   /* --- Szerepkör szerinti színek --- */
-  --bg: var(--c-beige);
-  --bg-alt: var(--c-card);
-  --bg-deep: var(--c-brown-900);
-  --surface: var(--c-card);
+  --bg: var(--c-offwhite);
+  --bg-beige: var(--c-beige);
+  --bg-deep: var(--c-espresso);
+  --surface: var(--c-white);
   --text: var(--c-ink);
   --text-muted: var(--c-muted);
-  --text-on-dark: #F6F1EA;
-  --text-on-dark-muted: #C9B9A7;
+  --text-on-dark: #F7F2EB;
+  --text-on-dark-muted: #CDBCA8;
   --border: var(--c-line);
   --accent: var(--c-brown-700);
 
-  /* --- Tipográfia --- */
-  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino,
-    'Times New Roman', serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  /* --- Tipográfia ----------------------------------------------------------
+     Montserrat: geometrikus, modern, prémium hatású — címsorra, gombra,
+     kiemelt számokra. Hosszú folyószöveghez az Inter olvashatóbb (keskenyebb
+     betűköz, nagyobb x-magasság), ezért a kettő van párban. Ha egységesen
+     Montserratot szeretnél, írd át a --font-body értékét ugyanarra. */
+  --font-display: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
   /* Fluid típusskála — clamp(min, preferált, max) */
   --fs-xs: 0.8125rem;
   --fs-sm: 0.9375rem;
   --fs-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
-  --fs-lg: clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
-  --fs-xl: clamp(1.375rem, 1.28rem + 0.48vw, 1.75rem);
-  --fs-2xl: clamp(1.75rem, 1.55rem + 1vw, 2.5rem);
-  --fs-3xl: clamp(2.125rem, 1.75rem + 1.9vw, 3.5rem);
-  --fs-4xl: clamp(2.5rem, 1.9rem + 3vw, 4.5rem);
+  --fs-lg: clamp(1.0625rem, 1.02rem + 0.25vw, 1.25rem);
+  --fs-xl: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
+  --fs-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 2.125rem);
+  --fs-3xl: clamp(1.875rem, 1.55rem + 1.6vw, 3rem);
+  --fs-4xl: clamp(2.125rem, 1.65rem + 2vw, 3.375rem);
 
-  --lh-tight: 1.08;
-  --lh-snug: 1.22;
-  --lh-body: 1.65;
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-body: 1.68;
 
-  --tracking-tight: -0.022em;
-  --tracking-wide: 0.14em;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.16em;
 
   /* --- Térköz (4px alapú skála) --- */
   --sp-1: 0.25rem;
@@ -81,25 +84,26 @@
   --sp-11: 6.5rem;
   --sp-12: 8rem;
 
-  /** Szekciók függőleges belső térköze — reszponzív. */
-  --section-y: clamp(4rem, 3rem + 5vw, 8rem);
+  /** Szekciók függőleges belső térköze — bőven mért fehér tér. */
+  --section-y: clamp(4.5rem, 3.2rem + 5.5vw, 9rem);
 
   /* --- Elrendezés --- */
   --container: 1240px;
-  --container-narrow: 860px;
+  --container-narrow: 820px;
   --gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
 
-  /* --- Sugár — visszafogott, nem „buborékos” --- */
-  --r-sm: 3px;
-  --r-md: 5px;
-  --r-lg: 8px;
+  /* --- Sugár — lekerekített, de nem buborékos --- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 24px;
   --r-pill: 999px;
 
-  /* --- Árnyék — finom, barnás alapú, nem szürke --- */
-  --shadow-xs: 0 1px 2px rgba(59, 38, 24, 0.06);
-  --shadow-sm: 0 2px 6px rgba(59, 38, 24, 0.06), 0 1px 2px rgba(59, 38, 24, 0.04);
-  --shadow-md: 0 10px 26px -12px rgba(59, 38, 24, 0.22);
-  --shadow-lg: 0 28px 60px -28px rgba(59, 38, 24, 0.34);
+  /* --- Árnyék — finom, barnás alapú, soha nem szürke --- */
+  --shadow-xs: 0 1px 2px rgba(46, 29, 20, 0.05);
+  --shadow-sm: 0 2px 8px rgba(46, 29, 20, 0.05), 0 1px 2px rgba(46, 29, 20, 0.04);
+  --shadow-md: 0 14px 34px -16px rgba(46, 29, 20, 0.2);
+  --shadow-lg: 0 34px 70px -32px rgba(46, 29, 20, 0.32);
 
   /* --- Mozgás --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -116,21 +120,21 @@
   --z-modal: 300;
   --z-toast: 400;
 
-  /* Fejléc magassága — a scroll-margin-top számol vele */
+  /* Fejléc magassága — a horgonyok scroll-margin-topja ezzel számol */
   --header-h: 68px;
-  /* Mobil alsó CTA sáv magassága */
+  /* Mobil alsó CTA-sáv magassága */
   --mobilebar-h: 0px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   :root {
-    --header-h: 76px;
+    --header-h: 78px;
   }
 }
 
 /* A mobil CTA-sáv csak kis kijelzőn foglal helyet */
-@media (max-width: 899px) {
+@media (max-width: 979px) {
   :root {
-    --mobilebar-h: 68px;
+    --mobilebar-h: 66px;
   }
 }

@@ -1,13 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { ANCHOR, company, hero } from '../config/site';
+import { ANCHOR, company, cta, hero } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
-import { telHref } from '../lib/contact';
-import { ArrowDownIcon, PhoneIcon } from '../components/Icons';
+import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
 
 export function Hero() {
@@ -15,9 +14,9 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
 
   /**
-   * Két finom interakció, egyetlen görgetés-/egérfigyelővel:
+   * Két visszafogott interakció, egyetlen görgetés- és egérfigyelővel:
    *  - a képréteg lassabban mozog görgetéskor (parallax),
-   *  - a kép fölött egy halvány fényfolt követi a kurzort.
+   *  - a kép fölött halvány fényfolt követi a kurzort.
    * Mindkettő CSS-változón keresztül hat, így csak `transform`-ot és
    * `opacity`-t animál — nem okoz újratördelést.
    */
@@ -35,7 +34,7 @@ export function Hero() {
 
     const apply = () => {
       frame = 0;
-      const shift = Math.max(-40, Math.min(40, (scrollY - scene.offsetTop) * 0.045));
+      const shift = Math.max(-36, Math.min(36, (scrollY - scene.offsetTop) * 0.04));
       scene.style.setProperty('--parallax', `${shift.toFixed(2)}px`);
       if (pointer) {
         scene.style.setProperty('--px', `${pointer.x}%`);
@@ -77,11 +76,14 @@ export function Hero() {
     };
   }, [reducedMotion]);
 
-  const phone = telHref();
-
   const onQuote = () => {
     track('cta_quote_click', { placement: 'hero' });
-    scrollToId(ANCHOR.quickForm);
+    scrollToId(ANCHOR.form);
+  };
+
+  const onServices = () => {
+    track('nav_click', { target: ANCHOR.services, label: 'hero-masodlagos' });
+    scrollToId(ANCHOR.services);
   };
 
   return (
@@ -95,51 +97,35 @@ export function Hero() {
           </p>
 
           <h1 id="hero-cim" className="hero__title">
-            {hero.titleBefore}
-            <span className="hero__title-em">
-              <PH value={hero.titleHighlight} />
-            </span>
-            {hero.titleAfter}
+            {hero.title}
           </h1>
 
-          <p className="hero__lead">
-            <PH value={hero.lead} />
-          </p>
+          <p className="hero__lead">{hero.lead}</p>
 
           <div className="hero__actions">
             <Button size="lg" onClick={onQuote} icon={<ArrowDownIcon />}>
-              {hero.primaryCta}
+              {cta.primary}
             </Button>
-
-            {phone ? (
-              <Button
-                as="a"
-                href={phone}
-                size="lg"
-                variant="secondary"
-                icon={<PhoneIcon />}
-                onClick={() => track('phone_click', { placement: 'hero' })}
-              >
-                {hero.secondaryCta}
-              </Button>
-            ) : (
-              <span className="hero__phone-missing">
-                <PhoneIcon />
-                <span className="ph" title="Kitöltetlen helyőrző — src/config/site.ts">
-                  [TELEFONSZÁM]
-                </span>
-              </span>
-            )}
+            <Button
+              size="lg"
+              variant="secondary"
+              onClick={onServices}
+              icon={<ArrowRightIcon />}
+            >
+              {cta.secondary}
+            </Button>
           </div>
 
-          <ul className="hero__points">
-            {hero.points.map((point) => (
-              <li key={point.title} className="hero__point">
-                <span className="hero__point-title">
-                  <PH value={point.title} />
+          {/* Három rövid bizalmi elem közvetlenül a gombok alatt. */}
+          <ul className="hero__trust">
+            {hero.trust.map((point) => (
+              <li key={point.title} className="hero__trust-item">
+                <span className="hero__trust-icon" aria-hidden="true">
+                  <CheckIcon />
                 </span>
-                <span className="hero__point-text">
-                  <PH value={point.text} />
+                <span className="hero__trust-copy">
+                  <strong>{point.title}</strong>
+                  <span>{point.text}</span>
                 </span>
               </li>
             ))}
@@ -158,27 +144,16 @@ export function Hero() {
               sizes="(min-width: 1100px) 46vw, (min-width: 700px) 60vw, 100vw"
             />
           </div>
-          {/* Lebegő réteg: a képre részben rácsúszó adatkártya */}
+
+          {/* Lebegő kártya a képre csúszva — szolgáltatási terület. */}
           <div className="hero__badge">
-            <span className="hero__badge-label">Szolgáltatási terület</span>
+            <span className="hero__badge-label">Működési terület</span>
             <span className="hero__badge-value">
               <PH value={company.serviceArea} />
             </span>
           </div>
         </div>
       </div>
-
-      <a
-        className="hero__scrollhint"
-        href={`#${ANCHOR.quickForm}`}
-        onClick={(e) => {
-          e.preventDefault();
-          scrollToId(ANCHOR.quickForm);
-        }}
-      >
-        <span>Ajánlatkérés</span>
-        <ArrowDownIcon />
-      </a>
     </section>
   );
 }

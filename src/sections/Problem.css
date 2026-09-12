@@ -1,5 +1,5 @@
 .problem {
-  background: var(--c-beige);
+  background: var(--c-white);
 }
 
 .problem__head {
@@ -108,7 +108,7 @@
 
 .problem__panel {
   padding: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
-  background: var(--c-card);
+  background: var(--c-white);
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-sm);
@@ -152,6 +152,34 @@
   }
 }
 
-.problem__cta {
+/* Átvezetés a megoldásra: kiemelt záró gondolat + ajánlatkérés. */
+.problem__bridge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-5);
   margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  background: var(--c-beige);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+}
+
+.problem__bridge-text {
+  max-width: 68ch;
+  font-size: var(--fs-lg);
+  color: var(--text);
+}
+
+@media (min-width: 880px) {
+  .problem__bridge {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-7);
+  }
+
+  .problem__bridge .btn {
+    flex: none;
+  }
 }

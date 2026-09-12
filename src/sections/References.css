@@ -1,141 +1,49 @@
 .refs {
-  background: var(--c-beige);
-  overflow: hidden;
+  background: var(--c-white);
 }
 
-.refs__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--sp-5);
-}
-
-.refs__head-copy {
-  max-width: 52ch;
-}
-
-.refs__nav {
-  display: none;
-  gap: var(--sp-3);
-}
-
-@media (min-width: 720px) {
-  .refs__nav {
-    display: flex;
-  }
-}
-
-.refs__arrow {
+.refs__grid {
   display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--c-brown-400);
-  border-radius: var(--r-md);
-  background: var(--c-card);
-  color: var(--c-brown-900);
-  transition:
-    background-color var(--dur) var(--ease-out),
-    border-color var(--dur) var(--ease-out),
-    opacity var(--dur) var(--ease-out);
-}
-
-.refs__arrow svg {
-  width: 20px;
-  height: 20px;
-}
-
-.refs__arrow:hover:not(:disabled) {
-  background: var(--c-brown-900);
-  border-color: var(--c-brown-900);
-  color: #FDFBF7;
-}
-
-.refs__arrow:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-/* --- Görgethető sáv --- */
-
-.refs__track {
-  display: flex;
-  gap: 20px;
-  margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
-  padding-inline: var(--gutter);
-  padding-bottom: var(--sp-3);
+  gap: clamp(1rem, 0.8rem + 1vw, 1.75rem);
   list-style: none;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--c-brown-400) transparent;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
 }
 
-/* A sáv a konténer szélességéhez igazodik, de a szélén túlnyúlik */
-@media (min-width: 1240px) {
-  .refs__track {
-    padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+/* Két oszlop: a referenciakép így nagyobb, és jobban látszik rajta a
+   munka minősége — ez a szekció lényege. */
+@media (min-width: 700px) {
+  .refs__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-.refs__track::-webkit-scrollbar {
-  height: 6px;
-}
-.refs__track::-webkit-scrollbar-thumb {
-  background: var(--c-brown-400);
-  border-radius: 3px;
-}
-.refs__track::-webkit-scrollbar-track {
-  background: var(--c-line-soft);
-  border-radius: 3px;
 }
 
 .refs__item {
-  flex: 0 0 auto;
-  width: min(80vw, 300px);
-  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-@media (min-width: 640px) {
-  .refs__item { width: 300px; }
-}
-@media (min-width: 1100px) {
-  .refs__item { width: 340px; }
+.refs__media {
+  position: relative;
+  background: var(--c-beige);
 }
 
-/* --- Kártya --- */
-
-.refs__card {
+.refs__zoom {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
   background: none;
-  text-align: left;
 }
 
-.refs__media {
-  position: relative;
-  display: block;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--dur) var(--ease-out);
-}
-
-.refs__media .imgslot {
+.refs__zoom .imgslot img {
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-.refs__card:hover .imgslot {
-  transform: scale(1.03);
-}
-
-.refs__card:hover .refs__media {
-  box-shadow: var(--shadow-md);
+@media (hover: hover) {
+  .refs__zoom:hover .imgslot img {
+    transform: scale(1.04);
+  }
 }
 
 .refs__expand {
@@ -144,75 +52,55 @@
   bottom: var(--sp-3);
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--r-md);
-  background: rgba(36, 26, 20, 0.72);
-  color: #FDFBF7;
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity var(--dur) var(--ease-out),
-    transform var(--dur) var(--ease-out);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--c-brown-900);
+  box-shadow: var(--shadow-sm);
 }
 
 .refs__expand svg {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
 }
 
-.refs__card:hover .refs__expand,
-.refs__card:focus-visible .refs__expand {
-  opacity: 1;
-  transform: none;
-}
-
-/* Érintőképernyőn nincs hover, ezért ott mindig látszik a jelzés */
-@media (pointer: coarse) {
-  .refs__expand {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.refs__meta {
-  display: block;
-  margin-top: var(--sp-4);
-}
-
-.refs__title {
-  display: block;
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  letter-spacing: -0.012em;
-  color: var(--c-brown-900);
+.refs__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
 }
 
 .refs__loc {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin-top: 0.2rem;
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-accent-text);
 }
 
 .refs__loc svg {
   width: 15px;
   height: 15px;
   flex: none;
-  color: var(--c-brown-400);
 }
 
-.refs__hint {
-  margin-top: var(--sp-5);
-  font-size: var(--fs-xs);
+.refs__type {
+  font-size: var(--fs-lg);
+}
+
+.refs__result {
+  font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
-@media (min-width: 720px) {
-  .refs__hint {
-    display: none;
-  }
+.refs__hint {
+  margin-top: var(--sp-6);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-align: center;
 }

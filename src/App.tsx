@@ -3,12 +3,14 @@ import { ANCHOR, legal } from './config/site';
 import { applyDocumentHead } from './lib/seo';
 import { Header } from './components/Header';
 import { Hero } from './sections/Hero';
-import { QuickQuote } from './sections/QuickQuote';
 import { Problem } from './sections/Problem';
-import { Solution } from './sections/Solution';
-import { References } from './sections/References';
+import { Services } from './sections/Services';
+import { WhyUs } from './sections/WhyUs';
 import { Process } from './sections/Process';
-import { FinalCta } from './sections/FinalCta';
+import { References } from './sections/References';
+import { Testimonials } from './sections/Testimonials';
+import { Faq } from './sections/Faq';
+import { QuoteSection } from './sections/QuoteSection';
 import { Footer } from './sections/Footer';
 import { StickyContact } from './components/StickyContact';
 import { CookieConsent } from './components/CookieConsent';
@@ -16,6 +18,11 @@ import { Modal } from './components/Modal';
 
 type LegalDoc = 'privacy' | 'imprint' | null;
 
+/**
+ * Az oldal felépítése szándékosan egy útvonalat jár be:
+ * probléma → megoldás → miért mi → hogyan dolgozunk → bizonyíték →
+ * kérdések → ajánlatkérés.
+ */
 export function App() {
   const [legalDoc, setLegalDoc] = useState<LegalDoc>(null);
   const [cookieSettings, setCookieSettings] = useState(false);
@@ -26,6 +33,7 @@ export function App() {
   }, []);
 
   const doc = legalDoc ? legal[legalDoc] : null;
+  const openPrivacy = () => setLegalDoc('privacy');
 
   return (
     <>
@@ -37,16 +45,18 @@ export function App() {
 
       <main id="fotartalom">
         <Hero />
-        <QuickQuote onOpenPrivacy={() => setLegalDoc('privacy')} />
         <Problem />
-        <Solution />
-        <References />
+        <Services />
+        <WhyUs />
         <Process />
-        <FinalCta onOpenPrivacy={() => setLegalDoc('privacy')} />
+        <References />
+        <Testimonials />
+        <Faq />
+        <QuoteSection onOpenPrivacy={openPrivacy} />
       </main>
 
       <Footer
-        onOpenPrivacy={() => setLegalDoc('privacy')}
+        onOpenPrivacy={openPrivacy}
         onOpenImprint={() => setLegalDoc('imprint')}
         onOpenCookies={() => setCookieSettings(true)}
       />

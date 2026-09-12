@@ -125,7 +125,7 @@
 .lightbox__arrow:hover {
   background: var(--c-sand);
   border-color: var(--c-sand);
-  color: var(--c-brown-950);
+  color: var(--c-espresso);
 }
 
 .lightbox__close {

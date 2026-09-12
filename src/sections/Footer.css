@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   overflow: hidden;
-  background: var(--c-brown-950);
+  background: var(--c-espresso);
   color: var(--text-on-dark);
   padding-top: clamp(3rem, 2rem + 4vw, 5rem);
   /*
@@ -128,4 +128,30 @@
   border-top: 1px solid rgba(216, 194, 168, 0.16);
   font-size: var(--fs-xs);
   color: var(--text-on-dark-muted);
+}
+
+.footer__logo {
+  height: auto;
+  max-width: 160px;
+  margin-bottom: var(--sp-3);
+}
+
+.footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+  margin-top: var(--sp-5);
+  list-style: none;
+}
+
+.footer__social a {
+  font-size: var(--fs-sm);
+  color: var(--text-on-dark-muted);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.footer__social a:hover {
+  color: var(--text-on-dark);
+  text-decoration: underline;
 }

@@ -1,0 +1,92 @@
+.services {
+  background: var(--c-beige);
+}
+
+.services__grid {
+  display: grid;
+  gap: clamp(1rem, 0.8rem + 1vw, 1.75rem);
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .services__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .services__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.services__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  overflow: hidden;
+  transition:
+    transform var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .services__card:hover {
+    transform: translateY(-4px);
+    border-color: var(--c-line);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.services__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--sp-2);
+  border-radius: var(--r-md);
+  background: var(--c-beige);
+  color: var(--c-brown-700);
+}
+
+.services__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.services__media {
+  margin: calc(-1 * clamp(1.5rem, 1.2rem + 1vw, 2rem));
+  margin-bottom: var(--sp-4);
+}
+
+.services__media .imgslot {
+  border-radius: 0;
+}
+
+.services__title {
+  font-size: var(--fs-lg);
+}
+
+.services__text {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* --- Záró CTA --- */
+
+.services__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-5);
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  text-align: center;
+}
+
+.services__cta-text {
+  max-width: 48ch;
+  font-size: var(--fs-lg);
+  color: var(--text-muted);
+}

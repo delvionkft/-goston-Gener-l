@@ -47,7 +47,7 @@
   transform: translateY(-2px);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .sticky-float {
     display: block;
   }
@@ -62,7 +62,7 @@
   display: flex;
   gap: var(--sp-3);
   padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom, 0px));
-  background: color-mix(in srgb, var(--c-card) 94%, transparent);
+  background: color-mix(in srgb, var(--c-white) 94%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--c-line);
@@ -73,7 +73,7 @@
 
 @supports not (backdrop-filter: blur(1px)) {
   .sticky-bar {
-    background: var(--c-card);
+    background: var(--c-white);
   }
 }
 
@@ -99,7 +99,7 @@
 .sticky-bar__call {
   flex: 0 0 auto;
   border: 1px solid var(--c-brown-400);
-  background: var(--c-card);
+  background: var(--c-white);
   color: var(--c-brown-900);
 }
 
@@ -119,7 +119,7 @@
   background: var(--c-brown-700);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .sticky-bar {
     display: none;
   }

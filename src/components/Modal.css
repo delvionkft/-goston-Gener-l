@@ -20,7 +20,7 @@
   flex-direction: column;
   width: min(680px, 100%);
   max-height: calc(100dvh - clamp(1.5rem, 4vw, 4rem));
-  background: var(--c-card);
+  background: var(--c-white);
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-lg);
@@ -63,7 +63,7 @@
   flex: none;
   border: 1px solid var(--c-line);
   border-radius: var(--r-md);
-  background: var(--c-card);
+  background: var(--c-white);
   color: var(--c-brown-900);
   transition: background-color var(--dur) var(--ease-out);
 }
@@ -74,7 +74,7 @@
 }
 
 .modal__close:hover {
-  background: var(--c-beige-deep);
+  background: var(--c-beige);
 }
 
 .modal__body {

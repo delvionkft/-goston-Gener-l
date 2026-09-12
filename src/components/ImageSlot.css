@@ -3,7 +3,7 @@
   aspect-ratio: var(--ratio, 4 / 3);
   overflow: hidden;
   border-radius: var(--r-lg);
-  background: var(--c-beige-deep);
+  background: var(--c-beige);
 }
 
 .imgslot > img {

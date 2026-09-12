@@ -39,7 +39,7 @@
 }
 
 .btn--lg {
-  padding: 1.05rem 2rem;
+  padding: 1.05rem 1.7rem;
   font-size: var(--fs-base);
 }
 
@@ -69,7 +69,7 @@
 /* Sötét háttéren: homokszín alap, sötétbarna felirat (kontraszt ~9.5:1) */
 .btn--onDark {
   --btn-bg: var(--c-sand);
-  --btn-fg: var(--c-brown-950);
+  --btn-fg: var(--c-espresso);
   --btn-bg-hover: #E7D8C4;
 }
 
@@ -98,4 +98,17 @@
 .btn__icon svg {
   width: 1.05em;
   height: 1.05em;
+}
+
+/* Nagyon keskeny kijelzőn (320–360 px) a hosszabb gombfeliratok
+   `white-space: nowrap` mellett szélesebbek lennének, mint a rendelkezésre
+   álló hely, és kilógnának a konténerből. Itt engedjük a törést. */
+@media (max-width: 400px) {
+  .btn {
+    white-space: normal;
+  }
+
+  .btn--lg {
+    padding-inline: 1.25rem;
+  }
 }

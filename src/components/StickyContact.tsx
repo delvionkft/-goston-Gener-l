@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ANCHOR } from '../config/site';
+import { ANCHOR, cta } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { telHref } from '../lib/contact';
@@ -47,7 +47,7 @@ export function StickyContact() {
 
   const onQuote = (placement: string) => {
     track('cta_quote_click', { placement });
-    scrollToId(ANCHOR.quickForm);
+    scrollToId(ANCHOR.form);
   };
 
   return (
@@ -61,7 +61,7 @@ export function StickyContact() {
           tabIndex={visible ? 0 : -1}
           aria-hidden={!visible}
         >
-          <span>Ajánlatot kérek</span>
+          <span>{cta.short}</span>
           <ArrowRightIcon />
         </button>
       </div>
@@ -87,7 +87,7 @@ export function StickyContact() {
           tabIndex={visible ? 0 : -1}
           aria-hidden={!visible}
         >
-          Ajánlatot kérek
+          {cta.short}
         </button>
       </div>
     </>

@@ -5,7 +5,7 @@
   bottom: calc(var(--mobilebar-h) + 0px);
   z-index: var(--z-toast);
   padding: var(--sp-4) var(--gutter) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
-  background: var(--c-card);
+  background: var(--c-white);
   border-top: 1px solid var(--c-line);
   box-shadow: 0 -10px 40px -24px rgba(59, 38, 24, 0.55);
   animation: cookiebar-in 340ms var(--ease-out) both;
@@ -60,9 +60,21 @@
 }
 
 @media (max-width: 520px) {
+  /* Keskeny kijelzőn a gombsor önálló sorba kerül és zsugorodhat —
+     `flex: none` mellett kilógna a képernyőből. */
+  .cookiebar__actions {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
   .cookiebar__actions .btn,
   .cookiebar__modal-actions .btn {
     flex: 1 1 auto;
+    min-width: 0;
+    /* A gombfelirat itt kivételesen törhet — szűk helyen ez jobb,
+       mint ha a gomb kilógna a képernyőből. */
+    white-space: normal;
+    padding-inline: 1rem;
   }
 }
 

@@ -1,28 +1,61 @@
-import { company, contact, isPlaceholder, site } from '../config/site';
+import {
+  company,
+  contact,
+  containsPlaceholder,
+  faq,
+  isPlaceholder,
+  seo,
+  services,
+  site,
+} from '../config/site';
 
 /**
- * LocalBusiness / ProfessionalService strukturált adat.
+ * ============================================================================
+ *  SEO: cím, meta leírás, Open Graph, strukturált adat
+ * ============================================================================
  *
- * FONTOS: kizárólag a ténylegesen kitöltött mezőket adjuk ki. A Google
- * a hamis vagy helyőrző adatot tartalmazó strukturált adatot büntetheti,
- * ezért minden `[HELYŐRZŐ]` értéket kihagyunk a kimenetből. Ha a cégnév
- * sincs kitöltve, egyáltalán nem generálunk sémát.
+ *  ALAPELV: kizárólag ténylegesen kitöltött adat kerül ki. A Google a
+ *  helyőrzős vagy valótlan strukturált adatot büntetheti, ezért minden
+ *  `[HELYŐRZŐ]` értéket kihagyunk — ha pedig a lényegi adat hiányzik,
+ *  inkább nem adunk ki sémát egyáltalán.
+ * ============================================================================
  */
-export function buildStructuredData(): string | null {
+
+/** A böngészőfülre és a találati listába kerülő cím. */
+export function pageTitle(): string {
+  if (!isPlaceholder(seo.title)) return seo.title;
+
+  /* Tartalék, amíg a seo.title nincs kitöltve. Ugyanaz a szöveg, mint az
+     index.html statikus címe, hogy ne váltson betöltés közben. */
+  const base = 'Nyílászárócsere és beépítés';
+  return isPlaceholder(company.name)
+    ? `${base} — ingyenes helyszíni felmérés`
+    : `${base} – ${company.name}`;
+}
+
+/** A meta description és az Open Graph leírás. */
+export function pageDescription(): string {
+  if (!isPlaceholder(seo.description)) return seo.description;
+  return company.intro;
+}
+
+/**
+ * LocalBusiness séma a helyi keresésekhez, a kínált szolgáltatások
+ * listájával. Cégnév nélkül nincs értelme — ilyenkor null.
+ */
+export function buildBusinessSchema(): Record<string, unknown> | null {
   if (isPlaceholder(company.name)) return null;
 
   const data: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
+    '@type': 'HomeAndConstructionBusiness',
     name: company.name,
     url: site.url,
+    description: company.intro,
+    image: new URL(site.ogImage, site.url).href,
+    serviceType: company.mainService,
   };
 
-  if (!isPlaceholder(company.intro)) data.description = company.intro;
-  if (!isPlaceholder(company.mainService)) {
-    data.knowsAbout = company.mainService;
-    data.serviceType = company.mainService;
-  }
   if (!isPlaceholder(contact.phoneDisplay)) data.telephone = contact.phoneDisplay;
   if (!isPlaceholder(contact.email)) data.email = contact.email;
   if (!isPlaceholder(company.serviceArea)) {
@@ -31,27 +64,51 @@ export function buildStructuredData(): string | null {
   if (contact.address && !isPlaceholder(contact.address)) {
     data.address = { '@type': 'PostalAddress', streetAddress: contact.address };
   }
-  if (contact.hours && !isPlaceholder(contact.hours)) {
-    data.openingHours = contact.hours;
-  }
+  if (contact.hours && !isPlaceholder(contact.hours)) data.openingHours = contact.hours;
 
-  return JSON.stringify(data);
+  data.hasOfferCatalog = {
+    '@type': 'OfferCatalog',
+    name: 'Szolgáltatások',
+    itemListElement: services.items.map((item) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: item.title, description: item.body },
+    })),
+  };
+
+  return data;
+}
+
+/**
+ * GYIK séma. Csak akkor kerül ki, ha egyetlen válasz sem tartalmaz
+ * kitöltetlen helyőrzőt — kitöltetlen ár vagy garancia a találati
+ * listában jelenne meg, ami rosszabb, mint ha nincs kiemelt találat.
+ */
+export function buildFaqSchema(): Record<string, unknown> | null {
+  const usable = faq.items.filter(
+    (item) => !containsPlaceholder(item.q) && !containsPlaceholder(item.a),
+  );
+  if (usable.length < 2) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: usable.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  };
 }
 
 /**
  * A dokumentum fejlécének beállítása. Nincs hozzá külső könyvtár
- * (react-helmet és társai) — ez a pár sor mindent lefed, amire itt szükség van.
+ * (react-helmet és társai) — ez a pár sor mindent lefed, amire itt kell.
  */
 export function applyDocumentHead(): void {
-  const title = isPlaceholder(company.name)
-    ? 'Landing oldal — töltsd ki a cégadatokat'
-    : `${company.name}${isPlaceholder(company.mainService) ? '' : ` – ${company.mainService}`}`;
+  const title = pageTitle();
+  const description = pageDescription();
 
   document.title = title;
-
-  const description = isPlaceholder(company.intro)
-    ? 'Ajánlatkérés néhány kattintással.'
-    : company.intro;
 
   setMeta('name', 'description', description);
   setMeta('property', 'og:title', title);
@@ -60,20 +117,14 @@ export function applyDocumentHead(): void {
   setMeta('property', 'og:url', site.url);
   setMeta('property', 'og:locale', site.locale);
   setMeta('property', 'og:image', new URL(site.ogImage, site.url).href);
+  setMeta('property', 'og:image:alt', title);
+  if (!isPlaceholder(company.name)) setMeta('property', 'og:site_name', company.name);
   setMeta('name', 'twitter:card', 'summary_large_image');
+  setMeta('name', 'twitter:title', title);
+  setMeta('name', 'twitter:description', description);
 
-  // Strukturált adat — csak valós mezőkből
-  const json = buildStructuredData();
-  const existing = document.getElementById('ld-json');
-  if (json) {
-    const script = (existing as HTMLScriptElement | null) ?? document.createElement('script');
-    script.id = 'ld-json';
-    (script as HTMLScriptElement).type = 'application/ld+json';
-    script.textContent = json;
-    if (!existing) document.head.appendChild(script);
-  } else {
-    existing?.remove();
-  }
+  setJsonLd('ld-business', buildBusinessSchema());
+  setJsonLd('ld-faq', buildFaqSchema());
 }
 
 function setMeta(attr: 'name' | 'property', key: string, value: string): void {
@@ -84,4 +135,17 @@ function setMeta(attr: 'name' | 'property', key: string, value: string): void {
     document.head.appendChild(tag);
   }
   tag.setAttribute('content', value);
+}
+
+function setJsonLd(id: string, data: Record<string, unknown> | null): void {
+  const existing = document.getElementById(id);
+  if (!data) {
+    existing?.remove();
+    return;
+  }
+  const script = (existing as HTMLScriptElement | null) ?? document.createElement('script');
+  script.id = id;
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(data);
+  if (!existing) document.head.appendChild(script);
 }

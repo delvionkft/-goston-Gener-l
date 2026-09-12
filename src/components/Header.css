@@ -135,7 +135,7 @@
   margin-right: -8px;
   border: 1px solid var(--c-line);
   border-radius: var(--r-md);
-  background: var(--c-card);
+  background: var(--c-white);
   color: var(--c-brown-900);
 }
 
@@ -170,7 +170,7 @@
   max-height: calc(100dvh - var(--header-h));
   overflow-y: auto;
   padding: var(--sp-5) var(--gutter) var(--sp-7);
-  background: var(--c-card);
+  background: var(--c-white);
   border-bottom: 1px solid var(--c-line);
   box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
@@ -216,7 +216,9 @@
 
 /* --- Töréspont --- */
 
-@media (min-width: 900px) {
+/* A teljes menüsor + telefonszám + gomb csak ettől a szélességtől fér el
+   torlódás nélkül; alatta a hamburger menü a rendezettebb megoldás. */
+@media (min-width: 980px) {
   .header__nav,
   .header__actions {
     display: flex;
@@ -234,8 +236,16 @@
   }
 }
 
-@media (max-width: 1099px) {
+/* A fejlécben a telefonszám csak akkor fér el a menü mellett, ha van rá
+   hely. Kisebb kijelzőn a mobil CTA-sávban és a menüben ott van. */
+@media (max-width: 1199px) {
   .header__phone {
     display: none;
   }
+}
+
+.header__logo {
+  height: 32px;
+  width: auto;
+  max-width: 150px;
 }

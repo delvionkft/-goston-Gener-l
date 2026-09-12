@@ -1,5 +1,5 @@
 import { useId, useRef, useState } from 'react';
-import { form as formCopy } from '../config/site';
+import { cta, form as formCopy } from '../config/site';
 import { track } from '../lib/analytics';
 import { submitLead } from '../lib/submitLead';
 import { emptyForm, validate, type FormErrors, type FormValues } from '../lib/validation';
@@ -11,21 +11,28 @@ import './QuoteForm.css';
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 interface Props {
-  /** Melyik űrlapról van szó — a mérésben és a CRM-ben megkülönbözteti őket. */
-  source: 'top' | 'bottom';
+  /** Honnan jött a lead. A mérésben és a CRM-ben ez különbözteti meg a helyeket. */
+  source: string;
   /** Sötét háttéren világos űrlapstílus. */
   onDark?: boolean;
   /** Az adatkezelési tájékoztató megnyitása. */
   onOpenPrivacy: () => void;
 }
 
+/**
+ * Ajánlatkérő űrlap.
+ *
+ * Szándékosan rövid: csak a név, a telefonszám és a hozzájárulás kötelező.
+ * Minden további mező opcionális — egy kötelezővé tett mező mindig lead-et
+ * visz el, és a hiányzó adatot úgyis megkérdezzük a visszahíváskor.
+ */
 export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
   const uid = useId();
   const [values, setValues] = useState<FormValues>(emptyForm);
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<Status>('idle');
   const [serverError, setServerError] = useState('');
-  /** Csak az első beküldési kísérlet után mutatunk hibát mező alatt. */
+  /** Csak az első beküldési kísérlet után mutatunk hibát a mezők alatt. */
   const [submitted, setSubmitted] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -53,9 +60,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       track('form_error', { source, fields: Object.keys(found).join(',') });
       // A fókusz az első hibás mezőre kerül — billentyűzettel is használható.
       const firstKey = Object.keys(found)[0];
-      formRef.current
-        ?.querySelector<HTMLElement>(`#${CSS.escape(fid(firstKey))}`)
-        ?.focus();
+      formRef.current?.querySelector<HTMLElement>(`#${CSS.escape(fid(firstKey))}`)?.focus();
       return;
     }
 
@@ -63,11 +68,23 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
     const result = await submitLead({ ...values, source });
 
     if (result.ok) {
-      setStatus('success');
-      track(source === 'top' ? 'form_submit_top' : 'form_submit_bottom', {
+      track('form_submit', {
         source,
         service: values.service || 'nincs megadva',
+        city: values.city || 'nincs megadva',
       });
+
+      /*
+       * Ha be van állítva külön köszönőoldal, oda navigálunk — így a GA4-ben
+       * oldalletöltés-alapú konverzió is mérhető. Egyébként a köszönőüzenet
+       * az űrlap helyén jelenik meg, és nem vész el a kontextus.
+       */
+      if (formCopy.thankYouUrl) {
+        window.location.assign(formCopy.thankYouUrl);
+        return;
+      }
+
+      setStatus('success');
       setValues(emptyForm);
       setSubmitted(false);
     } else {
@@ -77,18 +94,26 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
     }
   };
 
-  /* --- Sikeres beküldés visszajelzése --- */
+  /* --- Köszönőüzenet sikeres beküldés után --- */
   if (status === 'success') {
     return (
       <div className={`qform qform--done ${onDark ? 'on-dark' : ''}`} role="status">
         <span className="qform__done-icon" aria-hidden="true">
           <CheckIcon />
         </span>
-        <h3 className="qform__done-title">Megkaptuk az üzeneted</h3>
-        <p className="qform__done-text">
-          Hamarosan jelentkezünk a megadott elérhetőségen. Ha sürgős, hívj minket
-          nyugodtan közvetlenül is.
-        </p>
+        <h3 className="qform__done-title">{formCopy.thankYou.title}</h3>
+        <p className="qform__done-text">{formCopy.thankYou.lead}</p>
+        <ul className="qform__done-list">
+          {formCopy.thankYou.points.map((point) => (
+            <li key={point}>
+              <CheckIcon />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="qform__done-contact">
+          <PhoneLink placement={`koszono-${source}`} />
+        </div>
         <Button
           variant={onDark ? 'onDark' : 'secondary'}
           onClick={() => {
@@ -96,7 +121,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
             setServerError('');
           }}
         >
-          Új üzenet küldése
+          Új ajánlatkérés küldése
         </Button>
       </div>
     );
@@ -112,7 +137,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       noValidate
       aria-busy={loading}
     >
-      {/* Rejtett csapdamező az automata kitöltők ellen. Nem látszik,
+      {/* Rejtett csapdamező az automata kitöltő robotok ellen. Nem látszik,
           és a képernyőolvasó is átugorja. */}
       <div className="qform__trap" aria-hidden="true">
         <label htmlFor={fid('company')}>Ne töltsd ki</label>
@@ -129,7 +154,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
         <Field
           id={fid('name')}
           errorId={eid('name')}
-          label="Neved"
+          label="Név"
           required
           error={submitted ? errors.name : undefined}
         >
@@ -151,7 +176,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
           errorId={eid('phone')}
           label="Telefonszám"
           required
-          hint="Ezen hívunk vissza."
+          hint="Ezen a számon hívunk vissza."
           highlight
           error={submitted ? errors.phone : undefined}
         >
@@ -199,29 +224,53 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
           />
         </Field>
 
-        <Field id={fid('service')} errorId={eid('service')} label="Mi érdekel?">
-          <select
-            id={fid('service')}
-            name="service"
-            value={values.service}
+        <Field
+          id={fid('city')}
+          errorId={eid('city')}
+          label="Település"
+          hint="A felmérés megszervezéséhez."
+          error={submitted ? errors.city : undefined}
+        >
+          <input
+            id={fid('city')}
+            name="city"
+            type="text"
+            autoComplete="address-level2"
+            value={values.city}
             disabled={loading}
-            onChange={(e) => setField('service', e.target.value)}
-          >
-            <option value="">Válassz…</option>
-            {formCopy.serviceOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            aria-invalid={submitted && !!errors.city}
+            aria-describedby={
+              [submitted && errors.city ? eid('city') : '', `${fid('city')}-hint`]
+                .filter(Boolean)
+                .join(' ') || undefined
+            }
+            onChange={(e) => setField('city', e.target.value)}
+          />
         </Field>
       </div>
+
+      <Field id={fid('service')} errorId={eid('service')} label="Milyen megoldás érdekel?">
+        <select
+          id={fid('service')}
+          name="service"
+          value={values.service}
+          disabled={loading}
+          onChange={(e) => setField('service', e.target.value)}
+        >
+          <option value="">Válassz…</option>
+          {formCopy.serviceOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </Field>
 
       <Field
         id={fid('message')}
         errorId={eid('message')}
         label="Rövid üzenet"
-        hint="Néhány mondat is elég."
+        hint="Néhány mondat is elég — a részleteket telefonon átbeszéljük."
         error={submitted ? errors.message : undefined}
       >
         <textarea
@@ -253,7 +302,8 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
           onChange={(e) => setField('consent', e.target.checked)}
         />
         <label htmlFor={fid('consent')}>
-          Elolvastam és elfogadom az{' '}
+          Hozzájárulok, hogy a megadott adataimat a kapcsolatfelvételhez kezeljék, és
+          elolvastam az{' '}
           <button type="button" className="qform__link" onClick={onOpenPrivacy}>
             adatkezelési tájékoztatót
           </button>
@@ -290,11 +340,12 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
         disabled={loading}
         icon={loading ? <Spinner /> : <ArrowRightIcon />}
       >
-        {loading ? 'Küldés folyamatban…' : 'Ajánlatot kérek'}
+        {loading ? 'Küldés folyamatban…' : cta.primary}
       </Button>
 
       <p className="qform__note">
-        A megadott adatokat kizárólag a kapcsolatfelvételhez használjuk.
+        A megadott adatokat kizárólag a kapcsolatfelvételhez használjuk, harmadik
+        félnek nem adjuk át.
       </p>
     </form>
   );

@@ -89,3 +89,61 @@ export const PinIcon = () => (
     <circle cx="12" cy="10" r="2.6" />
   </svg>
 );
+
+/* --- Szolgáltatásikonok ---------------------------------------------------
+   Visszafogott, geometrikus vonalas ikonok. Nem illusztrációk és nem
+   hangulatjelek: a kártya jelentését a címe hordozza, az ikon csak
+   vizuális horgony. */
+
+export const WindowIcon = () => (
+  <svg {...base}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="1.5" />
+    <path d="M12 3.5v17M3.5 12h17" />
+  </svg>
+);
+
+export const DoorIcon = () => (
+  <svg {...base}>
+    <path d="M5.5 20.5V4.8c0-.7.5-1.2 1.2-1.3l9-1a1.2 1.2 0 0 1 1.3 1.2v16.8M3.5 20.5h17" />
+    <circle cx="14.2" cy="12.4" r=".9" />
+  </svg>
+);
+
+export const ShutterIcon = () => (
+  <svg {...base}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="1.5" />
+    <path d="M3.5 8h17M3.5 12h17M3.5 16h17" />
+  </svg>
+);
+
+export const MeshIcon = () => (
+  <svg {...base}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="1.5" />
+    <path d="M8.5 3.5v17M13.5 3.5v17M3.5 8.5h17M3.5 13.5h17" strokeWidth="1.1" />
+  </svg>
+);
+
+export const SillIcon = () => (
+  <svg {...base}>
+    <path d="M6 3.5h12v10H6zM3 16.5h18M3 16.5l1.6 3.5M21 16.5l-1.6 3.5" />
+  </svg>
+);
+
+export const InstallIcon = () => (
+  <svg {...base}>
+    <path d="M14.4 3.6a4.2 4.2 0 0 0-5.6 5l-5 5a1.6 1.6 0 0 0 0 2.3l.3.3a1.6 1.6 0 0 0 2.3 0l5-5a4.2 4.2 0 0 0 5-5.6l-2.3 2.3-2.1-.4-.4-2.1Z" />
+    <path d="m14.5 14.5 4.6 4.6" />
+  </svg>
+);
+
+export const ChevronDownIcon = () => (
+  <svg {...base}>
+    <path d="m5.5 9 6.5 6.5L18.5 9" />
+  </svg>
+);
+
+export const QuoteIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+    <path d="M9.2 5.5c-3 1.5-4.7 4-4.7 7.4v5.6h6.1v-6H7.3c0-1.9.9-3.3 2.8-4.4l-.9-2.6Zm9.1 0c-3 1.5-4.7 4-4.7 7.4v5.6h6.1v-6h-3.3c0-1.9.9-3.3 2.8-4.4l-.9-2.6Z" />
+  </svg>
+);

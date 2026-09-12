@@ -8,6 +8,8 @@ export interface FormValues {
   name: string;
   phone: string;
   email: string;
+  /** Település — a felmérés megszervezéséhez az egyik legfontosabb adat. */
+  city: string;
   service: string;
   message: string;
   consent: boolean;
@@ -54,6 +56,10 @@ export function validate(values: FormValues): FormErrors {
     errors.email = 'Ellenőrizd az e-mail-címet. Például: nev@pelda.hu';
   }
 
+  if (values.city.trim().length > 80) {
+    errors.city = 'Ez túl hosszú egy településnévhez.';
+  }
+
   if (values.message.trim().length > 2000) {
     errors.message = 'Ez túl hosszú. Foglald össze legfeljebb 2000 karakterben.';
   }
@@ -69,6 +75,7 @@ export const emptyForm: FormValues = {
   name: '',
   phone: '',
   email: '',
+  city: '',
   service: '',
   message: '',
   consent: false,
