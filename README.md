@@ -140,12 +140,24 @@ Ha nem REST API-t használsz, a `send()` törzsét cseréld le.
 Az éles build szándékosan hibát jelez bekötetlen végponttal: így nem lehet
 észrevétlenül elveszíteni valós érdeklődőt egy félig bekötött oldalon.
 
-### Kötelező mezők
+### A kérdőív
 
-Csak a **név**, a **telefonszám** és az **adatkezelési hozzájárulás**
-kötelező. Minden más mező opcionális — egy fölöslegesen kötelezővé tett mező
-mindig visz el érdeklődőt, a hiányzó adatot pedig úgyis megkérdezed a
-visszahíváskor.
+Az ajánlatkérés öt lépésből áll: négy egyérintéses minősítő kérdés, majd az
+elérhetőség. A kérdések és a válaszlehetőségek a `form.questions` tömbben
+szerkeszthetők — a `key` értékeket viszont ne írd át, azokra hivatkozik a
+kód, a mérés és a CRM-be küldött adat.
+
+| Kérdés | Mezőnév | Mit szűr |
+| --- | --- | --- |
+| Milyen ingatlanról van szó? | `propertyType` | Releváns-e egyáltalán a munka |
+| Hány nyílászárót érint a csere? | `windowCount` | A projekt nagyságrendje |
+| Mire van szükséged? | `needs` | Ablak / redőny / szúnyogháló — releváns ajánlat |
+| Mikor tervezed? | `timing` | Élő érdeklődés vagy még csak tájékozódás |
+
+Az utolsó lépésen **a név, a telefonszám, az ingatlan települése és az
+adatkezelési hozzájárulás kötelező**; az e-mail-cím és az üzenet nem. A
+település azért kötelező, mert enélkül olyan megkeresést is felhívnál, ami
+eleve kívül esik a kiszolgálási területen.
 
 ### Köszönőüzenet vagy köszönőoldal
 
@@ -165,7 +177,8 @@ megy át. A komponensek nem tudnak a konkrét mérőrendszerekről.
 | `cta_quote_click` | Bármelyik ajánlatkérő gomb (`placement` mondja meg, melyik) |
 | `phone_click` | Telefonszámra kattintás |
 | `email_click` | E-mail-címre kattintás |
-| `form_submit` | **Fő konverzió:** sikeres űrlapbeküldés |
+| `form_step` | Egy kérdőívlépés kitöltése (`step`, `question`, `answer`) — ebből látszik, hol morzsolódik le a kitöltő |
+| `form_submit` | **Fő konverzió:** sikeres űrlapbeküldés, a négy minősítő válasszal együtt |
 | `form_error` | Mezőhiba vagy sikertelen beküldés |
 | `reference_open` | Referenciakép megnyitása |
 | `faq_open` | GYIK-kérdés lenyitása |

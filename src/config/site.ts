@@ -560,27 +560,60 @@ export const faq = {
  * 12. AJÁNLATKÉRŐ SZEKCIÓ ÉS ŰRLAP
  * ------------------------------------------------------------------------ */
 
+/**
+ * Az ajánlatkérő kérdőív.
+ *
+ * Négy gyors, egyérintéses kérdés minősíti a megkeresést, és csak utána
+ * kéri az elérhetőséget. Így a hívás előtt tudod, mekkora a munka, mire
+ * van szükség, mennyire sürgős és hol van az ingatlan — a „még csak
+ * tájékozódom" válasz pedig elkülöníthető a valódi, élő érdeklődéstől.
+ *
+ * A kérdések sorrendje és az opciók szövege itt szerkeszthető. A `key`
+ * értékeket ne írd át: azokra hivatkozik a kód és a mérés.
+ */
 export const form = {
   eyebrow: 'Ajánlatkérés',
   title: 'Szeretnéd megtudni, milyen megoldás illik az otthonodhoz?',
   lead:
-    'Töltsd ki az űrlapot, és két munkanapon belül felvesszük veled a kapcsolatot az elképzeléseid egyeztetéséhez.',
+    'Négy gyors kérdés, aztán az elérhetőséged. Két munkanapon belül felvesszük veled a kapcsolatot.',
+  /** A négy minősítő kérdés. Mindegyik egy lépés, egy kattintással. */
+  questions: [
+    {
+      key: 'propertyType' as const,
+      title: 'Milyen ingatlanról van szó?',
+      hint: 'Ebből tudjuk, milyen beépítési körülményekre számítsunk.',
+      options: ['Családi ház', 'Társasházi lakás', 'Egyéb (iroda, üzlet, nyaraló)'],
+    },
+    {
+      key: 'windowCount' as const,
+      title: 'Hány nyílászárót érint a csere?',
+      hint: 'Elég egy becslés — a pontos darabszám a felmérésen derül ki.',
+      options: ['1–3 db', '4–8 db', '8 db felett'],
+    },
+    {
+      key: 'needs' as const,
+      title: 'Mire van szükséged?',
+      hint: 'Így rögtön a megfelelő megoldással tudunk hívni.',
+      options: ['Csak ablakra', 'Ablakra és redőnyre', 'Ablakra, redőnyre és szúnyoghálóra'],
+    },
+    {
+      key: 'timing' as const,
+      title: 'Mikor tervezed a nyílászárócserét?',
+      hint: 'Nem baj, ha még csak tájékozódsz — ezt is jelöld nyugodtan.',
+      options: ['Most azonnal', '1–3 hónapon belül', 'Még csak tájékozódom'],
+    },
+  ],
+  /** Az utolsó lépés fejléce. */
+  contactStep: {
+    title: 'Hova küldhetjük a választ?',
+    hint: 'A telefonszám kell a visszahíváshoz, a település pedig ahhoz, hogy lássuk, a területünkön van-e az ingatlan.',
+  },
   /** „Mi történik a beküldés után” — az űrlap mellett jelenik meg. */
   afterSubmit: [
-    'Megnézzük, amit írtál, és összeállítjuk a kérdéseinket.',
+    'Megnézzük a válaszaidat, és összeállítjuk a kérdéseinket.',
     'Két munkanapon belül felhívunk a megadott telefonszámon.',
     'Időpontot egyeztetünk a helyszíni felmérésre.',
     'A felmérés után elkészítjük a tételes ajánlatot.',
-  ],
-  /** A „Milyen megoldás érdekel?” választó opciói. */
-  serviceOptions: [
-    'Nyílászárócsere meglévő épületben',
-    'Nyílászáró beépítés új épületbe',
-    'Műanyag nyílászárók vásárlása (VEKA)',
-    'Bejárati ajtó',
-    'Redőny, árnyékolástechnika',
-    'Szúnyogháló, párkány, kiegészítők',
-    'Még nem tudom',
   ],
   /** A köszönőüzenet szövege sikeres beküldés után. */
   thankYou: {

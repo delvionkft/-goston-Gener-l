@@ -442,3 +442,207 @@
 .qform--done.on-dark .qform__done-list svg {
   color: var(--c-sand);
 }
+
+/* --- Kérdőív: haladás, lépések, válaszlehetőségek --------------------- */
+
+.qform__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  min-height: 28px;
+  margin-bottom: calc(-1 * var(--sp-3));
+}
+
+.qform__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  margin-left: -0.25rem;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* A `hidden` attribútumot a display: inline-flex felülírná — az első
+   lépésen így tényleg eltűnik a gomb. */
+.qform__back[hidden] {
+  display: none;
+}
+
+.qform__back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.qform__back:hover {
+  color: var(--c-brown-900);
+}
+
+.qform__count {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.qform__progress {
+  height: 3px;
+  border-radius: 3px;
+  background: var(--c-line);
+  overflow: hidden;
+}
+
+.qform__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(to right, var(--c-brown-700), var(--c-brown-400));
+  transition: width var(--dur) var(--ease-out);
+}
+
+.qform__step-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: var(--tracking-tight);
+  color: var(--c-brown-900);
+  text-wrap: balance;
+}
+
+.qform__step-title:focus-visible {
+  outline: 2px solid var(--c-brown-700);
+  outline-offset: 4px;
+}
+
+.qform__step-hint {
+  margin-top: calc(-1 * var(--sp-3));
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* --- Válaszlehetőségek --- */
+
+.qform__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.qform__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  width: 100%;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  background: var(--c-white);
+  color: var(--c-brown-900);
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.qform__option svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--c-brown-400);
+  transition: transform var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .qform__option:hover {
+    border-color: var(--c-brown-700);
+    background: var(--c-offwhite);
+  }
+
+  .qform__option:hover svg {
+    color: var(--c-brown-700);
+    transform: translateX(3px);
+  }
+}
+
+.qform__option:active {
+  transform: translateY(1px);
+}
+
+/* A korábban választott opció akkor is látszik, ha visszalépnek rá. */
+.qform__option.is-selected {
+  border-color: var(--c-brown-700);
+  box-shadow: inset 0 0 0 1px var(--c-brown-700);
+}
+
+/* --- Megadott válaszok az utolsó lépésen --- */
+
+.qform__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  list-style: none;
+}
+
+.qform__chips button {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-pill);
+  background: var(--c-beige);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.qform__chips button:hover {
+  border-color: var(--c-brown-700);
+  color: var(--c-brown-900);
+}
+
+/* --- Sötét háttéren --- */
+
+.qform.on-dark .qform__step-title {
+  color: var(--text-on-dark);
+}
+
+.qform.on-dark .qform__step-hint,
+.qform.on-dark .qform__count,
+.qform.on-dark .qform__back {
+  color: var(--text-on-dark-muted);
+}
+
+.qform.on-dark .qform__progress {
+  background: rgba(226, 210, 190, 0.22);
+}
+
+.qform.on-dark .qform__option {
+  background: rgba(255, 253, 249, 0.06);
+  border-color: rgba(226, 210, 190, 0.34);
+  color: var(--text-on-dark);
+}
+
+.qform.on-dark .qform__option.is-selected {
+  border-color: var(--c-sand);
+  box-shadow: inset 0 0 0 1px var(--c-sand);
+}
+
+.qform.on-dark .qform__chips button {
+  background: rgba(255, 253, 249, 0.06);
+  border-color: rgba(226, 210, 190, 0.28);
+  color: var(--text-on-dark-muted);
+}

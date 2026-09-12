@@ -29,11 +29,15 @@
  */
 
 export interface LeadData {
+  /** A kérdőív minősítő válaszai. */
+  propertyType: string;
+  windowCount: string;
+  needs: string;
+  timing: string;
   name: string;
   phone: string;
   email: string;
   city: string;
-  service: string;
   message: string;
   consent: boolean;
   /** Honnan jött a lead — a mérésnél és a CRM-ben is hasznos. */
@@ -53,11 +57,14 @@ const TIMEOUT_MS = 15000;
 /** A CRM felé küldött adatszerkezet. Itt igazítsd a saját sémádhoz. */
 function toPayload(data: LeadData) {
   return {
+    propertyType: data.propertyType,
+    windowCount: data.windowCount,
+    needs: data.needs,
+    timing: data.timing,
     name: data.name.trim(),
     phone: data.phone.trim(),
     email: data.email.trim(),
     city: data.city.trim(),
-    service: data.service,
     message: data.message.trim(),
     consent: data.consent,
     source: data.source,

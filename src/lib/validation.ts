@@ -5,12 +5,17 @@
  */
 
 export interface FormValues {
+  /** Minősítő kérdések — a kérdőív első négy lépése. */
+  propertyType: string;
+  windowCount: string;
+  needs: string;
+  timing: string;
+  /** Elérhetőség — az utolsó lépés. */
   name: string;
   phone: string;
   email: string;
-  /** Település — a felmérés megszervezéséhez az egyik legfontosabb adat. */
+  /** Település: ebből derül ki, a kiszolgálási területen van-e az ingatlan. */
   city: string;
-  service: string;
   message: string;
   consent: boolean;
 }
@@ -56,7 +61,9 @@ export function validate(values: FormValues): FormErrors {
     errors.email = 'Ellenőrizd az e-mail-címet. Például: nev@pelda.hu';
   }
 
-  if (values.city.trim().length > 80) {
+  if (!values.city.trim()) {
+    errors.city = 'Írd be a települést, hogy lássuk, a területünkön van-e.';
+  } else if (values.city.trim().length > 80) {
     errors.city = 'Ez túl hosszú egy településnévhez.';
   }
 
@@ -72,11 +79,14 @@ export function validate(values: FormValues): FormErrors {
 }
 
 export const emptyForm: FormValues = {
+  propertyType: '',
+  windowCount: '',
+  needs: '',
+  timing: '',
   name: '',
   phone: '',
   email: '',
   city: '',
-  service: '',
   message: '',
   consent: false,
 };

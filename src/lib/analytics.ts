@@ -25,6 +25,8 @@ export type AnalyticsEvent =
   | 'cta_quote_click'
   | 'phone_click'
   | 'email_click'
+  /** Egy kérdőívlépés kitöltése — itt látszik, hol morzsolódik le a kitöltő. */
+  | 'form_step'
   /** Sikeres űrlapbeküldés — ez a fő konverzió. */
   | 'form_submit'
   | 'form_error'
