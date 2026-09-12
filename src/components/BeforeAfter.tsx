@@ -1,4 +1,5 @@
 import { useId, useState } from 'react';
+import { ImageSlot } from './ImageSlot';
 import './BeforeAfter.css';
 
 interface Props {
@@ -33,6 +34,12 @@ export function BeforeAfter({
 }: Props) {
   const uid = useId();
   const [pos, setPos] = useState(50);
+  /* Amíg valamelyik kép nincs feltöltve, helyőrző áll a csúszka helyén. */
+  const [failed, setFailed] = useState(false);
+
+  if (failed) {
+    return <ImageSlot alt={afterAlt} ratio={ratio} label="[REFERENCIAKÉP]" />;
+  }
 
   return (
     <div
@@ -40,11 +47,27 @@ export function BeforeAfter({
       style={{ '--pos': `${pos}%`, '--ratio': ratio } as React.CSSProperties}
     >
       {/* Alsó réteg: az elkészült állapot, teljes szélességben. */}
-      <img className="ba__img" src={afterSrc} alt={afterAlt} loading="lazy" decoding="async" sizes={sizes} />
+      <img
+        className="ba__img"
+        src={afterSrc}
+        alt={afterAlt}
+        loading="lazy"
+        decoding="async"
+        sizes={sizes}
+        onError={() => setFailed(true)}
+      />
 
       {/* Felső réteg: a munka előtti állapot, a csúszkáig levágva. */}
       <div className="ba__clip" aria-hidden="true">
-        <img className="ba__img" src={beforeSrc} alt="" loading="lazy" decoding="async" sizes={sizes} />
+        <img
+          className="ba__img"
+          src={beforeSrc}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          sizes={sizes}
+          onError={() => setFailed(true)}
+        />
       </div>
 
       {/* A levágott kép leírása a képernyőolvasónak is elérhető marad. */}

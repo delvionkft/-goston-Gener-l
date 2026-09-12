@@ -183,12 +183,18 @@ export const hero = {
     },
   ],
   /**
-   * Hero kép: világos, modern családi ház vagy prémium enteriőr nagy
-   * nyílászárókkal. Tedd a fájlt a /public mappába, pl. '/hero.webp'.
-   * Ajánlott: 1200×1500 px, WebP vagy AVIF, 200 kB alatt.
+   * A hero alatti képsáv. Három kép: középen a legerősebb (ez látszik
+   * mobilon is elsőként), két oldalt egy-egy kiegészítő.
+   *
+   * A fájlokat a /public mappába kell feltölteni pontosan ezekkel a
+   * nevekkel — amíg nincsenek ott, jelölt képhelyőrző látszik, nem törött
+   * kép. Ajánlott: 1000×1250 px, WebP, 200 kB alatt.
    */
-  image: '',
-  imageAlt: '[Képaláírás: pl. világos nappali nagyméretű, modern ablakokkal]',
+  gallery: [
+    { image: '/hero-1.webp', alt: 'Világos nappali nagyméretű modern ablakokkal' },
+    { image: '/hero-2.webp', alt: 'Beépített bejárati ajtó kívülről' },
+    { image: '/hero-3.webp', alt: 'Nyílászáró beépítés közben, rendezett munkaterület' },
+  ],
 } as const;
 
 /* ---------------------------------------------------------------------------
@@ -400,7 +406,10 @@ export const process = {
  *  Két megjelenítési mód, a kitöltött mezőktől függően:
  *   - `beforeImage` + `afterImage` → előtte–utána összehasonlító csúszka
  *   - csak `afterImage`            → egyetlen kép, nagy nézettel
- *  Ha egyik sincs kitöltve, jelölt képhelyőrző jelenik meg.
+ *
+ *  A fájlnevek előre be vannak írva: tedd a képeket a /public mappába
+ *  ezekkel a nevekkel, és maguktól megjelennek. Amíg egy fájl nincs ott,
+ *  jelölt képhelyőrző látszik a helyén — nem törött kép.
  * ------------------------------------------------------------------------ */
 
 export const references = {
@@ -416,9 +425,9 @@ export const references = {
       location: '[HELYSZÍN]',
       workType: '[ELVÉGZETT MUNKA TÍPUSA]',
       result: '[Rövid eredményleírás: mi változott a munka után.]',
-      beforeImage: '',
+      beforeImage: '/ref-1-elotte.webp',
       beforeAlt: '[Kép: állapot a munka előtt]',
-      afterImage: '',
+      afterImage: '/ref-1-utana.webp',
       afterAlt: '[Kép: állapot a munka után]',
     },
     {
@@ -426,9 +435,9 @@ export const references = {
       location: '[HELYSZÍN]',
       workType: '[ELVÉGZETT MUNKA TÍPUSA]',
       result: '[Rövid eredményleírás: mi változott a munka után.]',
-      beforeImage: '',
+      beforeImage: '/ref-2-elotte.webp',
       beforeAlt: '[Kép: állapot a munka előtt]',
-      afterImage: '',
+      afterImage: '/ref-2-utana.webp',
       afterAlt: '[Kép: állapot a munka után]',
     },
     {
@@ -436,9 +445,9 @@ export const references = {
       location: '[HELYSZÍN]',
       workType: '[ELVÉGZETT MUNKA TÍPUSA]',
       result: '[Rövid eredményleírás: mi változott a munka után.]',
-      beforeImage: '',
+      beforeImage: '/ref-3-elotte.webp',
       beforeAlt: '[Kép: állapot a munka előtt]',
-      afterImage: '',
+      afterImage: '/ref-3-utana.webp',
       afterAlt: '[Kép: állapot a munka után]',
     },
     {
@@ -446,9 +455,9 @@ export const references = {
       location: '[HELYSZÍN]',
       workType: '[ELVÉGZETT MUNKA TÍPUSA]',
       result: '[Rövid eredményleírás: mi változott a munka után.]',
-      beforeImage: '',
+      beforeImage: '/ref-4-elotte.webp',
       beforeAlt: '[Kép: állapot a munka előtt]',
-      afterImage: '',
+      afterImage: '/ref-4-utana.webp',
       afterAlt: '[Kép: állapot a munka után]',
     },
   ],

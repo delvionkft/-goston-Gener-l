@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './ImageSlot.css';
 
 interface Props {
@@ -32,8 +33,15 @@ export function ImageSlot({
   sizes,
 }: Props) {
   const style = { '--ratio': ratio } as React.CSSProperties;
+  /*
+   * Ha a kép nincs feltöltve (vagy elírt a fájlnév), törött kép helyett a
+   * megtervezett helyőrző jelenik meg. Így a konfigurációba előre be lehet
+   * írni a fájlneveket, mielőtt a képek felkerülnének.
+   */
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = Boolean(src) && failedSrc === src;
 
-  if (!src) {
+  if (!src || failed) {
     return (
       <div
         className={`imgslot imgslot--empty ${className ?? ''}`}
@@ -60,6 +68,7 @@ export function ImageSlot({
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : 'auto'}
         draggable={false}
+        onError={() => setFailedSrc(src)}
       />
     </div>
   );

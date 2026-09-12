@@ -56,23 +56,27 @@ export function References() {
 
         <ul className="refs__grid">
           {references.items.map((item) => {
-            const hasPair = Boolean(item.beforeImage && item.afterImage);
+            /* A konfigurációban lehetnek konstans literálok; itt sima
+               sztringként kezeljük, hogy az „üres mező" ág is megmaradjon. */
+            const beforeImage: string = item.beforeImage;
+            const afterImage: string = item.afterImage;
+            const hasPair = Boolean(beforeImage && afterImage);
 
             return (
               <li className="refs__item card" key={item.id}>
                 <div className="refs__media">
                   {hasPair ? (
                     <BeforeAfter
-                      beforeSrc={item.beforeImage}
+                      beforeSrc={beforeImage}
                       beforeAlt={item.beforeAlt}
-                      afterSrc={item.afterImage}
+                      afterSrc={afterImage}
                       afterAlt={item.afterAlt}
                       beforeLabel={references.beforeLabel}
                       afterLabel={references.afterLabel}
                       ratio="4 / 3"
                       sizes="(min-width: 700px) 50vw, 100vw"
                     />
-                  ) : item.afterImage ? (
+                  ) : afterImage ? (
                     <button
                       type="button"
                       className="refs__zoom"
@@ -80,7 +84,7 @@ export function References() {
                       aria-haspopup="dialog"
                     >
                       <ImageSlot
-                        src={item.afterImage}
+                        src={afterImage}
                         alt={item.afterAlt}
                         ratio="4 / 3"
                         sizes="(min-width: 700px) 50vw, 100vw"

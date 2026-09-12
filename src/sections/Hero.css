@@ -1,49 +1,37 @@
 .hero {
   position: relative;
   padding-top: calc(var(--header-h) + clamp(2.5rem, 1.5rem + 4vw, 5rem));
-  padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  padding-bottom: clamp(2.5rem, 2rem + 3vw, 4.5rem);
   overflow: hidden;
 }
 
-/* Meleg, világos háttér: törtfehérből bézsbe futó lágy átmenet, a jobb
-   felső sarokban egy alig látható homokszín folttal. */
+/* Meleg, világos háttér: törtfehérből bézsbe futó lágy átmenet, felül egy
+   alig látható homokszín folttal. */
 .hero__bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(
-      70% 60% at 82% 8%,
-      rgba(226, 210, 190, 0.55) 0%,
-      rgba(226, 210, 190, 0) 60%
-    ),
+    radial-gradient(60% 45% at 50% 0%, rgba(226, 210, 190, 0.6) 0%, rgba(226, 210, 190, 0) 62%),
     linear-gradient(175deg, var(--c-offwhite) 0%, var(--c-beige) 100%);
 }
 
+/* --- Üzenet --- */
+
 .hero__inner {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-}
-
-@media (min-width: 940px) {
-  .hero__inner {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: clamp(3rem, 2rem + 4vw, 5.5rem);
-  }
-}
-
-.hero__copy {
-  max-width: 40rem;
+  text-align: center;
 }
 
 .hero__title {
+  max-width: 18ch;
   margin-bottom: var(--sp-5);
 }
 
 .hero__lead {
-  max-width: 52ch;
+  max-width: 56ch;
   font-size: var(--fs-lg);
   color: var(--text-muted);
 }
@@ -51,20 +39,15 @@
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--sp-3);
   margin-top: var(--sp-7);
 }
 
-/* A két gomb egy sorban csak akkor fér el olvashatóan, ha van rá hely.
-   Ez alatt egymás alá kerülnek, azonos szélességgel — így rendezett marad,
-   nem pedig „egy hosszú és egy rövid” gomb egymás alatt. */
-@media (max-width: 1199px) {
+@media (max-width: 559px) {
   .hero__actions {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .hero__actions .btn {
     width: 100%;
     max-width: 24rem;
   }
@@ -75,16 +58,19 @@
 .hero__trust {
   display: grid;
   gap: var(--sp-4);
+  width: 100%;
+  max-width: 62rem;
   margin-top: var(--sp-7);
   padding-top: var(--sp-6);
   border-top: 1px solid var(--c-line);
   list-style: none;
+  text-align: left;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 760px) {
   .hero__trust {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-5);
+    gap: var(--sp-6);
   }
 }
 
@@ -133,62 +119,84 @@
   color: var(--text-muted);
 }
 
-/* --- Képoldal --- */
+/* --- Képsáv --- */
 
-.hero__scene {
+.hero__gallery {
   position: relative;
-  --parallax: 0px;
-  --glow: 0;
-  --px: 50%;
-  --py: 40%;
+  margin-top: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
 }
 
-.hero__frame {
-  position: relative;
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  transform: translateY(var(--parallax));
-  transition: transform 120ms linear;
-  will-change: transform;
+.hero__strip {
+  display: grid;
+  gap: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
+  list-style: none;
+  padding-inline: var(--gutter);
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
 }
 
-.hero__frame::after {
-  /* Alig látható belső keret — a kép szélét teszi tisztábbá. */
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-  pointer-events: none;
+@media (min-width: 760px) {
+  .hero__strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  /* A középső kép nagyobb és kissé kiemelkedik — ez adja a sáv ritmusát,
+     és egyben ez a legerősebb fotó helye. */
+  .hero__shot--2 {
+    margin-top: clamp(-3rem, -2rem - 2vw, -1.25rem);
+  }
 }
 
-.hero__glow {
-  position: absolute;
-  inset: -12%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at var(--px) var(--py),
-    rgba(226, 210, 190, 0.6),
-    rgba(226, 210, 190, 0) 55%
-  );
-  opacity: var(--glow);
-  transition: opacity 420ms var(--ease-out);
-  pointer-events: none;
+/* Mobilon vízszintesen húzható sáv, a középső képnél kezdve. */
+@media (max-width: 759px) {
+  .hero__strip {
+    grid-auto-flow: column;
+    grid-auto-columns: 74%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: var(--sp-2);
+  }
+
+  .hero__strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero__shot {
+    scroll-snap-align: center;
+  }
 }
 
-.hero__badge {
-  position: absolute;
-  left: clamp(-1rem, -0.5rem - 1vw, 0rem);
-  bottom: clamp(1.25rem, 1rem + 1vw, 2.25rem);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--sp-4) var(--sp-5);
-  background: var(--c-white);
+.hero__shot .imgslot {
   border-radius: var(--r-lg);
+  overflow: hidden;
   box-shadow: var(--shadow-md);
-  max-width: min(84%, 22rem);
+}
+
+.hero__shot--2 .imgslot {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Lebegő kártya a képsáv bal alsó sarkában. */
+.hero__badge {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .hero__badge {
+    position: absolute;
+    left: calc(var(--gutter) + 1.25rem);
+    bottom: -1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--sp-4) var(--sp-5);
+    background: var(--c-white);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 20rem;
+  }
 }
 
 .hero__badge-label {
@@ -204,12 +212,4 @@
   font-size: var(--fs-base);
   font-weight: 600;
   color: var(--c-brown-900);
-}
-
-@media (max-width: 939px) {
-  .hero__scene {
-    max-width: 32rem;
-    margin-inline: auto;
-    width: 100%;
-  }
 }

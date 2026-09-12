@@ -78,23 +78,32 @@ maradt ilyen — CI-ba is beköthető.
 Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 `src/config/site.ts` megfelelő `image` mezőjébe (pl. `'/hero.webp'`).
 
-| Hely | Mező | Ajánlott méret | Képarány |
+| Hely | Fájlnév a `public/` mappában | Ajánlott méret | Képarány |
 | --- | --- | --- | --- |
-| Hero | `hero.image` | 1200×1500 | 4:5 |
-| Szolgáltatáskártya | `services.items[].image` | 1200×750 | 16:10 |
-| Referencia | `references.items[].beforeImage` / `afterImage` | 1200×900 | 4:3 |
-| Open Graph | `site.ogImage` | 1200×630 | 1.91:1 |
+| Hero, bal kép | `hero-1.webp` | 1000×1250 | 4:5 |
+| Hero, középső (legerősebb) | `hero-2.webp` | 1000×1250 | 4:5 |
+| Hero, jobb kép | `hero-3.webp` | 1000×1250 | 4:5 |
+| 1. referencia, előtte | `ref-1-elotte.webp` | 1200×900 | 4:3 |
+| 1. referencia, utána | `ref-1-utana.webp` | 1200×900 | 4:3 |
+| 2–4. referencia | `ref-2-elotte.webp` … `ref-4-utana.webp` | 1200×900 | 4:3 |
+| Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 |
+| Logó (opcionális) | pl. `logo.svg` → `company.logo` | — | — |
+| Szolgáltatáskártya (opcionális) | tetszőleges → `services.items[].image` | 1200×750 | 16:10 |
+
+**Ezek a fájlnevek már be vannak írva a konfigurációba.** Elég a fájlokat a
+`public/` mappába feltölteni ezekkel a nevekkel — kódot nem kell módosítani.
+Amíg egy fájl hiányzik vagy a neve elír, jelölt képhelyőrző látszik a helyén,
+nem törött kép.
+
+Egy előtte–utána párnál a két képnek azonos képarányúnak kell lennie,
+különben ugrik az összehasonlítás. Ha egy munkához nincs „előtte" fotó,
+töröld a `beforeImage` értékét — akkor egyetlen, nagyítható kép jelenik meg.
 
 Minden képhez kötelező az alt szöveg — ez kerül az `alt` attribútumba.
 
 **Szolgáltatáskártyák:** a kép opcionális. Ha üresen hagyod, a kártya a
 letisztult vonalas ikonnal jelenik meg — így fotók nélkül is rendezett az
 oldal, nem hat félkésznek.
-
-**Referenciák:** ha egy munkához `beforeImage` és `afterImage` is van,
-összehasonlító csúszka jelenik meg. Ha csak `afterImage` van, egyetlen kép
-látszik, nagyítható nézettel. A két képnek azonos képarányúnak kell lennie,
-különben ugrik az összehasonlítás.
 
 Ajánlás: WebP vagy AVIF formátum, 200 kB alatt. A hero képe `priority`
 betöltést kap (nincs lazy load), minden más lustán töltődik.
