@@ -30,6 +30,8 @@ export type AnalyticsEvent =
   /** Sikeres űrlapbeküldés — ez a fő konverzió. */
   | 'form_submit'
   | 'form_error'
+  /** A kalkulátor használata — mit állított be a látogató. */
+  | 'calculator_use'
   | 'reference_open'
   | 'faq_open'
   | 'nav_click'

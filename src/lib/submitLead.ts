@@ -40,6 +40,8 @@ export interface LeadData {
   city: string;
   message: string;
   consent: boolean;
+  /** A kalkulátor beállítása, ha a látogató használta. */
+  estimate?: string;
   /** Honnan jött a lead — a mérésnél és a CRM-ben is hasznos. */
   source: string;
 }
@@ -65,6 +67,7 @@ function toPayload(data: LeadData) {
     phone: data.phone.trim(),
     email: data.email.trim(),
     city: data.city.trim(),
+    estimate: data.estimate ?? '',
     message: data.message.trim(),
     consent: data.consent,
     source: data.source,

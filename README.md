@@ -167,6 +167,34 @@ alapú konverziót mérsz —, add meg az útvonalat a `form.thankYouUrl` mezőb
 
 ---
 
+## 3/B. Árkalkulátor
+
+A kalkulátor minden adata a `src/config/site.ts` **`calculator`** blokkjában
+van. Sehol máshol nincs ár a kódban.
+
+**Amíg a `pricesReady` értéke `false`, a kalkulátor nem mutat összeget** —
+összefoglalja a beállítást, és ajánlatkérésre visz. Ez szándékos: kitalált ár
+a látogató felé ígéret, és az első telefonban lebukik.
+
+Éles árakhoz:
+
+1. Töltsd ki a `from` / `to` értékeket — nyílászáró-tételenként, kiegészítőnként
+   és a beépítésre. Mindegyik **egy darabra** vonatkozik.
+2. A háromrétegű üvegezésnél add meg a `multiplier` értéket (pl. `1.15`, ha
+   15%-kal drágább). A kétrétegű az alap, ez marad `1`.
+3. Írd át a `priceNote` mezőt: bruttó vagy nettó, mit tartalmaz az ár.
+4. Állítsd a `pricesReady` értékét `true`-ra.
+
+Az eredmény mindig **sáv** (-tól -ig), tízezresre kerekítve — egy nyílászáró
+ára a mérettől és a beépítés körülményeitől is függ, az egyetlen szám hamis
+pontosságot sugallna.
+
+A kalkulátor beállítása az ajánlatkéréssel együtt elmegy (`estimate` mező),
+és a `calculator_use` eseményben is szerepel — így a visszahíváskor látod,
+mire számolt az érdeklődő.
+
+---
+
 ## 4. Mérés (GA4 / GTM / Meta Pixel)
 
 Minden konverziós esemény a **`src/lib/analytics.ts`** `track()` függvényén
@@ -177,6 +205,7 @@ megy át. A komponensek nem tudnak a konkrét mérőrendszerekről.
 | `cta_quote_click` | Bármelyik ajánlatkérő gomb (`placement` mondja meg, melyik) |
 | `phone_click` | Telefonszámra kattintás |
 | `email_click` | E-mail-címre kattintás |
+| `calculator_use` | A kalkulátor beállításával ajánlatkérésre kattintás |
 | `form_step` | Egy kérdőívlépés kitöltése (`step`, `question`, `answer`) — ebből látszik, hol morzsolódik le a kitöltő |
 | `form_submit` | **Fő konverzió:** sikeres űrlapbeküldés, a négy minősítő válasszal együtt |
 | `form_error` | Mezőhiba vagy sikertelen beküldés |

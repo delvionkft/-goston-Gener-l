@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { cta, form as formCopy } from '../config/site';
 import { track } from '../lib/analytics';
+import { getEstimate } from '../lib/estimate';
 import { submitLead } from '../lib/submitLead';
 import { emptyForm, validate, type FormErrors, type FormValues } from '../lib/validation';
 import { Button } from './Button';
@@ -95,7 +96,14 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
     }
 
     setStatus('loading');
-    const result = await submitLead({ ...values, source });
+    /* Ha a látogató használta a kalkulátort, a beállítása is menjen a leaddel:
+       így a visszahíváskor már látod, mire számolt. */
+    const estimate = getEstimate();
+    const result = await submitLead({
+      ...values,
+      source,
+      estimate: estimate?.text,
+    });
 
     if (result.ok) {
       track('form_submit', {
@@ -105,6 +113,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
         needs: values.needs,
         timing: values.timing,
         city: values.city || 'nincs megadva',
+        estimate: estimate?.text ?? 'nem használt kalkulátort',
       });
 
       /*

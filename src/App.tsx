@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { Hero } from './sections/Hero';
 import { Problem } from './sections/Problem';
 import { Services } from './sections/Services';
+import { Calculator } from './sections/Calculator';
 import { WhyUs } from './sections/WhyUs';
 import { Process } from './sections/Process';
 import { References } from './sections/References';
@@ -48,6 +49,7 @@ export function App() {
         <Hero />
         <Problem />
         <Services />
+        <Calculator />
         <WhyUs />
         <Process />
         <References />

@@ -126,6 +126,7 @@ export const ANCHOR = {
   hero: 'fooldal',
   problem: 'problemak',
   services: 'szolgaltatasok',
+  calculator: 'kalkulator',
   why: 'miert-minket',
   process: 'folyamat',
   references: 'referenciak',
@@ -136,6 +137,7 @@ export const ANCHOR = {
 
 export const navLinks = [
   { id: ANCHOR.services, label: 'Szolgáltatások' },
+  { id: ANCHOR.calculator, label: 'Kalkulátor' },
   { id: ANCHOR.why, label: 'Miért minket' },
   { id: ANCHOR.process, label: 'Folyamat' },
   { id: ANCHOR.references, label: 'Referenciák' },
@@ -150,6 +152,7 @@ export const navLinks = [
 export const SECTIONS = [
   { id: ANCHOR.problem, label: 'Problémák' },
   { id: ANCHOR.services, label: 'Szolgáltatások' },
+  { id: ANCHOR.calculator, label: 'Kalkulátor' },
   { id: ANCHOR.why, label: 'Miért minket' },
   { id: ANCHOR.process, label: 'Folyamat' },
   { id: ANCHOR.references, label: 'Referenciák' },
@@ -369,6 +372,108 @@ export const why = {
         'Tájékoztatást adunk az aktuális nyílászáró-korszerűsítési támogatásokról, és segítünk a műszaki dokumentáció összeállításában. Pályázatíró partnerekkel is kapcsolatban állunk.',
     },
   ],
+} as const;
+
+/* ---------------------------------------------------------------------------
+ * 7/B. ÁRKALKULÁTOR
+ *
+ *  ==========================================================================
+ *   ITT KELL KITÖLTENI AZ ÁRAKAT — ÉS SEHOL MÁSHOL.
+ *  ==========================================================================
+ *
+ *  Amíg a `pricesReady` értéke `false`, a kalkulátor NEM mutat összeget:
+ *  összefoglalja a választást, és ajánlatkérésre visz. Ez szándékos —
+ *  kitalált ár a látogató felé ígéret, és az első telefonban lebukik.
+ *
+ *  Ha megvannak a valós árak:
+ *   1. töltsd ki az alábbi `from` / `to` értékeket (nettó vagy bruttó,
+ *      ahogy a `priceNote` mondja — de végig ugyanúgy),
+ *   2. állítsd a `pricesReady` értékét `true`-ra.
+ *
+ *  Az összeg mindig SÁV (-tól -ig), soha nem egyetlen szám: egy nyílászáró
+ *  ára a mérettől, a nyitásmódtól és a beépítés körülményeitől is függ.
+ * ------------------------------------------------------------------------ */
+
+export const calculator = {
+  eyebrow: 'Árkalkulátor',
+  title: 'Nézzük meg nagyságrendben, mibe kerülne',
+  lead:
+    'Állítsd be, mire lenne szükséged, és kapsz egy tájékoztató nagyságrendet. A pontos árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
+
+  /** FALSE, amíg nincsenek valós árak. Ilyenkor összeg helyett összefoglaló látszik. */
+  pricesReady: false,
+
+  /** Pénznem és ár-alapelv — ez jelenik meg az eredmény alatt. */
+  currency: 'Ft',
+  priceNote:
+    '[ÁRAK JELLEGE — pl. bruttó árak, anyaggal és munkadíjjal együtt, átlagos méretű nyílászáróra számolva.]',
+
+  /** Nyílászáró-tételek. A látogató darabszámot állít mindegyiknél. */
+  items: [
+    {
+      key: 'ablak',
+      label: 'Ablak',
+      hint: 'Átlagos méretű, bukó-nyíló ablak',
+      max: 30,
+      from: 0,
+      to: 0,
+    },
+    {
+      key: 'erkelyajto',
+      label: 'Erkély- vagy teraszajtó',
+      hint: 'Nagyobb üvegfelület, nyíló vagy toló',
+      max: 10,
+      from: 0,
+      to: 0,
+    },
+    {
+      key: 'bejarati',
+      label: 'Bejárati ajtó',
+      hint: 'Hőszigetelt, biztonsági vasalattal',
+      max: 5,
+      from: 0,
+      to: 0,
+    },
+  ],
+
+  /** Üvegezés — a nyílászárók árát szorozza. A kétrétegű az alap (1). */
+  glazing: [
+    { key: 'duplex', label: 'Kétrétegű üveg', hint: 'Alapeset', multiplier: 1 },
+    {
+      key: 'triplex',
+      label: 'Háromrétegű üveg',
+      hint: 'Jobb hőszigetelés',
+      multiplier: 1,
+    },
+  ],
+
+  /** Kiegészítők. Nyílászáróként számolódnak (darabszám × egységár). */
+  extras: [
+    { key: 'redony', label: 'Redőny', from: 0, to: 0 },
+    { key: 'szunyoghalo', label: 'Szúnyogháló', from: 0, to: 0 },
+    { key: 'parkany', label: 'Párkányok', from: 0, to: 0 },
+  ],
+
+  /** Beépítés: a régi bontása, az új beépítése és a helyreállítás. */
+  installation: {
+    key: 'beepites',
+    label: 'Beépítés bontással és helyreállítással',
+    hint: 'Ha csak a nyílászárót vennéd meg, kapcsold ki.',
+    from: 0,
+    to: 0,
+  },
+
+  /** Az eredménypanel szövegei. */
+  result: {
+    label: 'Tájékoztató nagyságrend',
+    empty: 'Állíts be legalább egy nyílászárót.',
+    /** Ez látszik, amíg a pricesReady false. */
+    pending:
+      'Az árak feltöltése folyamatban. Küldd el az ajánlatkérést a beállításoddal, és konkrét árral keresünk meg.',
+    disclaimer:
+      'Ez tájékoztató nagyságrend, nem ajánlat. A végleges árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
+    cta: 'Ajánlatot kérek erre a beállításra',
+  },
 } as const;
 
 /* ---------------------------------------------------------------------------

@@ -1,0 +1,375 @@
+.calc {
+  background: var(--c-white);
+}
+
+.calc__grid {
+  display: grid;
+  gap: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  align-items: start;
+}
+
+@media (min-width: 940px) {
+  .calc__grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+}
+
+/* --- Vezérlők --- */
+
+.calc__controls {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+  padding: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  background: var(--c-beige);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+}
+
+.calc__block {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.calc__legend {
+  padding: 0;
+  margin-bottom: var(--sp-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-accent-text);
+}
+
+/* Tételsorok --- */
+
+.calc__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  list-style: none;
+}
+
+.calc__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--c-white);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+}
+
+.calc__item-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.calc__item-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-brown-900);
+}
+
+.calc__item-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+/* Léptető --- */
+
+.calc__stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  flex: none;
+  padding: 3px;
+  background: var(--c-beige);
+  border-radius: var(--r-pill);
+}
+
+.calc__stepper button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--c-line);
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-brown-900);
+  font-size: 1.15rem;
+  line-height: 1;
+  font-weight: 600;
+  transition:
+    border-color var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.calc__stepper button:hover:not(:disabled) {
+  border-color: var(--c-brown-700);
+  background: var(--c-offwhite);
+}
+
+.calc__stepper button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.calc__stepper output {
+  min-width: 2.25rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-brown-900);
+}
+
+/* Üvegezés --- */
+
+.calc__segments {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+@media (min-width: 520px) {
+  .calc__segments {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.calc__segment {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-4);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  background: var(--c-white);
+  color: var(--c-brown-900);
+  font-family: var(--font-display);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.calc__segment-hint {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.calc__segment:hover {
+  border-color: var(--c-brown-400);
+}
+
+.calc__segment.is-active {
+  border-color: var(--c-brown-700);
+  box-shadow: inset 0 0 0 1px var(--c-brown-700);
+}
+
+/* Kiegészítők --- */
+
+.calc__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.calc__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-pill);
+  background: var(--c-white);
+  color: var(--c-brown-900);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition:
+    border-color var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out);
+}
+
+.calc__chip-mark {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--c-line);
+  border-radius: 50%;
+  color: var(--c-white);
+  transition: background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+
+.calc__chip-mark svg {
+  width: 12px;
+  height: 12px;
+}
+
+.calc__chip:hover {
+  border-color: var(--c-brown-400);
+}
+
+.calc__chip.is-on {
+  border-color: var(--c-brown-700);
+  background: var(--c-offwhite);
+}
+
+.calc__chip.is-on .calc__chip-mark {
+  background: var(--c-brown-700);
+  border-color: var(--c-brown-700);
+}
+
+/* Kapcsoló --- */
+
+.calc__switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  background: var(--c-white);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--r-md);
+}
+
+.calc__switch label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.calc__switch input {
+  flex: none;
+  width: 52px;
+  height: 30px;
+  margin: 0;
+  appearance: none;
+  border-radius: var(--r-pill);
+  background: var(--c-line);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.calc__switch input::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 3px;
+  border-radius: 50%;
+  background: var(--c-white);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.calc__switch input:checked {
+  background: var(--c-brown-700);
+}
+
+.calc__switch input:checked::before {
+  transform: translateX(22px);
+}
+
+/* --- Eredménypanel --- */
+
+.calc__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: clamp(1.25rem, 1rem + 1.2vw, 2rem);
+  border-radius: var(--r-lg);
+  color: var(--text-on-dark);
+  background:
+    radial-gradient(70% 50% at 80% 0%, rgba(199, 154, 106, 0.28) 0%, rgba(199, 154, 106, 0) 70%),
+    linear-gradient(165deg, #3D2619 0%, #2E1D14 55%, #231610 100%);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 940px) {
+  .calc__result {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+}
+
+.calc__result-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-sand);
+}
+
+.calc__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.calc__price-sep {
+  color: var(--c-brown-400);
+}
+
+.calc__result-empty,
+.calc__result-pending {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-on-dark-muted);
+}
+
+.calc__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(226, 210, 190, 0.2);
+  list-style: none;
+  font-size: var(--fs-sm);
+}
+
+.calc__lines li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  color: var(--text-on-dark-muted);
+}
+
+.calc__line-detail {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-on-dark);
+}
+
+.calc__disclaimer,
+.calc__note {
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--text-on-dark-muted);
+}
+
+.calc__note {
+  opacity: 0.85;
+}
