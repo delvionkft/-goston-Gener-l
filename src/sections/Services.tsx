@@ -1,6 +1,6 @@
 import { ANCHOR, cta, services } from '../config/site';
 import { track } from '../lib/analytics';
-import { scrollToId } from '../lib/scroll';
+import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
@@ -23,7 +23,7 @@ export function Services() {
 
   const onQuote = () => {
     track('cta_quote_click', { placement: 'szolgaltatasok' });
-    scrollToId(ANCHOR.form);
+    scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { ANCHOR, cta, faq } from '../config/site';
 import { track } from '../lib/analytics';
-import { scrollToId } from '../lib/scroll';
+import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
@@ -65,7 +65,7 @@ export function Faq() {
             icon={<ArrowDownIcon />}
             onClick={() => {
               track('cta_quote_click', { placement: 'gyik' });
-              scrollToId(ANCHOR.form);
+              scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
             }}
           >
             {cta.primary}

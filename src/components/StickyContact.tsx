@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ANCHOR, cta } from '../config/site';
 import { track } from '../lib/analytics';
-import { scrollToId } from '../lib/scroll';
+import { scrollToNearestForm } from '../lib/scroll';
 import { telHref } from '../lib/contact';
 import { ArrowRightIcon, PhoneIcon } from './Icons';
 import './StickyContact.css';
@@ -46,8 +46,8 @@ export function StickyContact() {
   }, []);
 
   const onQuote = (placement: string) => {
-    track('cta_quote_click', { placement });
-    scrollToId(ANCHOR.form);
+    const target = scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
+    track('cta_quote_click', { placement, target: target ?? 'nincs urlap' });
   };
 
   return (

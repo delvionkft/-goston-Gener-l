@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ANCHOR, calculator } from '../config/site';
 import { track } from '../lib/analytics';
 import { formatPrice, setEstimate } from '../lib/estimate';
-import { scrollToId } from '../lib/scroll';
+import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
@@ -269,7 +269,7 @@ export function Calculator() {
                   units: result.totalUnits,
                 });
                 track('cta_quote_click', { placement: 'kalkulator' });
-                scrollToId(ANCHOR.form);
+                scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
               }}
             >
               {calculator.result.cta}

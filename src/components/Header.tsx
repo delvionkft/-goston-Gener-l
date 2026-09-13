@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ANCHOR, company, cta, navLinks } from '../config/site';
 import { track } from '../lib/analytics';
-import { scrollToId } from '../lib/scroll';
+import { scrollToId, scrollToNearestForm } from '../lib/scroll';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { Button } from './Button';
@@ -11,6 +11,8 @@ import { CloseIcon, MenuIcon } from './Icons';
 import './Header.css';
 
 const NAV_IDS = navLinks.map((link) => link.id);
+/** A két ajánlatkérő űrlap — a gomb mindig a közelebbire visz. */
+const FORM_IDS = [ANCHOR.quickForm, ANCHOR.form] as const;
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -70,8 +72,8 @@ export function Header() {
 
   const openQuote = (placement: string) => {
     setMenuOpen(false);
-    track('cta_quote_click', { placement });
-    scrollToId(ANCHOR.form);
+    const target = scrollToNearestForm(FORM_IDS);
+    track('cta_quote_click', { placement, target: target ?? 'nincs urlap' });
   };
 
   return (

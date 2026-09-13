@@ -3,6 +3,7 @@ import { ANCHOR, legal } from './config/site';
 import { applyDocumentHead } from './lib/seo';
 import { Header } from './components/Header';
 import { Hero } from './sections/Hero';
+import { QuickQuote } from './sections/QuickQuote';
 import { Problem } from './sections/Problem';
 import { Services } from './sections/Services';
 import { Calculator } from './sections/Calculator';
@@ -47,6 +48,7 @@ export function App() {
 
       <main id="fotartalom">
         <Hero />
+        <QuickQuote onOpenPrivacy={openPrivacy} />
         <Problem />
         <Services />
         <Calculator />

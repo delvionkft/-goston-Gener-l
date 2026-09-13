@@ -128,6 +128,8 @@ export const cta = {
 
 export const ANCHOR = {
   hero: 'fooldal',
+  /** A hero alatti, rövid ajánlatkérő. Nem számozott szekció. */
+  quickForm: 'ajanlatkeres-fent',
   problem: 'problemak',
   services: 'szolgaltatasok',
   calculator: 'kalkulator',
@@ -682,6 +684,22 @@ export const faq = {
  */
 export const form = {
   eyebrow: 'Ajánlatkérés',
+  /**
+   * A hero alatti, rövid ajánlatkérő fejléce. Ugyanaz a kérdőív fut benne,
+   * mint a lap alján — csak a felvezetés rövidebb, mert itt a látogató még
+   * nem olvasott végig semmit.
+   */
+  top: {
+    eyebrow: 'Kezdjük itt',
+    title: 'Kérj ajánlatot két percben',
+    lead:
+      'Négy gyors kérdés, aztán az elérhetőséged. Nem kell méret vagy műszaki leírás — a részleteket a felmérésen tisztázzuk.',
+    points: [
+      'Két munkanapon belül visszahívunk',
+      'A felmérés díját megrendelés esetén jóváírjuk',
+      'Tételes, összehasonlítható ajánlat',
+    ],
+  },
   title: 'Szeretnéd megtudni, milyen megoldás illik az otthonodhoz?',
   lead:
     'Négy gyors kérdés, aztán az elérhetőséged. Két munkanapon belül felvesszük veled a kapcsolatot.',

@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from 'react';
 import { ANCHOR, cta, problem } from '../config/site';
 import { track } from '../lib/analytics';
-import { scrollToId } from '../lib/scroll';
+import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
@@ -114,7 +114,7 @@ export function Problem() {
             icon={<ArrowDownIcon />}
             onClick={() => {
               track('cta_quote_click', { placement: 'problema', context: current.key });
-              scrollToId(ANCHOR.form);
+              scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
             }}
           >
             {cta.primary}

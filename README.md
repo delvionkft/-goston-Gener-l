@@ -145,6 +145,17 @@ Ha nem REST API-t használsz, a `send()` törzsét cseréld le.
 Az éles build szándékosan hibát jelez bekötetlen végponttal: így nem lehet
 észrevétlenül elveszíteni valós érdeklődőt egy félig bekötött oldalon.
 
+### Két űrlap az oldalon
+
+Ugyanaz a kérdőív fut két helyen: egy a hero alatt (`source: 'hero-urlap'`),
+egy a lap alján (`source: 'fo-urlap'`). A beküldött adatban és a mérésben a
+`source` mező különbözteti meg őket, így látszik, melyik hoz több
+érdeklődőt.
+
+A gombok mindig a **közelebbi** űrlapra visznek (a hero saját gombja
+kivétel: az mindig a közvetlenül alatta lévőre). Így a látogató sosem ugrik
+át a fél oldalon a rossz irányba.
+
 ### A kérdőív
 
 Az ajánlatkérés öt lépésből áll: négy egyérintéses minősítő kérdés, majd az

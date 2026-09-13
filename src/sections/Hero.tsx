@@ -17,7 +17,7 @@ import './Hero.css';
 export function Hero() {
   const onQuote = () => {
     track('cta_quote_click', { placement: 'hero' });
-    scrollToId(ANCHOR.form);
+    scrollToId(ANCHOR.quickForm);
   };
 
   const onServices = () => {
