@@ -160,7 +160,9 @@
    így nem szorul egymásra, hanem új sorba kerül. */
 @media (min-width: 560px) {
   .quote__contacts {
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    /* A sáv csak akkor tördel oszlopokra, ha egy oszlopba tényleg kifér a
+       leghosszabb érték (az e-mail-cím). Enélkül a cím szó közepén törne. */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     gap: var(--sp-5) var(--sp-6);
   }
 }
@@ -181,12 +183,13 @@
   margin: 0.35rem 0 0;
   font-weight: 500;
   min-width: 0;
-  /* Az e-mail-cím inkább törjön, mint hogy kilógjon a szomszéd oszlopba. */
-  overflow-wrap: anywhere;
 }
 
+/* Az e-mail-cím és a telefonszám egy sorban marad. Ha a hely tényleg
+   kevés, a fenti rács vált egy oszlopra — nem a szöveg törik el. */
 .quote__contacts .contact-link {
   max-width: 100%;
+  white-space: nowrap;
 }
 
 .quote__area {
