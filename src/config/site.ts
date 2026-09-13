@@ -62,16 +62,23 @@ export const company = {
 } as const;
 
 export const contact = {
-  /** Megjelenített telefonszám — Ágoston Zsolt ügyvezető. */
-  phoneDisplay: '+36 30 463 8726',
+  /**
+   * A nyilvános telefonszám — Böröndi Szabina irodavezető.
+   * Szándékosan csak egy szám van kint: az ügyvezetői számot nem
+   * hirdetjük az oldalon.
+   */
+  phoneDisplay: '+36 70 547 9595',
   /** Tárcsázható formátum a `tel:` linkhez, szóköz nélkül. */
-  phoneHref: '+36304638726',
-  /** Második szám — Böröndi Szabina irodavezető. Üresen hagyva nem jelenik meg. */
-  phoneDisplay2: '+36 70 547 9595',
-  phoneHref2: '+36705479595',
-  /** Kihez tartoznak a számok — a footerben a szám mellett jelenik meg. */
-  phoneLabel: 'Ágoston Zsolt, ügyvezető',
-  phoneLabel2: 'Böröndi Szabina, irodavezető',
+  phoneHref: '+36705479595',
+  /** Kihez tartozik a szám — a footerben a szám alatt jelenik meg. */
+  phoneLabel: 'Böröndi Szabina, irodavezető',
+  /**
+   * Második szám. Üresen hagyva sehol nem jelenik meg — jelenleg
+   * szándékosan üres.
+   */
+  phoneDisplay2: '',
+  phoneHref2: '',
+  phoneLabel2: '',
   email: 'info@agostongeneral.hu',
   /** Székhely. Üresen hagyva nem jelenik meg. */
   address: '8648 Balatonkeresztúr, Iskola utca 4/I',
@@ -792,7 +799,7 @@ export const legal = {
   imprint: {
     title: 'Impresszum',
     href: '',
-    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: info@agostongeneral.hu · Telefon: +36 30 463 8726 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
+    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: info@agostongeneral.hu · Telefon: +36 70 547 9595 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
   },
 } as const;
 
