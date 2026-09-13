@@ -85,6 +85,12 @@ export function Process() {
           ref={listRef}
           style={{ '--progress': `${Math.max(0, progress)}%` } as React.CSSProperties}
         >
+          {/* Fénypont, ami végigfut az idővonalon — jelzi, hogy a folyamat
+              halad, és megmozgatja a szekció legnagyobb üres felületét. */}
+          <span className="process__track" aria-hidden="true">
+            <span className="process__spark" />
+          </span>
+
           {processCopy.steps.map((step, index) => (
             <li
               key={step.title}
