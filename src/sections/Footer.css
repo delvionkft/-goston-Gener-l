@@ -3,7 +3,7 @@
   overflow: hidden;
   /* Az ajánlatkérő szekciónál egy árnyalattal mélyebb tónus — ez adja a
      két sötét blokk közötti átmenet alapját, a felső vonal pedig lezárja. */
-  background: #231611;
+  background: var(--grain), linear-gradient(180deg, #2A1A13 0%, #231611 60%);
   color: var(--text-on-dark);
   padding-top: 0;
   /*

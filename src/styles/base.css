@@ -366,3 +366,59 @@ html[data-dev='true'] .ph {
     transform: skewX(-18deg) translateX(420%);
   }
 }
+
+/* --- Lágy háttérfoltok -----------------------------------------------------
+   Nagyon halvány, homokszínű körök a világos szekciók hátterében. Lassan
+   mozdulnak, így az oldal nem hat statikus dokumentumnak — de mivel a
+   tartalom mögött, alacsony kontraszttal ülnek, semmit nem nehezítenek meg. */
+
+.section--soft {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.section--soft::before,
+.section--soft::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: clamp(18rem, 40vw, 34rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(226, 210, 190, 0.5) 0%,
+    rgba(226, 210, 190, 0) 68%
+  );
+  pointer-events: none;
+}
+
+.section--soft::before {
+  top: -12%;
+  right: -8%;
+  animation: orb-drift 26s var(--ease-in-out) infinite alternate;
+}
+
+.section--soft::after {
+  bottom: -18%;
+  left: -12%;
+  width: clamp(14rem, 30vw, 26rem);
+  animation: orb-drift 34s var(--ease-in-out) 1.5s infinite alternate-reverse;
+}
+
+@keyframes orb-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, 4%, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section--soft::before,
+  .section--soft::after {
+    animation: none;
+  }
+}

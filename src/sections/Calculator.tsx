@@ -6,6 +6,7 @@ import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
 import { Button } from '../components/Button';
 import { PH } from '../components/PlaceholderText';
+import { AccentTitle } from '../components/AccentTitle';
 import { SectionMark } from '../components/SectionMark';
 import { ArrowDownIcon, CheckIcon } from '../components/Icons';
 import './Calculator.css';
@@ -128,7 +129,9 @@ export function Calculator() {
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{calculator.eyebrow}</p>
-          <h2 id="calc-cim">{calculator.title}</h2>
+          <h2 id="calc-cim">
+            <AccentTitle text={calculator.title} accent={calculator.accent} />
+          </h2>
           <p className="section-lead">{calculator.lead}</p>
         </div>
 

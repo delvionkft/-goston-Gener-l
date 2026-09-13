@@ -7,6 +7,7 @@ import { ImageSlot } from '../components/ImageSlot';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon } from '../components/Icons';
 import { SERVICE_ICONS } from '../components/serviceIcons';
+import { AccentTitle } from '../components/AccentTitle';
 import { SectionMark } from '../components/SectionMark';
 import './Services.css';
 
@@ -27,12 +28,14 @@ export function Services() {
   };
 
   return (
-    <section className="section services" id={ANCHOR.services} aria-labelledby="services-cim">
+    <section className="section section--soft services" id={ANCHOR.services} aria-labelledby="services-cim">
       <SectionMark id={ANCHOR.services} />
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{services.eyebrow}</p>
-          <h2 id="services-cim">{services.title}</h2>
+          <h2 id="services-cim">
+            <AccentTitle text={services.title} accent={services.accent} />
+          </h2>
           <p className="section-lead">{services.lead}</p>
         </div>
 

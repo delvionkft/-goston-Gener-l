@@ -2,6 +2,7 @@ import { ANCHOR, containsPlaceholder, testimonials } from '../config/site';
 import { useReveal } from '../hooks/useReveal';
 import { PH } from '../components/PlaceholderText';
 import { QuoteIcon } from '../components/Icons';
+import { AccentTitle } from '../components/AccentTitle';
 import { SectionMark } from '../components/SectionMark';
 import './Testimonials.css';
 
@@ -21,7 +22,7 @@ export function Testimonials() {
 
   return (
     <section
-      className="section testimonials"
+      className="section section--soft testimonials"
       id={ANCHOR.testimonials}
       aria-labelledby="testimonials-cim"
     >
@@ -29,7 +30,9 @@ export function Testimonials() {
       <div className="container">
         <div className="section-head" ref={headRef}>
           <p className="eyebrow">{testimonials.eyebrow}</p>
-          <h2 id="testimonials-cim">{testimonials.title}</h2>
+          <h2 id="testimonials-cim">
+            <AccentTitle text={testimonials.title} accent={testimonials.accent} />
+          </h2>
           <p className="section-lead">{testimonials.lead}</p>
           {isSample ? (
             <p className="testimonials__notice ph">{testimonials.sampleNotice}</p>

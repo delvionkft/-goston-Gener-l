@@ -1,0 +1,59 @@
+.stats {
+  display: grid;
+  gap: var(--sp-5);
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) var(--gutter);
+  list-style: none;
+}
+
+@media (min-width: 620px) {
+  .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6);
+  }
+}
+
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+/* Hajszálvékony elválasztó a számok között — csak ott, ahol egy sorban vannak. */
+@media (min-width: 620px) {
+  .stats__item + .stats__item::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--sp-6) / 2);
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background: var(--c-line);
+  }
+}
+
+.stats__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-brown-900);
+}
+
+.stats__suffix {
+  color: var(--c-brown-400);
+}
+
+.stats__label {
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--text-muted);
+  max-width: 22ch;
+}

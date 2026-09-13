@@ -213,3 +213,10 @@
   font-weight: 600;
   color: var(--c-brown-900);
 }
+
+/* --- Számsáv --- */
+
+.hero__stats {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  border-top: 1px solid var(--c-line);
+}

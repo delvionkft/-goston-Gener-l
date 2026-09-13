@@ -3,6 +3,7 @@ import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { Button } from '../components/Button';
 import { ImageSlot } from '../components/ImageSlot';
+import { Stats } from '../components/Stats';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
@@ -87,6 +88,11 @@ export function Hero() {
             <PH value={company.serviceAreaShort} />
           </span>
         </div>
+      </div>
+
+      {/* Rövid számsáv a képsáv alatt — görgetéskor felfutó értékekkel. */}
+      <div className="hero__stats">
+        <Stats />
       </div>
     </section>
   );

@@ -216,6 +216,21 @@ export const hero = {
 } as const;
 
 /* ---------------------------------------------------------------------------
+ * 4/B. SZÁMOK
+ *
+ *  Rövid, ellenőrizhető számok a hero alatt. Csak olyat tegyél ide, ami
+ *  igaz és bizonyítható — a felfújt szám az első beszélgetésben lebukik.
+ *  A 25 év és a 250 kivitelezés a korábbi agostongeneral.hu oldalról jön;
+ *  ha időközben változott, írd át.
+ * ------------------------------------------------------------------------ */
+
+export const stats = [
+  { value: 25, suffix: '+', label: 'év építőipari tapasztalat' },
+  { value: 250, suffix: '+', label: 'befejezett kivitelezés' },
+  { value: 14, suffix: '', label: 'település a szolgáltatási területen' },
+] as const;
+
+/* ---------------------------------------------------------------------------
  * 5. PROBLÉMAFELVETÉS
  * ------------------------------------------------------------------------ */
 
@@ -277,6 +292,8 @@ export const problem = {
 export const services = {
   eyebrow: 'Szolgáltatások',
   title: 'Amiben segíteni tudunk',
+  /** Ez a szó kap kézzel húzott aláhúzást a címben. Üresen hagyva nincs. */
+  accent: 'segíteni',
   lead:
     'Egy helyen a teljes nyílászáró-kör: a nyílászárótól az árnyékoláson át a beépítésig és a helyreállításig. Így nem neked kell több kivitelezőt összehangolnod.',
   items: [
@@ -403,6 +420,7 @@ export const why = {
 export const calculator = {
   eyebrow: 'Árkalkulátor',
   title: 'Nézzük meg nagyságrendben, mibe kerülne',
+  accent: 'nagyságrendben',
   lead:
     'Állítsd be, mire lenne szükséged, és kapsz egy tájékoztató nagyságrendet. A pontos árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
 
@@ -595,6 +613,7 @@ export const references = {
 export const testimonials = {
   eyebrow: 'Ügyfélvélemények',
   title: 'Mit mondanak az ügyfeleink?',
+  accent: 'ügyfeleink',
   lead: 'Valós, nyilvános Google-értékelésekből.',
   /** Csak akkor jelenik meg, ha a vélemények még helyőrzők. */
   sampleNotice:

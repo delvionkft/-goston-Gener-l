@@ -1,0 +1,48 @@
+.accent-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.accent-word__line {
+  position: absolute;
+  left: -1%;
+  right: -1%;
+  bottom: -0.22em;
+  width: 102%;
+  height: 0.32em;
+  overflow: visible;
+  fill: none;
+  stroke: var(--c-brown-400);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.section--dark .accent-word__line {
+  stroke: var(--c-sand);
+  opacity: 0.7;
+}
+
+/* A vonal megjelenéskor rajzolódik ki — a szekció reveal-jéhez igazítva. */
+.accent-word__line path {
+  stroke-dasharray: 210;
+  stroke-dashoffset: 210;
+  animation: accent-draw 900ms var(--ease-out) 320ms forwards;
+}
+
+.reveal:not(.is-visible) .accent-word__line path {
+  animation-play-state: paused;
+}
+
+@keyframes accent-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent-word__line path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

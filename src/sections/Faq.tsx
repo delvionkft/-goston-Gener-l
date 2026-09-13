@@ -20,7 +20,7 @@ export function Faq() {
   const listRef = useReveal<HTMLDivElement>();
 
   return (
-    <section className="section faq" id={ANCHOR.faq} aria-labelledby="faq-cim">
+    <section className="section section--soft faq" id={ANCHOR.faq} aria-labelledby="faq-cim">
       <SectionMark id={ANCHOR.faq} />
       <div className="container faq__inner">
         <div className="faq__head" ref={headRef}>

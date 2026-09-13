@@ -105,6 +105,10 @@
   --shadow-md: 0 14px 34px -16px rgba(46, 29, 20, 0.2);
   --shadow-lg: 0 34px 70px -32px rgba(46, 29, 20, 0.32);
 
+  /* Finom filmszemcse a sötét felületekre — közelről sem lesz „lapos
+     barna folt", de nyomtatásban és kis kijelzőn sem tolakodó. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
+
   /* --- Mozgás --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
