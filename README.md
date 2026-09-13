@@ -90,6 +90,11 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 | Logó (opcionális) | pl. `logo.svg` → `company.logo` | — | — |
 | Szolgáltatáskártya (opcionális) | tetszőleges → `services.items[].image` | 1200×750 | 16:10 |
 
+A konfigurációban a képútvonalak **kezdő perjel nélkül** szerepelnek
+(`hero-1.webp`, nem `/hero-1.webp`). Így az oldal akkor is megtalálja a
+fájlokat, ha nem a domain gyökeréből szolgáljuk ki — például előnézetben
+vagy alkönyvtárból.
+
 **Ezek a fájlnevek már be vannak írva a konfigurációba.** Elég a fájlokat a
 `public/` mappába feltölteni ezekkel a nevekkel — kódot nem kell módosítani.
 Amíg egy fájl hiányzik vagy a neve elír, jelölt képhelyőrző látszik a helyén,
