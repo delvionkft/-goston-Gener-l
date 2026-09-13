@@ -31,13 +31,22 @@ export function QuoteSection({ onOpenPrivacy }: Props) {
 
       <div className="container">
         <div className="quote__grid" ref={ref}>
-          <div className="quote__copy">
+          <div className="quote__intro">
             <p className="eyebrow">{formCopy.eyebrow}</p>
             <h2 id="quote-cim" className="quote__title">
               {formCopy.title}
             </h2>
             <p className="section-lead">{formCopy.lead}</p>
+          </div>
 
+          {/* Világos panel a sötét háttéren — az űrlap a szekció
+              legerősebb vizuális eleme. Mobilon rögtön a felvezető után
+              jön, hogy ne kelljen hozzá görgetni. */}
+          <div className="quote__panel">
+            <QuoteForm source="fo-urlap" onOpenPrivacy={onOpenPrivacy} />
+          </div>
+
+          <div className="quote__aside">
             <div className="quote__after">
               <h3 className="quote__after-title">Mi történik a beküldés után?</h3>
               <ol className="quote__steps">
@@ -72,12 +81,6 @@ export function QuoteSection({ onOpenPrivacy }: Props) {
                 </dd>
               </div>
             </dl>
-          </div>
-
-          {/* Világos panel a sötét háttéren — az űrlap így a szekció
-              legerősebb vizuális eleme. */}
-          <div className="quote__panel">
-            <QuoteForm source="fo-urlap" onOpenPrivacy={onOpenPrivacy} />
           </div>
         </div>
       </div>
