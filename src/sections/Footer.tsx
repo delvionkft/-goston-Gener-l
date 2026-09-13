@@ -18,8 +18,21 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
     <footer className="footer on-dark">
       {/* Nagyméretű, halvány cégnév a háttérben. Dekoratív, ezért a
           képernyőolvasó elől el van rejtve, és nem takarja a szöveget. */}
+      {/* Háttérfelirat SVG-ben: a `textLength` miatt a szöveg pontosan
+          annyi helyet foglal, amennyi van — így hosszabb cégnévnél sem lóg
+          ki, és nem kell betűméretet találgatni. */}
       <div className="footer__wordmark" aria-hidden="true">
-        <span>{company.shortName}</span>
+        <svg viewBox="0 0 1000 150" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <text
+            x="500"
+            y="128"
+            textAnchor="middle"
+            textLength="960"
+            lengthAdjust="spacingAndGlyphs"
+          >
+            {company.shortName}
+          </text>
+        </svg>
       </div>
 
       <div className="container footer__inner">

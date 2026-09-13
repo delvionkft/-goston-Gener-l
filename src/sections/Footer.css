@@ -20,22 +20,26 @@
 
 .footer__wordmark {
   position: absolute;
-  inset: auto 0 -0.14em;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--mobilebar-h) + clamp(0.5rem, 0.25rem + 1vw, 1.25rem));
   display: flex;
   justify-content: center;
   pointer-events: none;
   user-select: none;
-  overflow: hidden;
-  line-height: 0.78;
 }
 
-.footer__wordmark span {
+.footer__wordmark svg {
+  width: 100%;
+  max-width: var(--container);
+  height: auto;
+}
+
+.footer__wordmark text {
   font-family: var(--font-display);
-  font-size: clamp(5rem, 20vw, 19rem);
+  font-size: 130px;
   font-weight: 600;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-  color: rgba(216, 194, 168, 0.07);
+  fill: rgba(226, 210, 190, 0.07);
 }
 
 .footer__inner {
