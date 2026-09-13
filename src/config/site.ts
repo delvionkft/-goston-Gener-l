@@ -79,7 +79,7 @@ export const contact = {
   phoneDisplay2: '',
   phoneHref2: '',
   phoneLabel2: '',
-  email: 'info@agostongeneral.hu',
+  email: 'agostongeneral@gmail.com',
   /** Székhely. Üresen hagyva nem jelenik meg. */
   address: '8648 Balatonkeresztúr, Iskola utca 4/I',
   /** Elérhetőségi idő rövid szövege. Ha üres, nem jelenik meg. */
@@ -799,7 +799,7 @@ export const legal = {
   imprint: {
     title: 'Impresszum',
     href: '',
-    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: info@agostongeneral.hu · Telefon: +36 70 547 9595 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
+    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: agostongeneral@gmail.com · Telefon: +36 70 547 9595 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
   },
 } as const;
 
