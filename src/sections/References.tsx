@@ -35,6 +35,10 @@ export function References() {
       imageAlt: item.afterAlt,
     }));
 
+  /* A csúszkás tipp csak akkor jelenik meg, ha van olyan munka, amihez
+     „előtte" fotó is tartozik. */
+  const hasAnyPair = references.items.some((item) => item.beforeImage && item.afterImage);
+
   const openLightbox = (id: string) => {
     const index = gallery.findIndex((entry) => entry.id === id);
     if (index < 0) return;
@@ -74,7 +78,7 @@ export function References() {
                       beforeLabel={references.beforeLabel}
                       afterLabel={references.afterLabel}
                       ratio="4 / 3"
-                      sizes="(min-width: 700px) 50vw, 100vw"
+                      sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw"
                     />
                   ) : afterImage ? (
                     <button
@@ -87,7 +91,7 @@ export function References() {
                         src={afterImage}
                         alt={item.afterAlt}
                         ratio="4 / 3"
-                        sizes="(min-width: 700px) 50vw, 100vw"
+                        sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw"
                       />
                       <span className="refs__expand" aria-hidden="true">
                         <ExpandIcon />
@@ -121,7 +125,7 @@ export function References() {
           })}
         </ul>
 
-        {gallery.length > 0 ? (
+        {hasAnyPair ? (
           <p className="refs__hint">
             Ahol előtte–utána kép is van, a csúszkát húzva hasonlíthatod össze a két
             állapotot.
