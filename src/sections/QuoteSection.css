@@ -5,7 +5,7 @@
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(165deg, #3D2619 0%, #2E1D14 48%, #231610 100%);
+    linear-gradient(165deg, #4A3D20 0%, #332A16 48%, #241E10 100%);
 }
 
 /* Meleg fény a jobb felső sarokból — a hero irányából „bejövő" fény. */
@@ -15,8 +15,8 @@
   inset: 0;
   background:
     var(--grain),
-    radial-gradient(48% 42% at 78% 4%, rgba(199, 154, 106, 0.3) 0%, rgba(199, 154, 106, 0) 70%),
-    radial-gradient(40% 45% at 8% 96%, rgba(126, 84, 48, 0.34) 0%, rgba(126, 84, 48, 0) 72%);
+    radial-gradient(48% 42% at 78% 4%, rgba(192, 169, 110, 0.3) 0%, rgba(192, 169, 110, 0) 70%),
+    radial-gradient(40% 45% at 8% 96%, rgba(143, 117, 62, 0.34) 0%, rgba(143, 117, 62, 0) 72%);
   pointer-events: none;
 }
 
@@ -48,7 +48,7 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(226, 210, 190, 0.16) 0%,
+    rgba(233, 220, 190, 0.16) 0%,
     rgba(169, 130, 99, 0.12) 42%,
     rgba(169, 130, 99, 0) 68%
   );
@@ -134,7 +134,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid rgba(226, 210, 190, 0.34);
+  border: 1px solid rgba(233, 220, 190, 0.34);
   font-family: var(--font-display);
   font-size: var(--fs-xs);
   font-weight: 700;
@@ -153,7 +153,7 @@
   gap: var(--sp-4);
   margin: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem) 0 0;
   padding-top: var(--sp-6);
-  border-top: 1px solid rgba(226, 210, 190, 0.22);
+  border-top: 1px solid rgba(233, 220, 190, 0.22);
 }
 
 /* Annyi oszlop, amennyi elfér: a hosszú e-mail-cím és a működési terület
@@ -205,7 +205,7 @@
   background: linear-gradient(180deg, #FFFFFF 0%, var(--c-offwhite) 100%);
   border-radius: var(--r-xl);
   box-shadow:
-    0 40px 80px -36px rgba(12, 7, 4, 0.6),
+    0 40px 80px -36px rgba(10, 8, 4, 0.6),
     0 0 0 1px rgba(239, 228, 214, 0.12);
   /* Így a lépések között nem ugrál a szekció magassága. */
   min-height: clamp(26rem, 22rem + 10vw, 34rem);

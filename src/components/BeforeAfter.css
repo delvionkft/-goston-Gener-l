@@ -32,7 +32,7 @@
   width: 2px;
   margin-left: -1px;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0 1px rgba(46, 29, 20, 0.18);
+  box-shadow: 0 0 0 1px rgba(37, 31, 18, 0.18);
   pointer-events: none;
 }
 
@@ -75,7 +75,7 @@
   top: var(--sp-3);
   padding: 0.3rem 0.65rem;
   border-radius: var(--r-pill);
-  background: rgba(46, 29, 20, 0.72);
+  background: rgba(37, 31, 18, 0.72);
   color: #fff;
   font-family: var(--font-display);
   font-size: var(--fs-xs);

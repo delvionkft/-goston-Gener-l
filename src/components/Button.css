@@ -1,7 +1,9 @@
+/* A gombok színei szándékosan fix értékek, nem a paletta tokenjei: a
+   márkaszín változásakor is pontosan ilyenek maradnak. */
 .btn {
-  --btn-bg: var(--c-brown-900);
+  --btn-bg: #3A2419;
   --btn-fg: #FDFBF7;
-  --btn-bg-hover: var(--c-brown-700);
+  --btn-bg-hover: #5A3A25;
   --btn-border: transparent;
 
   position: relative;
@@ -58,24 +60,24 @@
 /* Másodlagos: körvonalas, világos felületen */
 .btn--secondary {
   --btn-bg: transparent;
-  --btn-fg: var(--c-brown-900);
+  --btn-fg: #3A2419;
   --btn-bg-hover: rgba(107, 68, 35, 0.07);
-  --btn-border: var(--c-brown-400);
+  --btn-border: #A98263;
 }
 .btn--secondary:hover {
-  --btn-border: var(--c-brown-700);
+  --btn-border: #5A3A25;
 }
 
 /* Sötét háttéren: homokszín alap, sötétbarna felirat (kontraszt ~9.5:1) */
 .btn--onDark {
-  --btn-bg: var(--c-sand);
-  --btn-fg: var(--c-espresso);
+  --btn-bg: #E2D2BE;
+  --btn-fg: #2E1D14;
   --btn-bg-hover: #E7D8C4;
 }
 
 .btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: var(--c-brown-900);
+  --btn-fg: #3A2419;
   --btn-bg-hover: rgba(107, 68, 35, 0.08);
   padding-inline: 0.9rem;
   font-weight: 500;

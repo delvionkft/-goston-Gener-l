@@ -7,7 +7,7 @@
   padding: var(--sp-4) var(--gutter) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
   background: var(--c-white);
   border-top: 1px solid var(--c-line);
-  box-shadow: 0 -10px 40px -24px rgba(59, 38, 24, 0.55);
+  box-shadow: 0 -10px 40px -24px rgba(37, 31, 18, 0.55);
   animation: cookiebar-in 340ms var(--ease-out) both;
 }
 

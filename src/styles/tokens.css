@@ -6,43 +6,58 @@
 
 :root {
   /* --- Színpaletta ---------------------------------------------------------
-     Fehér → törtfehér → bézs alapokon meleg, barnás skála.
-     Az akcentus egy mély, telített barna: elegáns, és sötét tónusa miatt
-     fehér szöveggel is bőven a WCAG AA fölött marad. */
-  --c-espresso: #2E1D14; /* legmélyebb barna — sötét szekciók háttere */
-  --c-brown-900: #3A2419; /* címsorok színe */
-  --c-brown-800: #4A2F20;
-  --c-brown-700: #5A3A25; /* FŐ AKCENTUS — gombok, kiemelések (10.2:1 fehérrel) */
-  --c-brown-600: #6E4728;
-  --c-brown-500: #7E5430; /* sötét háttéren és dekorációnál */
-  --c-brown-400: #A98263; /* világos, dekoratív barna — csak vonal, ikon, keret */
+     A márkaszín a #8F753E: minden nem fehér felület és kiemelés ebből a
+     családból jön. A nagy, sötét felületek ennek mélyebb árnyalatai, a
+     világos szekciók pedig ugyanennek a színnek a nagyon halvány keverései
+     fehérrel — így az oldal egyetlen színrendszert használ.
 
-  --c-sand: #E2D2BE;      /* homok — sötét háttéren kiemelés */
-  --c-sand-light: #EFE4D6;
-  --c-beige: #F3ECE2;     /* bézs szekcióháttér */
-  --c-offwhite: #FBF8F4;  /* törtfehér — az oldal alaphátere */
+     A gombok színei nem innen jönnek: azok a Button.css-ben fix értékek. */
+  --c-gold: #8F753E;        /* MÁRKASZÍN — vonalak, ikonok, kiemelések */
+  --c-gold-600: #7A6333;    /* sötétebb arany — hover, hangsúly */
+  --c-gold-800: #4A3D20;    /* mély arany — sötét felületek felső tónusa */
+  --c-gold-900: #332A16;    /* mélyebb — sötét szekciók alaptónusa */
+  --c-gold-950: #241E10;    /* legmélyebb — footer, sötét gradiens alja */
+  --c-gold-light: #C0A96E;  /* világos arany — dekoratív fény */
+
+  --c-cream: #E9DCBE;       /* krém — kiemelés sötét háttéren */
+  --c-cream-light: #F2E9D4;
+  --c-beige: #F4EFE3;       /* halvány arany-bézs szekcióháttér */
+  --c-offwhite: #FBF8F1;    /* törtfehér — az oldal alaphátere */
   --c-white: #FFFFFF;
 
-  --c-ink: #241A14;       /* fő szövegszín */
-  --c-muted: #6E6058;     /* másodlagos szöveg */
-  --c-line: #E4DACD;      /* keretek */
-  --c-line-soft: #EFE8DE;
+  --c-ink: #241E12;         /* fő szövegszín */
+  --c-muted: #6B6250;       /* másodlagos szöveg (5.6:1) */
+  --c-line: #E5DCC8;        /* keretek */
+  --c-line-soft: #EFE9DB;
 
-  /* Szövegre használható akcentszín világos háttéren (5.7:1). A dekoratív
-     --c-brown-400 szöveghez kevés, azt csak vonalra és ikonra használjuk. */
-  --c-accent-text: #7E5430;
+  /* Szövegre használható arany. A tiszta #8F753E világos háttéren 4.4:1-et
+     ad, ami folyószöveghez kevés — ezért szöveghez ez a sötétebb (5.9:1),
+     a tiszta márkaszín pedig dekorációra megy, ahol a küszöb 3:1. */
+  --c-accent-text: #755F2C;
+
+  /* Visszafelé kompatibilis nevek: a komponens-CSS ezeket használja.
+     Egy helyen mutatnak az új palettára. */
+  --c-espresso: var(--c-gold-950);
+  --c-brown-900: #2F2716;   /* címsorok, sötét szöveg */
+  --c-brown-800: #3C3119;
+  --c-brown-700: var(--c-gold-600);
+  --c-brown-600: var(--c-gold-600);
+  --c-brown-500: var(--c-gold);
+  --c-brown-400: var(--c-gold);
+  --c-sand: var(--c-cream);
+  --c-sand-light: var(--c-cream-light);
 
   /* --- Szerepkör szerinti színek --- */
   --bg: var(--c-offwhite);
   --bg-beige: var(--c-beige);
-  --bg-deep: var(--c-espresso);
+  --bg-deep: var(--c-gold-900);
   --surface: var(--c-white);
   --text: var(--c-ink);
   --text-muted: var(--c-muted);
-  --text-on-dark: #F7F2EB;
-  --text-on-dark-muted: #CDBCA8;
+  --text-on-dark: #F8F4EA;
+  --text-on-dark-muted: #D2C5A6;
   --border: var(--c-line);
-  --accent: var(--c-brown-700);
+  --accent: var(--c-gold);
 
   /* --- Tipográfia ----------------------------------------------------------
      Montserrat: geometrikus, modern, prémium hatású — címsorra, gombra,
@@ -100,10 +115,10 @@
   --r-pill: 999px;
 
   /* --- Árnyék — finom, barnás alapú, soha nem szürke --- */
-  --shadow-xs: 0 1px 2px rgba(46, 29, 20, 0.05);
-  --shadow-sm: 0 2px 8px rgba(46, 29, 20, 0.05), 0 1px 2px rgba(46, 29, 20, 0.04);
-  --shadow-md: 0 14px 34px -16px rgba(46, 29, 20, 0.2);
-  --shadow-lg: 0 34px 70px -32px rgba(46, 29, 20, 0.32);
+  --shadow-xs: 0 1px 2px rgba(37, 31, 18, 0.05);
+  --shadow-sm: 0 2px 8px rgba(37, 31, 18, 0.05), 0 1px 2px rgba(37, 31, 18, 0.04);
+  --shadow-md: 0 14px 34px -16px rgba(37, 31, 18, 0.2);
+  --shadow-lg: 0 34px 70px -32px rgba(37, 31, 18, 0.32);
 
   /* Finom filmszemcse a sötét felületekre — közelről sem lesz „lapos
      barna folt", de nyomtatásban és kis kijelzőn sem tolakodó. */

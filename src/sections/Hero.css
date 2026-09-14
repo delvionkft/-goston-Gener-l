@@ -11,7 +11,7 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(60% 45% at 50% 0%, rgba(226, 210, 190, 0.6) 0%, rgba(226, 210, 190, 0) 62%),
+    radial-gradient(60% 45% at 50% 0%, rgba(233, 220, 190, 0.6) 0%, rgba(233, 220, 190, 0) 62%),
     linear-gradient(175deg, var(--c-offwhite) 0%, var(--c-beige) 100%);
 }
 

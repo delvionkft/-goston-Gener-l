@@ -3,7 +3,7 @@
   overflow: hidden;
   /* Az ajánlatkérő szekciónál egy árnyalattal mélyebb tónus — ez adja a
      két sötét blokk közötti átmenet alapját, a felső vonal pedig lezárja. */
-  background: var(--grain), linear-gradient(180deg, #2A1A13 0%, #231611 60%);
+  background: var(--grain), linear-gradient(180deg, #332A16 0%, #241E10 60%);
   color: var(--text-on-dark);
   padding-top: 0;
   /*
@@ -39,7 +39,7 @@
   font-family: var(--font-display);
   font-size: 130px;
   font-weight: 600;
-  fill: rgba(226, 210, 190, 0.07);
+  fill: rgba(233, 220, 190, 0.07);
 }
 
 .footer__inner {
@@ -175,7 +175,7 @@
   gap: var(--sp-4);
   padding-block: var(--sp-5);
   margin-bottom: clamp(2.5rem, 1.8rem + 3vw, 4rem);
-  border-bottom: 1px solid rgba(226, 210, 190, 0.16);
+  border-bottom: 1px solid rgba(233, 220, 190, 0.16);
 }
 
 .footer__seam-text {
@@ -191,7 +191,7 @@
   align-items: center;
   gap: var(--sp-2);
   padding: 0.5rem 0.9rem;
-  border: 1px solid rgba(226, 210, 190, 0.28);
+  border: 1px solid rgba(233, 220, 190, 0.28);
   border-radius: var(--r-pill);
   background: none;
   color: var(--text-on-dark);
@@ -209,7 +209,7 @@
 }
 
 .footer__totop:hover {
-  background: rgba(226, 210, 190, 0.1);
+  background: rgba(233, 220, 190, 0.1);
   border-color: var(--c-sand);
 }
 

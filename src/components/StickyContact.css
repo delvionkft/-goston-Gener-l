@@ -27,8 +27,8 @@
   padding: 0.95rem 1.5rem;
   border: 1px solid var(--c-brown-800);
   border-radius: var(--r-pill);
-  background: var(--c-brown-900);
-  color: #FDFBF7;
+  background: #3A2419;
+  color: #FBF8F1;
   font-size: var(--fs-sm);
   font-weight: 600;
   box-shadow: var(--shadow-lg);
@@ -43,7 +43,7 @@
 }
 
 .sticky-float__btn:hover {
-  background: var(--c-brown-700);
+  background: #5A3A25;
   transform: translateY(-2px);
 }
 
@@ -66,7 +66,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--c-line);
-  box-shadow: 0 -6px 24px -18px rgba(59, 38, 24, 0.5);
+  box-shadow: 0 -6px 24px -18px rgba(37, 31, 18, 0.5);
   transform: translateY(100%);
   transition: transform var(--dur) var(--ease-out);
 }
@@ -100,7 +100,7 @@
   flex: 0 0 auto;
   border: 1px solid var(--c-brown-400);
   background: var(--c-white);
-  color: var(--c-brown-900);
+  color: #3A2419;
 }
 
 .sticky-bar__call svg {
@@ -111,12 +111,12 @@
 .sticky-bar__quote {
   flex: 1;
   border: 1px solid transparent;
-  background: var(--c-brown-900);
-  color: #FDFBF7;
+  background: #3A2419;
+  color: #FBF8F1;
 }
 
 .sticky-bar__quote:hover {
-  background: var(--c-brown-700);
+  background: #5A3A25;
 }
 
 @media (min-width: 980px) {
