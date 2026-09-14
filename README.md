@@ -87,7 +87,7 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 | Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
 
 A három hero kép a referenciafotókból készült 4:5 arányú vágással
-(`ref-1`, `ref-2`, `ref-6`). Ha jobb fotó készül, elég felülírni a fájlt
+(`ref-4`, `ref-5`, `ref-6`). Ha jobb fotó készül, elég felülírni a fájlt
 ugyanezzel a névvel — a kódban semmit nem kell átírni.
 | Logó (opcionális) | pl. `logo.svg` → `company.logo` | — | — |
 | Szolgáltatáskártya (opcionális) | tetszőleges → `services.items[].image` | 1200×750 | 16:10 |

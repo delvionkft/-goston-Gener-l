@@ -216,8 +216,8 @@ export const hero = {
    * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
    */
   gallery: [
-    { image: 'hero-1.webp', alt: 'Frissen beépített kétszárnyú műanyag ablak kívülről, a helyreállítás előtt' },
-    { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak belülről, kilátással a kertre' },
+    { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
+    { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal, kívülről' },
     { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
   ],
 } as const;
