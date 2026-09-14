@@ -211,14 +211,14 @@ export const hero = {
    * A hero alatti képsáv. Három kép: középen a legerősebb (ez látszik
    * mobilon is elsőként), két oldalt egy-egy kiegészítő.
    *
-   * A fájlokat a /public mappába kell feltölteni pontosan ezekkel a
-   * nevekkel — amíg nincsenek ott, jelölt képhelyőrző látszik, nem törött
-   * kép. Ajánlott: 1000×1250 px, WebP, 200 kB alatt.
+   * A képek a /public mappában vannak, a saját referenciafotóitokból
+   * 4:5 arányra vágva. Ha jobb fotó készül, elég felülírni a fájlt
+   * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
    */
   gallery: [
-    { image: 'hero-1.webp', alt: 'Világos nappali nagyméretű modern ablakokkal' },
-    { image: 'hero-2.webp', alt: 'Beépített bejárati ajtó kívülről' },
-    { image: 'hero-3.webp', alt: 'Nyílászáró beépítés közben, rendezett munkaterület' },
+    { image: 'hero-1.webp', alt: 'Frissen beépített kétszárnyú műanyag ablak kívülről, a helyreállítás előtt' },
+    { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak belülről, kilátással a kertre' },
+    { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
   ],
 } as const;
 

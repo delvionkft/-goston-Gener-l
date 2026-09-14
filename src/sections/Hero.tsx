@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { ANCHOR, company, cta, hero } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
@@ -16,6 +17,21 @@ import './Hero.css';
  * a legerősebb kép: ez látszik mobilon is elsőként.
  */
 export function Hero() {
+  const stripRef = useRef<HTMLUListElement>(null);
+
+  /**
+   * Mobilon a húzható képsáv a középső (legerősebb) képnél nyit. Ez egyben
+   * jelzi is, hogy a sáv oldalra húzható, mert mindkét szélen kilátszik a
+   * szomszédos kép. Desktopon a sáv nem görgethető, ott nincs dolga.
+   */
+  useEffect(() => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const middle = strip.children[1] as HTMLElement | undefined;
+    if (!middle || strip.scrollWidth <= strip.clientWidth) return;
+    strip.scrollLeft = middle.offsetLeft - (strip.clientWidth - middle.clientWidth) / 2;
+  }, []);
+
   const onQuote = () => {
     track('cta_quote_click', { placement: 'hero' });
     scrollToId(ANCHOR.quickForm);
@@ -67,7 +83,7 @@ export function Hero() {
 
       {/* Képsáv. Mobilon vízszintesen húzható, középen kezdve. */}
       <div className="hero__gallery">
-        <ul className="hero__strip">
+        <ul className="hero__strip" ref={stripRef}>
           {hero.gallery.map((item, index) => (
             <li className={`hero__shot hero__shot--${index + 1}`} key={item.image}>
               <ImageSlot

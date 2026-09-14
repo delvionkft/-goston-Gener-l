@@ -78,15 +78,17 @@ maradt ilyen — CI-ba is beköthető.
 Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 `src/config/site.ts` megfelelő `image` mezőjébe (pl. `'/hero.webp'`).
 
-| Hely | Fájlnév a `public/` mappában | Ajánlott méret | Képarány |
-| --- | --- | --- | --- |
-| Hero, bal kép | `hero-1.webp` | 1000×1250 | 4:5 |
-| Hero, középső (legerősebb) | `hero-2.webp` | 1000×1250 | 4:5 |
-| Hero, jobb kép | `hero-3.webp` | 1000×1250 | 4:5 |
-| 1. referencia, előtte | `ref-1-elotte.webp` | 1200×900 | 4:3 |
-| 1. referencia, utána | `ref-1-utana.webp` | 1200×900 | 4:3 |
-| 2–4. referencia | `ref-2-elotte.webp` … `ref-4-utana.webp` | 1200×900 | 4:3 |
-| Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 |
+| Hely | Fájlnév a `public/` mappában | Ajánlott méret | Képarány | Állapot |
+| --- | --- | --- | --- | --- |
+| Hero, bal kép | `hero-1.webp` | 840×1050 | 4:5 | kész |
+| Hero, középső (legerősebb) | `hero-2.webp` | 840×1050 | 4:5 | kész |
+| Hero, jobb kép | `hero-3.webp` | 840×1050 | 4:5 | kész |
+| Referenciák (6 db) | `ref-1.webp` … `ref-6.webp` | 1400×1050 | 4:3 | kész |
+| Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
+
+A három hero kép a referenciafotókból készült 4:5 arányú vágással
+(`ref-1`, `ref-2`, `ref-6`). Ha jobb fotó készül, elég felülírni a fájlt
+ugyanezzel a névvel — a kódban semmit nem kell átírni.
 | Logó (opcionális) | pl. `logo.svg` → `company.logo` | — | — |
 | Szolgáltatáskártya (opcionális) | tetszőleges → `services.items[].image` | 1200×750 | 16:10 |
 
