@@ -431,76 +431,65 @@ export const calculator = {
   lead:
     'Állítsd be, mire lenne szükséged, és kapsz egy tájékoztató nagyságrendet. A pontos árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
 
-  /** FALSE, amíg nincsenek valós árak. Ilyenkor összeg helyett összefoglaló látszik. */
-  pricesReady: false,
+  /** Fix ablak: a gyártói mérettáblázatból számol (src/config/pricing.ts). */
+  fix: {
+    legend: 'Fix ablak',
+    hint: 'A gyártói mérettáblázat szerinti listaár, méret alapján.',
+    widthLabel: 'Szélesség (cm)',
+    heightLabel: 'Magasság (cm)',
+    countLabel: 'Darabszám',
+  },
 
-  /** Pénznem és ár-alapelv — ez jelenik meg az eredmény alatt. */
-  currency: 'Ft',
-  priceNote:
-    '[ÁRAK JELLEGE — pl. bruttó árak, anyaggal és munkadíjjal együtt, átlagos méretű nyílászáróra számolva.]',
+  /** További nyílászárók. Ezekhez még nincs mérettáblázat. */
+  others: {
+    legend: 'További nyílászárók',
+    items: [
+      {
+        key: 'openingWindow' as const,
+        label: 'Nyíló / bukó-nyíló ablak',
+        hint: 'Mérettáblázat alapján számolható, amint megvan',
+        max: 30,
+      },
+      {
+        key: 'balconyDoor' as const,
+        label: 'Erkély- vagy teraszajtó',
+        hint: 'Nagyobb üvegfelület, nyíló vagy toló',
+        max: 10,
+      },
+      {
+        key: 'entranceDoor' as const,
+        label: 'Bejárati ajtó',
+        hint: 'Hőszigetelt, biztonsági vasalattal',
+        max: 5,
+      },
+    ],
+  },
 
-  /** Nyílászáró-tételek. A látogató darabszámot állít mindegyiknél. */
-  items: [
-    {
-      key: 'ablak',
-      label: 'Ablak',
-      hint: 'Átlagos méretű, bukó-nyíló ablak',
-      max: 30,
-      from: 0,
-      to: 0,
-    },
-    {
-      key: 'erkelyajto',
-      label: 'Erkély- vagy teraszajtó',
-      hint: 'Nagyobb üvegfelület, nyíló vagy toló',
-      max: 10,
-      from: 0,
-      to: 0,
-    },
-    {
-      key: 'bejarati',
-      label: 'Bejárati ajtó',
-      hint: 'Hőszigetelt, biztonsági vasalattal',
-      max: 5,
-      from: 0,
-      to: 0,
-    },
-  ],
+  /** Kiegészítők — nyílászárónként számolódnak. */
+  extras: {
+    legend: 'Kiegészítők',
+    items: [
+      { key: 'shutter' as const, label: 'Redőny' },
+      { key: 'insectScreen' as const, label: 'Szúnyogháló' },
+      { key: 'sill' as const, label: 'Párkányok' },
+    ],
+  },
 
-  /** Üvegezés — a nyílászárók árát szorozza. A kétrétegű az alap (1). */
-  glazing: [
-    { key: 'duplex', label: 'Kétrétegű üveg', hint: 'Alapeset', multiplier: 1 },
-    {
-      key: 'triplex',
-      label: 'Háromrétegű üveg',
-      hint: 'Jobb hőszigetelés',
-      multiplier: 1,
-    },
-  ],
-
-  /** Kiegészítők. Nyílászáróként számolódnak (darabszám × egységár). */
-  extras: [
-    { key: 'redony', label: 'Redőny', from: 0, to: 0 },
-    { key: 'szunyoghalo', label: 'Szúnyogháló', from: 0, to: 0 },
-    { key: 'parkany', label: 'Párkányok', from: 0, to: 0 },
-  ],
-
-  /** Beépítés: a régi bontása, az új beépítése és a helyreállítás. */
   installation: {
-    key: 'beepites',
+    key: 'installation' as const,
     label: 'Beépítés bontással és helyreállítással',
     hint: 'Ha csak a nyílászárót vennéd meg, kapcsold ki.',
-    from: 0,
-    to: 0,
   },
 
   /** Az eredménypanel szövegei. */
   result: {
     label: 'Tájékoztató nagyságrend',
     empty: 'Állíts be legalább egy nyílászárót.',
-    /** Ez látszik, amíg a pricesReady false. */
+    /** Ha a beállított tételek egyikéhez sincs még ár. */
     pending:
-      'Az árak feltöltése folyamatban. Küldd el az ajánlatkérést a beállításoddal, és konkrét árral keresünk meg.',
+      'Ehhez a beállításhoz még nincs árunk feltöltve. Küldd el az ajánlatkérést, és konkrét árral keresünk meg.',
+    /** Ha csak néhány tételhez hiányzik az ár. */
+    missingPrefix: 'Az összeg nem tartalmazza:',
     disclaimer:
       'Ez tájékoztató nagyságrend, nem ajánlat. A végleges árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
     cta: 'Ajánlatot kérek erre a beállításra',

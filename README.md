@@ -188,22 +188,30 @@ alapú konverziót mérsz —, add meg az útvonalat a `form.thankYouUrl` mezőb
 A kalkulátor minden adata a `src/config/site.ts` **`calculator`** blokkjában
 van. Sehol máshol nincs ár a kódban.
 
-**Amíg a `pricesReady` értéke `false`, a kalkulátor nem mutat összeget** —
-összefoglalja a beállítást, és ajánlatkérésre visz. Ez szándékos: kitalált ár
-a látogató felé ígéret, és az első telefonban lebukik.
+**Az árak euróban vannak, a `src/config/pricing.ts` fájlban** — a gyártói
+listaárak is euróban érkeznek. A kalkulátor a megjelenítéskor váltja át
+forintra az **aznapi árfolyammal**, így árfolyamváltozáskor nincs teendő.
 
-Éles árakhoz:
+| Mi | Hol | Megjegyzés |
+| --- | --- | --- |
+| Fix ablak mérettáblázat | `fixWindow.prices` | EUR/darab, sorok = magasság, oszlopok = szélesség |
+| Egyéb tételek egységára | `unitPrices` | EUR/darab. **0 = még nincs ár** |
+| Árfolyamforrás | `exchange.url` | EKB napi középárfolyam, kulcs nélkül, CORS-barát |
+| Tartalék árfolyam | `exchange.fallbackRate` | Ha a lekérés nem megy. Néha frissítsd |
+| Kerekítés | `exchange.roundTo` | Alapból ezresre |
 
-1. Töltsd ki a `from` / `to` értékeket — nyílászáró-tételenként, kiegészítőnként
-   és a beépítésre. Mindegyik **egy darabra** vonatkozik.
-2. A háromrétegű üvegezésnél add meg a `multiplier` értéket (pl. `1.15`, ha
-   15%-kal drágább). A kétrétegű az alap, ez marad `1`.
-3. Írd át a `priceNote` mezőt: bruttó vagy nettó, mit tartalmaz az ár.
-4. Állítsd a `pricesReady` értékét `true`-ra.
+**Amihez `0` az ár, azt a kalkulátor nem találja ki**: kihagyja az összegből,
+a tételsorban „ár egyeztetés alatt" jelzéssel, és az eredmény alatt kiírja,
+mi nincs benne. Kitalált ár a látogató felé ígéret, és az első telefonban
+lebukik.
 
-Az eredmény mindig **sáv** (-tól -ig), tízezresre kerekítve — egy nyílászáró
-ára a mérettől és a beépítés körülményeitől is függ, az egyetlen szám hamis
-pontosságot sugallna.
+Az árfolyam-lekérés hibája nem töri el az oldalt: ilyenkor a tartalék
+árfolyam megy, és az eredmény mellett ott áll, hogy tájékoztató árfolyammal
+számolt. Az árfolyamot a böngésző munkamenetére gyorsítótárazzuk, tehát egy
+látogatás alatt egyszer kérdezzük le.
+
+Másik árfolyamforrásra váltáshoz elég az `exchange.url` és a
+`src/lib/exchange.ts` `readRate()` függvénye.
 
 A kalkulátor beállítása az ajánlatkéréssel együtt elmegy (`estimate` mező),
 és a `calculator_use` eseményben is szerepel — így a visszahíváskor látod,

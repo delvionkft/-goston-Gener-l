@@ -1,44 +1,54 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ANCHOR, calculator } from '../config/site';
+import { fixWindow, unitPrices } from '../config/pricing';
 import { track } from '../lib/analytics';
-import { formatPrice, setEstimate } from '../lib/estimate';
+import { setEstimate } from '../lib/estimate';
+import { fetchRate, formatEur, formatHuf, toHuf, type Rate } from '../lib/exchange';
 import { scrollToNearestForm } from '../lib/scroll';
 import { useReveal } from '../hooks/useReveal';
-import { Button } from '../components/Button';
-import { PH } from '../components/PlaceholderText';
 import { AccentTitle } from '../components/AccentTitle';
+import { Button } from '../components/Button';
 import { SectionMark } from '../components/SectionMark';
 import { ArrowDownIcon, CheckIcon } from '../components/Icons';
 import './Calculator.css';
 
 type Counts = Record<string, number>;
 
-/** Kerekítés tízezresre — a pontosabb szám hamis pontosságot sugallna. */
-function roundPrice(value: number): number {
-  return Math.round(value / 10000) * 10000;
-}
-
 /**
  * Árkalkulátor.
  *
- * Nem árajánlat-generátor, hanem nagyságrend-mutató: a látogató lássa,
- * milyen tartományban mozog a dolog, mielőtt telefonál. Ezért mindig
- * sávot mutat, és mindig ott van mellette, hogy a pontos ár a felmérés
- * után jön.
+ * Az árak euróban vannak (a gyártói listaárak is úgy érkeznek), a
+ * megjelenítés viszont forintban, az aznapi árfolyammal — így
+ * árfolyamváltozáskor nincs teendő a kódban.
  *
- * Amíg a konfigurációban nincsenek valós árak (`pricesReady: false`),
- * összeg helyett a beállítás összefoglalója jelenik meg — kitalált
- * számot nem mutatunk.
+ * Amihez még nincs ár, azt nem találjuk ki: a kalkulátor kihagyja az
+ * összegből, és külön kiírja, mi nincs benne.
  */
 export function Calculator() {
   const headRef = useReveal<HTMLDivElement>();
 
+  /* Fix ablak: méret a gyártói táblázatból. Alapból egy közepes méret. */
+  const [widthIndex, setWidthIndex] = useState(4);
+  const [heightIndex, setHeightIndex] = useState(4);
+  const [fixCount, setFixCount] = useState(2);
+
   const [counts, setCounts] = useState<Counts>(() =>
-    Object.fromEntries(calculator.items.map((item) => [item.key, item.key === 'ablak' ? 3 : 0])),
+    Object.fromEntries(calculator.others.items.map((item) => [item.key, 0])),
   );
-  const [glazing, setGlazing] = useState<string>(calculator.glazing[0].key);
   const [extras, setExtras] = useState<string[]>([]);
   const [installation, setInstallation] = useState(true);
+  const [rate, setRate] = useState<Rate | null>(null);
+
+  /* Az aznapi árfolyam. Hiba esetén a tartalék árfolyam jön vissza. */
+  useEffect(() => {
+    let active = true;
+    fetchRate().then((value) => {
+      if (active) setRate(value);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const setCount = (key: string, value: number, max: number) =>
     setCounts((prev) => ({ ...prev, [key]: Math.max(0, Math.min(max, value)) }));
@@ -47,64 +57,85 @@ export function Calculator() {
     setExtras((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
 
   const result = useMemo(() => {
-    const multiplier =
-      calculator.glazing.find((option) => option.key === glazing)?.multiplier ?? 1;
-
-    /* Összes nyílászáró: ehhez igazodik a beépítés díja. */
-    const totalUnits = calculator.items.reduce((sum, item) => sum + (counts[item.key] ?? 0), 0);
-    /* Redőny és szúnyogháló ablakra és erkélyajtóra kerül, bejárati ajtóra nem. */
-    const shadedUnits = calculator.items
-      .filter((item) => item.key !== 'bejarati')
-      .reduce((sum, item) => sum + (counts[item.key] ?? 0), 0);
-
-    let from = 0;
-    let to = 0;
     const lines: { label: string; detail: string }[] = [];
+    const missing: string[] = [];
+    let eur = 0;
 
-    for (const item of calculator.items) {
-      const qty = counts[item.key] ?? 0;
-      if (qty === 0) continue;
-      from += qty * item.from * multiplier;
-      to += qty * item.to * multiplier;
-      lines.push({ label: item.label, detail: `${qty} db` });
+    /* Fix ablak — méret szerinti listaár. */
+    const fixUnit = fixWindow.prices[heightIndex][widthIndex];
+    if (fixCount > 0) {
+      eur += fixCount * fixUnit;
+      lines.push({
+        label: `${fixWindow.label} · ${fixWindow.widths[widthIndex]} × ${fixWindow.heights[heightIndex]} cm`,
+        detail: `${fixCount} db`,
+      });
     }
 
-    for (const extra of calculator.extras) {
-      if (!extras.includes(extra.key) || shadedUnits === 0) continue;
-      from += shadedUnits * extra.from;
-      to += shadedUnits * extra.to;
-      lines.push({ label: extra.label, detail: `${shadedUnits} db` });
+    /* További nyílászárók — amíg nincs áruk, csak jelezzük őket. */
+    for (const item of calculator.others.items) {
+      const qty = counts[item.key] ?? 0;
+      if (qty === 0) continue;
+      const unit = unitPrices[item.key];
+      if (unit > 0) {
+        eur += qty * unit;
+        lines.push({ label: item.label, detail: `${qty} db` });
+      } else {
+        missing.push(item.label);
+        lines.push({ label: item.label, detail: `${qty} db · ár egyeztetés alatt` });
+      }
+    }
+
+    const totalUnits =
+      fixCount + calculator.others.items.reduce((sum, item) => sum + (counts[item.key] ?? 0), 0);
+
+    for (const extra of calculator.extras.items) {
+      if (!extras.includes(extra.key) || totalUnits === 0) continue;
+      const unit = unitPrices[extra.key];
+      if (unit > 0) {
+        eur += totalUnits * unit;
+        lines.push({ label: extra.label, detail: `${totalUnits} db` });
+      } else {
+        missing.push(extra.label);
+        lines.push({ label: extra.label, detail: 'ár egyeztetés alatt' });
+      }
     }
 
     if (installation && totalUnits > 0) {
-      from += totalUnits * calculator.installation.from;
-      to += totalUnits * calculator.installation.to;
-      lines.push({ label: calculator.installation.label, detail: `${totalUnits} db` });
+      const unit = unitPrices.installation;
+      if (unit > 0) {
+        eur += totalUnits * unit;
+        lines.push({ label: calculator.installation.label, detail: `${totalUnits} db` });
+      } else {
+        missing.push('beépítés');
+        lines.push({ label: calculator.installation.label, detail: 'ár egyeztetés alatt' });
+      }
     }
 
-    /* Emberi nyelvű összefoglaló — ez megy el a leaddel is. */
+    /* Emberi nyelvű összefoglaló — ez megy el az ajánlatkéréssel. */
     const parts: string[] = [];
-    for (const item of calculator.items) {
+    if (fixCount > 0) {
+      parts.push(
+        `${fixCount} fix ablak (${fixWindow.widths[widthIndex]}×${fixWindow.heights[heightIndex]} cm)`,
+      );
+    }
+    for (const item of calculator.others.items) {
       const qty = counts[item.key] ?? 0;
       if (qty > 0) parts.push(`${qty} ${item.label.toLowerCase()}`);
     }
-    const glazingLabel =
-      calculator.glazing.find((option) => option.key === glazing)?.label ?? '';
-    const extraLabels = calculator.extras
+    const extraLabels = calculator.extras.items
       .filter((extra) => extras.includes(extra.key))
       .map((extra) => extra.label.toLowerCase());
 
     const summary = [
       parts.join(', '),
-      glazingLabel.toLowerCase(),
       extraLabels.length ? extraLabels.join(', ') : null,
       installation ? 'beépítéssel' : 'beépítés nélkül',
     ]
       .filter(Boolean)
       .join(' · ');
 
-    return { from, to, lines, totalUnits, summary };
-  }, [counts, glazing, extras, installation]);
+    return { eur, lines, missing, totalUnits, summary };
+  }, [counts, extras, installation, fixCount, widthIndex, heightIndex]);
 
   /* A beállítás elérhetővé tétele az ajánlatkérő űrlap számára. */
   useEffect(() => {
@@ -112,15 +143,19 @@ export function Calculator() {
       setEstimate(null);
       return;
     }
+    const huf = rate ? toHuf(result.eur, rate.value) : undefined;
     setEstimate({
-      text: result.summary,
-      from: calculator.pricesReady ? roundPrice(result.from) : undefined,
-      to: calculator.pricesReady ? roundPrice(result.to) : undefined,
+      text: huf
+        ? `${result.summary} · kalkulált nagyságrend: ${formatHuf(huf)}`
+        : result.summary,
+      from: huf,
+      to: huf,
     });
-  }, [result]);
+  }, [result, rate]);
 
   const hasSelection = result.totalUnits > 0;
-  const showPrice = calculator.pricesReady && hasSelection && result.to > 0;
+  const huf = rate ? toHuf(result.eur, rate.value) : 0;
+  const showPrice = hasSelection && result.eur > 0 && rate !== null;
 
   return (
     <section className="section calc" id={ANCHOR.calculator} aria-labelledby="calc-cim">
@@ -139,9 +174,59 @@ export function Calculator() {
           {/* --- Vezérlők --- */}
           <div className="calc__controls">
             <fieldset className="calc__block">
-              <legend className="calc__legend">Mennyi nyílászáróról van szó?</legend>
+              <legend className="calc__legend">{calculator.fix.legend}</legend>
+              <p className="calc__block-hint">{calculator.fix.hint}</p>
+
+              <div className="calc__sizes">
+                <label className="calc__field">
+                  <span className="calc__field-label">{calculator.fix.widthLabel}</span>
+                  <select
+                    value={widthIndex}
+                    onChange={(event) => setWidthIndex(Number(event.target.value))}
+                  >
+                    {fixWindow.widths.map((band, index) => (
+                      <option key={band} value={index}>
+                        {band}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="calc__field">
+                  <span className="calc__field-label">{calculator.fix.heightLabel}</span>
+                  <select
+                    value={heightIndex}
+                    onChange={(event) => setHeightIndex(Number(event.target.value))}
+                  >
+                    {fixWindow.heights.map((band, index) => (
+                      <option key={band} value={index}>
+                        {band}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <div className="calc__item">
+                <div className="calc__item-copy">
+                  <span className="calc__item-label">{calculator.fix.countLabel}</span>
+                  <span className="calc__item-hint">
+                    Legkisebb gyártható méret: {fixWindow.minSize}
+                  </span>
+                </div>
+                <Stepper
+                  value={fixCount}
+                  max={30}
+                  label={fixWindow.label}
+                  onChange={(value) => setFixCount(Math.max(0, Math.min(30, value)))}
+                />
+              </div>
+            </fieldset>
+
+            <fieldset className="calc__block">
+              <legend className="calc__legend">{calculator.others.legend}</legend>
               <ul className="calc__items">
-                {calculator.items.map((item) => {
+                {calculator.others.items.map((item) => {
                   const qty = counts[item.key] ?? 0;
                   return (
                     <li className="calc__item" key={item.key}>
@@ -149,27 +234,12 @@ export function Calculator() {
                         <span className="calc__item-label">{item.label}</span>
                         <span className="calc__item-hint">{item.hint}</span>
                       </div>
-                      <div className="calc__stepper">
-                        <button
-                          type="button"
-                          onClick={() => setCount(item.key, qty - 1, item.max)}
-                          disabled={qty === 0}
-                          aria-label={`${item.label}: eggyel kevesebb`}
-                        >
-                          −
-                        </button>
-                        <output aria-live="polite" aria-label={`${item.label} darabszáma`}>
-                          {qty}
-                        </output>
-                        <button
-                          type="button"
-                          onClick={() => setCount(item.key, qty + 1, item.max)}
-                          disabled={qty >= item.max}
-                          aria-label={`${item.label}: eggyel több`}
-                        >
-                          +
-                        </button>
-                      </div>
+                      <Stepper
+                        value={qty}
+                        max={item.max}
+                        label={item.label}
+                        onChange={(value) => setCount(item.key, value, item.max)}
+                      />
                     </li>
                   );
                 })}
@@ -177,27 +247,9 @@ export function Calculator() {
             </fieldset>
 
             <fieldset className="calc__block">
-              <legend className="calc__legend">Üvegezés</legend>
-              <div className="calc__segments">
-                {calculator.glazing.map((option) => (
-                  <button
-                    type="button"
-                    key={option.key}
-                    className={`calc__segment ${glazing === option.key ? 'is-active' : ''}`}
-                    aria-pressed={glazing === option.key}
-                    onClick={() => setGlazing(option.key)}
-                  >
-                    <span>{option.label}</span>
-                    <span className="calc__segment-hint">{option.hint}</span>
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-
-            <fieldset className="calc__block">
-              <legend className="calc__legend">Kiegészítők</legend>
+              <legend className="calc__legend">{calculator.extras.legend}</legend>
               <div className="calc__chips">
-                {calculator.extras.map((extra) => {
+                {calculator.extras.items.map((extra) => {
                   const on = extras.includes(extra.key);
                   return (
                     <button
@@ -239,13 +291,13 @@ export function Calculator() {
             {!hasSelection ? (
               <p className="calc__result-empty">{calculator.result.empty}</p>
             ) : showPrice ? (
-              <p className="calc__price">
-                <span>{formatPrice(roundPrice(result.from), calculator.currency)}</span>
-                <span className="calc__price-sep" aria-hidden="true">
-                  –
-                </span>
-                <span>{formatPrice(roundPrice(result.to), calculator.currency)}</span>
-              </p>
+              <>
+                <p className="calc__price">{formatHuf(huf)}</p>
+                <p className="calc__price-eur">
+                  {formatEur(result.eur)} · 1 € = {rate.value.toLocaleString('hu-HU')} Ft
+                  {rate.fallback ? ' (tájékoztató árfolyam)' : ` · ${rate.date}`}
+                </p>
+              </>
             ) : (
               <p className="calc__result-pending">{calculator.result.pending}</p>
             )}
@@ -261,6 +313,12 @@ export function Calculator() {
               </ul>
             ) : null}
 
+            {hasSelection && result.missing.length > 0 && result.eur > 0 ? (
+              <p className="calc__missing">
+                {calculator.result.missingPrefix} {result.missing.join(', ')}.
+              </p>
+            ) : null}
+
             <Button
               size="lg"
               fullWidth
@@ -270,6 +328,7 @@ export function Calculator() {
                   placement: 'kalkulator',
                   selection: result.summary || 'üres',
                   units: result.totalUnits,
+                  eur: Math.round(result.eur),
                 });
                 track('cta_quote_click', { placement: 'kalkulator' });
                 scrollToNearestForm([ANCHOR.quickForm, ANCHOR.form]);
@@ -279,12 +338,45 @@ export function Calculator() {
             </Button>
 
             <p className="calc__disclaimer">{calculator.result.disclaimer}</p>
-            <p className="calc__note">
-              <PH value={calculator.priceNote} />
-            </p>
+            <p className="calc__note">{fixWindow.note}</p>
           </aside>
         </div>
       </div>
     </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+interface StepperProps {
+  value: number;
+  max: number;
+  label: string;
+  onChange: (value: number) => void;
+}
+
+function Stepper({ value, max, label, onChange }: StepperProps) {
+  return (
+    <div className="calc__stepper">
+      <button
+        type="button"
+        onClick={() => onChange(value - 1)}
+        disabled={value === 0}
+        aria-label={`${label}: eggyel kevesebb`}
+      >
+        −
+      </button>
+      <output aria-live="polite" aria-label={`${label} darabszáma`}>
+        {value}
+      </output>
+      <button
+        type="button"
+        onClick={() => onChange(value + 1)}
+        disabled={value >= max}
+        aria-label={`${label}: eggyel több`}
+      >
+        +
+      </button>
+    </div>
   );
 }

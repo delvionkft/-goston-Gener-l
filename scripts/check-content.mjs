@@ -1,5 +1,6 @@
 /**
- * Kilistázza a src/config/site.ts fájlban maradt kitöltetlen helyőrzőket.
+ * Kilistázza a src/config/site.ts és a src/config/pricing.ts fájlban maradt
+ * kitöltetlen helyőrzőket.
  * Éles indítás előtt futtasd: `npm run check:content`
  * Ha maradt helyőrző, a szkript 1-es kilépési kóddal áll le — így a CI
  * megfogja, mielőtt kitöltetlen oldal kerülne élesbe.
@@ -9,8 +10,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const file = join(root, 'src/config/site.ts');
-const source = readFileSync(file, 'utf8');
+const files = ['src/config/site.ts', 'src/config/pricing.ts'];
+const source = files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n');
 
 const found = new Map();
 const lines = source.split('\n');
@@ -30,16 +31,16 @@ lines.forEach((line, index) => {
 });
 
 if (found.size === 0) {
-  console.log('✓ Nincs kitöltetlen helyőrző a src/config/site.ts fájlban.');
+  console.log('✓ Nincs kitöltetlen helyőrző a konfigurációs fájlokban.');
   process.exit(0);
 }
 
 let total = 0;
-console.log('\nKitöltetlen helyőrzők a src/config/site.ts fájlban:\n');
+console.log('\nKitöltetlen helyőrzők a konfigurációban:\n');
 for (const [value, atLines] of found) {
   total += atLines.length;
   console.log(`  ${value}`);
-  console.log(`      sor: ${atLines.join(', ')}`);
+  console.log(`      előfordulás: ${atLines.length}×`);
 }
 console.log(`\nÖsszesen ${total} kitöltetlen érték ${found.size} különböző helyőrzőben.`);
 console.log('Töltsd ki őket valós adattal, mielőtt élesíted az oldalt.\n');
