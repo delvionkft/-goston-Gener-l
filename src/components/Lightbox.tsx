@@ -7,11 +7,12 @@ import './Lightbox.css';
 
 export interface LightboxItem {
   id: string;
-  title: string;
-  location: string;
-  description: string;
   image: string;
   imageAlt: string;
+  /** Opcionális felirat. Ha nincs, a nagy nézet csak a képet mutatja. */
+  title?: string;
+  location?: string;
+  description?: string;
 }
 
 interface Props {
@@ -80,7 +81,7 @@ export function Lightbox({ items, index, onIndexChange, onClose }: Props) {
       <div className="lightbox__backdrop" onClick={onClose} aria-hidden="true" />
 
       <div
-        className="lightbox__dialog on-dark"
+        className={`lightbox__dialog on-dark ${item.title ? '' : 'is-bare'}`}
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
@@ -104,20 +105,26 @@ export function Lightbox({ items, index, onIndexChange, onClose }: Props) {
           />
         </div>
 
-        <div className="lightbox__info">
+        <div className={`lightbox__info ${item.title ? '' : 'is-bare'}`}>
           <p className="lightbox__count" aria-hidden="true">
             {index + 1} / {items.length}
           </p>
-          <h3 className="lightbox__title">
-            <PH value={item.title} />
-          </h3>
-          <p className="lightbox__loc">
-            <PinIcon />
-            <PH value={item.location} />
-          </p>
-          <p className="lightbox__desc">
-            <PH value={item.description} />
-          </p>
+          {item.title ? (
+            <h3 className="lightbox__title">
+              <PH value={item.title} />
+            </h3>
+          ) : null}
+          {item.location ? (
+            <p className="lightbox__loc">
+              <PinIcon />
+              <PH value={item.location} />
+            </p>
+          ) : null}
+          {item.description ? (
+            <p className="lightbox__desc">
+              <PH value={item.description} />
+            </p>
+          ) : null}
         </div>
 
         {items.length > 1 ? (

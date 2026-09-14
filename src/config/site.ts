@@ -561,82 +561,19 @@ export const references = {
   eyebrow: 'Referenciák',
   title: 'Elkészült munkáink',
   lead: '[Rövid felvezető: milyen jellegű munkákat mutattok be itt.]',
-  /** A csúszkás összehasonlítás címkéi. */
-  beforeLabel: 'Előtte',
-  afterLabel: 'Utána',
+  /**
+   * A galéria képei. A kártyákon nincs képaláírás — csak a fotók.
+   *
+   * Az `alt` a képernyőolvasóknak és a keresőknek szól, az oldalon nem
+   * látszik. Akkor jelenik meg, ha a kép valamiért nem töltődik be.
+   */
   items: [
-    {
-      id: 'ref-1',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-1.webp',
-      afterAlt: 'Frissen beépített kétszárnyú műanyag ablak kívülről, a beépítés lezárása előtt',
-    },
-    {
-      id: 'ref-2',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-2.webp',
-      afterAlt: 'Kétszárnyú műanyag ablak belülről, kilátással a kertre',
-    },
-    {
-      id: 'ref-3',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-3.webp',
-      afterAlt: 'Két beépített műanyag ablak sárga homlokzaton',
-    },
-    {
-      id: 'ref-4',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-4.webp',
-      afterAlt: 'Családi ház homlokzata négy beépített nyílászáróval',
-    },
-    {
-      id: 'ref-5',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-5.webp',
-      afterAlt: 'Kétszárnyú műanyag ablak új külső párkánnyal',
-    },
-    {
-      id: 'ref-6',
-      location: '[HELYSZÍN]',
-      workType: '[ELVÉGZETT MUNKA TÍPUSA]',
-      result: '[Rövid eredményleírás: mi változott a munka után.]',
-      /* Ha van „előtte" fotó is, ide írd a fájlnevét — akkor a kártyán
-         összehasonlító csúszka jelenik meg a két kép között. */
-      beforeImage: '',
-      beforeAlt: '',
-      afterImage: 'ref-6.webp',
-      afterAlt: 'Beépített kétszárnyú ablak külső párkánnyal, közelről',
-    },
+    { id: 'ref-1', image: 'ref-1.webp', alt: 'Frissen beépített kétszárnyú műanyag ablak kívülről, a beépítés lezárása előtt' },
+    { id: 'ref-2', image: 'ref-2.webp', alt: 'Kétszárnyú műanyag ablak belülről, kilátással a kertre' },
+    { id: 'ref-3', image: 'ref-3.webp', alt: 'Két beépített műanyag ablak sárga homlokzaton' },
+    { id: 'ref-4', image: 'ref-4.webp', alt: 'Családi ház homlokzata négy beépített nyílászáróval' },
+    { id: 'ref-5', image: 'ref-5.webp', alt: 'Kétszárnyú műanyag ablak új külső párkánnyal' },
+    { id: 'ref-6', image: 'ref-6.webp', alt: 'Beépített kétszárnyú ablak külső párkánnyal, közelről' },
   ],
 } as const;
 

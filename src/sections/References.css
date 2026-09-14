@@ -24,13 +24,12 @@
 
 .refs__item {
   display: flex;
-  flex-direction: column;
   overflow: hidden;
 }
 
-.refs__media {
-  position: relative;
-  background: var(--c-beige);
+/* Felirat nincs a kártyán: a kép tölti ki, a keret csak finoman keretezi. */
+.refs__item .imgslot {
+  border-radius: calc(var(--r-lg) - 1px);
 }
 
 .refs__zoom {
@@ -71,42 +70,14 @@
   height: 18px;
 }
 
-.refs__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  padding: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
-}
 
-.refs__loc {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-accent-text);
-}
 
-.refs__loc svg {
-  width: 15px;
-  height: 15px;
-  flex: none;
-}
 
-.refs__type {
-  font-size: var(--fs-lg);
-}
 
-.refs__result {
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-}
 
-.refs__hint {
-  margin-top: var(--sp-6);
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-  text-align: center;
-}
+
+
+
+
+
+

@@ -147,6 +147,13 @@
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     align-items: stretch;
   }
+
+  /* Felirat nélkül nincs mit a kép mellé tenni: a kép kapja a teljes
+     szélességet, nem marad üres hasáb mellette. */
+  .lightbox__dialog.is-bare {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(920px, 100%);
+  }
   .lightbox__stage {
     height: 100%;
   }
@@ -170,4 +177,28 @@
     right: auto;
     left: calc(60% - 44px - var(--sp-3));
   }
+}
+
+/* --- Felirat nélküli galéria ---
+   Ha a képekhez nincs szöveg, a kép kapja a teljes dialógust, a sorszám
+   pedig kis címkeként ráúszik. Így nem marad üres, sötét hasáb mellette. */
+
+.lightbox__dialog.is-bare .lightbox__stage .imgslot {
+  max-height: calc(100dvh - clamp(3rem, 8vw, 8rem));
+}
+
+.lightbox__dialog.is-bare .lightbox__info {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--sp-4) var(--sp-5);
+  pointer-events: none;
+}
+
+.lightbox__dialog.is-bare .lightbox__count {
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--r-pill);
+  background: rgba(36, 30, 16, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
