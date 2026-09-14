@@ -3,12 +3,23 @@
   left: 0;
   right: 0;
   bottom: calc(var(--mobilebar-h) + 0px);
-  z-index: var(--z-toast);
+  z-index: var(--z-cookie);
   padding: var(--sp-4) var(--gutter) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
   background: var(--c-white);
   border-top: 1px solid var(--c-line);
   box-shadow: 0 -10px 40px -24px rgba(37, 31, 18, 0.55);
   animation: cookiebar-in 340ms var(--ease-out) both;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    visibility var(--dur-fast) var(--ease-out);
+}
+
+/* Amíg modális ablak (nagy kép, mobilmenü, jogi ablak) van nyitva, a
+   sütisáv félreáll, és bezárás után magától visszatér. */
+body.is-locked .cookiebar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @keyframes cookiebar-in {

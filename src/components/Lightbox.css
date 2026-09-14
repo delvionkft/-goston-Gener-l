@@ -180,25 +180,58 @@
 }
 
 /* --- Felirat nélküli galéria ---
-   Ha a képekhez nincs szöveg, a kép kapja a teljes dialógust, a sorszám
-   pedig kis címkeként ráúszik. Így nem marad üres, sötét hasáb mellette. */
+   Ha a képekhez nincs szöveg, a kép kapja a teljes dialógust. A lapozó és
+   a sorszám ilyenkor NEM úszik rá a fotóra, hanem a kép alatt kap saját
+   sávot — így semmi nem takarja a referenciaképet. */
+
+.lightbox__dialog.is-bare {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.lightbox__dialog.is-bare .lightbox__stage {
+  grid-row: 1;
+  grid-column: 1;
+}
 
 .lightbox__dialog.is-bare .lightbox__stage .imgslot {
-  max-height: calc(100dvh - clamp(3rem, 8vw, 8rem));
+  max-height: calc(100dvh - clamp(3rem, 8vw, 8rem) - 5.25rem);
+}
+
+/* A kép alatti vezérlősáv: balra előző, jobbra következő, középen a sorszám. */
+.lightbox__dialog.is-bare .lightbox__info,
+.lightbox__dialog.is-bare .lightbox__arrow {
+  position: static;
+  grid-row: 2;
+  grid-column: 1;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  margin-block: var(--sp-3);
+  align-self: center;
 }
 
 .lightbox__dialog.is-bare .lightbox__info {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: var(--sp-4) var(--sp-5);
+  justify-self: center;
+  padding: 0;
   pointer-events: none;
 }
 
+.lightbox__dialog.is-bare .lightbox__arrow--prev {
+  justify-self: start;
+  margin-left: var(--sp-3);
+}
+
+.lightbox__dialog.is-bare .lightbox__arrow--next {
+  justify-self: end;
+  margin-right: var(--sp-3);
+}
+
 .lightbox__dialog.is-bare .lightbox__count {
-  padding: 0.3rem 0.7rem;
-  border-radius: var(--r-pill);
-  background: rgba(36, 30, 16, 0.72);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  padding: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }

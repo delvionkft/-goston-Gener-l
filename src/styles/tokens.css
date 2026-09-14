@@ -136,6 +136,9 @@
   --z-mobilebar: 90;
   --z-float: 80;
   --z-menu: 200;
+  /* A sütisáv a menü fölött, de a modális ablakok alatt marad — így soha
+     nem takarja a nagy képet vagy a jogi ablak gombjait. */
+  --z-cookie: 250;
   --z-modal: 300;
   --z-toast: 400;
 
