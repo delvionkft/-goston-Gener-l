@@ -116,7 +116,7 @@ export const site = {
 export const seo = {
   title: 'Nyílászáró csere és beépítés – Ágoston-Generál Kft.',
   description:
-    'Ablak- és ajtócsere, beépítés a Balaton déli partján, Keszthely–Marcali–Balatonboglár–Fonyód térségében. VEKA nyílászárók, bontás és helyreállítás egy kézből.',
+    'Ablak- és ajtócsere, beépítés a Balaton déli partján, Keszthely–Marcali–Balatonboglár–Fonyód térségében. Műanyag, fa és alumínium nyílászárók, bontás és helyreállítás egy kézből.',
 } as const;
 
 /* ---------------------------------------------------------------------------
@@ -202,7 +202,7 @@ export const hero = {
   trust: [
     {
       title: 'Személyre szabott megoldások',
-      text: 'VEKA profilrendszerek, igény esetén más gyártó terméke — az épület adottságaihoz igazítva.',
+      text: 'A osztályú profilrendszerek több gyártó kínálatából — az épület adottságaihoz igazítva.',
     },
     {
       title: 'Precíz helyszíni felmérés',
@@ -311,11 +311,17 @@ export const services = {
     'Egy helyen a teljes nyílászáró-kör: a nyílászárótól az árnyékoláson át a beépítésig és a helyreállításig. Így nem neked kell több kivitelezőt összehangolnod.',
   items: [
     {
+      /**
+       * A profilrendszer gyártója szándékosan nincs megnevezve. Ha van egy
+       * fő rendszer, amit vinni akartok, a márkanév ide és a hero bizalmi
+       * pontjába (`hero.trust[0].text`) kerül — a gyártó neve erős bizalmi
+       * jel ebben az iparágban, érdemes kiírni, ha egyértelmű.
+       */
       key: 'muanyag',
       icon: 'window' as const,
       title: 'Műanyag nyílászárók',
       body:
-        'Elsősorban VEKA profilrendszerekkel készült ablakok és erkélyajtók, A osztályú profilokból. Igény esetén fa, alumínium és fa–alumínium nyílászárót is beszerzünk.',
+        'Ablakok és erkélyajtók A osztályú profilrendszerekből, több gyártó kínálatából — azt választjuk, ami az adott épülethez illik. Igény esetén fa, alumínium és fa–alumínium nyílászárót is beszerzünk.',
       image: '',
       imageAlt: '[Képaláírás: műanyag ablak beépítve]',
     },
