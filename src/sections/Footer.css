@@ -138,8 +138,8 @@
 
 .footer__logo {
   width: auto;
-  height: 72px;
-  max-width: 200px;
+  height: 54px;
+  max-width: 230px;
   object-fit: contain;
   margin-bottom: var(--sp-4);
 }

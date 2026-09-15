@@ -80,15 +80,29 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 
 | Hely | Fájlnév a `public/` mappában | Ajánlott méret | Képarány | Állapot |
 | --- | --- | --- | --- | --- |
-| Hero, bal kép | `hero-1.webp` | 840×1050 | 4:5 | kész |
-| Hero, középső (legerősebb) | `hero-2.webp` | 840×1050 | 4:5 | kész |
-| Hero, jobb kép | `hero-3.webp` | 840×1050 | 4:5 | kész |
+| Hero, bal kép | `hero-1.webp` | 800×1000 | 4:5 | kész |
+| Hero, középső (legerősebb) | `hero-2.webp` | 597×746 | 4:5 | kész |
+| Hero, jobb kép | `hero-3.webp` | 293×366 | 4:5 | **kis felbontás** |
+| Logó, világos háttérre | `agoston-ablak-logo.webp` | 755×208 | 3,6:1 | kész |
+| Logó, sötét háttérre | `agoston-ablak-logo-light.webp` | 755×208 | 3,6:1 | kész |
+| Logó, álló változat | `agoston-ablak-logo-stacked.webp` | 575×584 | 1:1 | tartalék |
 | Referenciák (6 db) | `ref-1.webp` … `ref-6.webp` | 1400×1050 | 4:3 | kész |
 | Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
 
-A három hero kép a referenciafotókból készült 4:5 arányú vágással
-(`ref-4`, `ref-5`, `ref-6`). Ha jobb fotó készül, elég felülírni a fájlt
-ugyanezzel a névvel — a kódban semmit nem kell átírni.
+A hero képek 4:5 arányra vágott gyártói/katalógusfotók. Ha saját fotó
+készül, elég felülírni a fájlt ugyanezzel a névvel — a kódban semmit nem
+kell átírni.
+
+**A `hero-3.webp` forrása mindössze 548×366 px volt**, ezért a vágott kép
+293×366 — a megjelenítési méret alatt van, retina kijelzőn lágy lesz.
+Nagyobb felbontású forrással azonnal javul.
+
+**A logó fekvő elrendezésű**, mert az eredeti álló (ikon fölött a felirat,
+alatta a szlogen) a 88 px-es fejlécben 57 px széles lett volna, és a
+felirat olvashatatlanná vált. A fekvő változat ugyanabból az artworkből
+készült: ikon balra, „ÁGOSTON ABLAK" jobbra. A szlogen a fekvő változatból
+kimaradt — fejlécméretben 7 px magas lenne. Az eredeti álló változat a
+`-stacked` fájlban megmaradt.
 | Logó (opcionális) | pl. `logo.svg` → `company.logo` | — | — |
 | Szolgáltatáskártya (opcionális) | tetszőleges → `services.items[].image` | 1200×750 | 16:10 |
 

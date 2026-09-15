@@ -96,8 +96,8 @@ export function Header() {
                 className="header__logo"
                 src={company.logo}
                 alt={company.name}
-                width="700"
-                height="460"
+                width="755"
+                height="208"
               />
               <span className="visually-hidden">
                 <PH value={company.name} />

@@ -73,6 +73,23 @@
   list-style: none;
 }
 
+/* A menüpont soha ne törjön két sorba — a fekvő logó szélesebb a réginél,
+   és 980–1100 px között a „Miért minket" épp elhasadt. */
+.header__list a {
+  white-space: nowrap;
+}
+
+/* Ebben a sávban a legszűkösebb a hely: kisebb térköz és betűméret. */
+@media (min-width: 980px) and (max-width: 1099px) {
+  .header__brand {
+    margin-right: var(--sp-4) !important;
+  }
+  .header__list a {
+    padding-inline: 0.55rem;
+    font-size: var(--fs-sm);
+  }
+}
+
 .header__link {
   position: relative;
   display: inline-block;
@@ -122,6 +139,7 @@
 
 .header__phone {
   font-size: var(--fs-sm);
+  white-space: nowrap;
 }
 
 /* --- Hamburger --- */
@@ -238,22 +256,22 @@
 
 /* A fejlécben a telefonszám csak akkor fér el a menü mellett, ha van rá
    hely. Kisebb kijelzőn a mobil CTA-sávban és a menüben ott van. */
-@media (max-width: 1199px) {
+@media (max-width: 1319px) {
   .header__phone {
     display: none;
   }
 }
 
 .header__logo {
-  height: 46px;
+  height: 34px;
   width: auto;
-  max-width: 150px;
+  max-width: 170px;
   object-fit: contain;
 }
 
 @media (min-width: 980px) {
   .header__logo {
-    height: 58px;
+    height: 40px;
   }
 }
 

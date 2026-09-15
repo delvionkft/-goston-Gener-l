@@ -58,10 +58,10 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
             {company.logo ? (
               <img
                 className="footer__logo"
-                src={company.logo}
+                src={company.logoLight || company.logo}
                 alt={company.name}
-                width="700"
-                height="460"
+                width="755"
+                height="208"
               />
             ) : null}
             <p className={`footer__name ${company.logo ? 'visually-hidden' : ''}`}>

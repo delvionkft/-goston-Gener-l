@@ -58,7 +58,13 @@ export const company = {
    * akkor is megtalálja a fájlokat, ha nem a domain gyökeréből szolgáljuk
    * ki (előnézet, aloldal, alkönyvtár).
    */
-  logo: 'agoston-general-gold-logo.webp',
+  logo: 'agoston-ablak-logo.webp',
+  /**
+   * Ugyanaz a logó, de a sötét („tinta") részek fehérre váltva. A sötét
+   * láblécen ez megy, különben az „ÁGOSTON" felirat és a szlogen beleolvad
+   * a háttérbe. Ha üresen hagyod, a lábléc is az alap logót használja.
+   */
+  logoLight: 'agoston-ablak-logo-light.webp',
 } as const;
 
 export const contact = {
@@ -216,9 +222,9 @@ export const hero = {
    * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
    */
   gallery: [
-    { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
-    { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal, kívülről' },
-    { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
+    { image: 'hero-1.webp', alt: 'Modern családi ház nagy üvegfelületekkel, esti megvilágításban' },
+    { image: 'hero-2.webp', alt: 'Világos nappali erkélyajtóval és beépített redőnyökkel' },
+    { image: 'hero-3.webp', alt: 'Nappali padlóig érő üvegfelületekkel és tolóajtóval' },
   ],
 } as const;
 
