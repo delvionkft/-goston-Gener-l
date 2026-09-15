@@ -8,7 +8,9 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   font-variant-numeric: tabular-nums;
-  color: var(--c-brown-400);
+  /* A tiszta márkaarany itt 3.3:1 lenne a világos háttéren — ez 15 px-es
+     feliratnál kevés, ezért a szöveghez való, sötétebb arany megy. */
+  color: var(--c-accent-text);
   pointer-events: none;
 }
 

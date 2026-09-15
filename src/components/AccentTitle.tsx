@@ -20,9 +20,16 @@ export function AccentTitle({ text, accent }: Props) {
   const [before, ...rest] = text.split(accent);
   const after = rest.join(accent);
 
+  /* A kiemelt szó után közvetlenül álló írásjel nem szakadhat új sorba —
+     e nélkül a „…nagyságrendben, mibe kerülne" címsorban a vessző magában
+     kezdett új sort. Ezért a szóval együtt egy nem törhető dobozba kerül. */
+  const glued = after.match(/^[\s]*[,.;:!?)\]}»"']+/)?.[0] ?? '';
+  const tail = after.slice(glued.length);
+
   return (
     <>
       {before}
+      <span className="accent-word__glue">
       <span className="accent-word">
         {accent}
         <svg
@@ -36,7 +43,9 @@ export function AccentTitle({ text, accent }: Props) {
           <path d="M2 8.5C38 3.6 96 2.4 198 5.8" />
         </svg>
       </span>
-      {after}
+      {glued}
+      </span>
+      {tail}
     </>
   );
 }

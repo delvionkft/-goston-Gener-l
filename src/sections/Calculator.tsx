@@ -57,7 +57,7 @@ export function Calculator() {
     setExtras((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
 
   const result = useMemo(() => {
-    const lines: { label: string; detail: string }[] = [];
+    const lines: { label: string; detail: string; eur?: number }[] = [];
     const missing: string[] = [];
     let eur = 0;
 
@@ -68,6 +68,7 @@ export function Calculator() {
       lines.push({
         label: `${fixWindow.label} · ${fixWindow.widths[widthIndex]} × ${fixWindow.heights[heightIndex]} cm`,
         detail: `${fixCount} db`,
+        eur: fixCount * fixUnit,
       });
     }
 
@@ -78,10 +79,10 @@ export function Calculator() {
       const unit = unitPrices[item.key];
       if (unit > 0) {
         eur += qty * unit;
-        lines.push({ label: item.label, detail: `${qty} db` });
+        lines.push({ label: item.label, detail: `${qty} db`, eur: qty * unit });
       } else {
         missing.push(item.label);
-        lines.push({ label: item.label, detail: `${qty} db · ár egyeztetés alatt` });
+        lines.push({ label: item.label, detail: `${qty} db` });
       }
     }
 
@@ -93,10 +94,10 @@ export function Calculator() {
       const unit = unitPrices[extra.key];
       if (unit > 0) {
         eur += totalUnits * unit;
-        lines.push({ label: extra.label, detail: `${totalUnits} db` });
+        lines.push({ label: extra.label, detail: `${totalUnits} db`, eur: totalUnits * unit });
       } else {
         missing.push(extra.label);
-        lines.push({ label: extra.label, detail: 'ár egyeztetés alatt' });
+        lines.push({ label: extra.label, detail: `${totalUnits} db` });
       }
     }
 
@@ -104,10 +105,10 @@ export function Calculator() {
       const unit = unitPrices.installation;
       if (unit > 0) {
         eur += totalUnits * unit;
-        lines.push({ label: calculator.installation.label, detail: `${totalUnits} db` });
+        lines.push({ label: calculator.installation.label, detail: `${totalUnits} db`, eur: totalUnits * unit });
       } else {
         missing.push('beépítés');
-        lines.push({ label: calculator.installation.label, detail: 'ár egyeztetés alatt' });
+        lines.push({ label: calculator.installation.label, detail: `${totalUnits} db` });
       }
     }
 
@@ -153,6 +154,7 @@ export function Calculator() {
     });
   }, [result, rate]);
 
+  const fixUnitEur = fixWindow.prices[heightIndex][widthIndex];
   const hasSelection = result.totalUnits > 0;
   const huf = rate ? toHuf(result.eur, rate.value) : 0;
   const showPrice = hasSelection && result.eur > 0 && rate !== null;
@@ -206,6 +208,13 @@ export function Calculator() {
                   </select>
                 </label>
               </div>
+
+              <p className="calc__unit">
+                <span>{calculator.fix.unitLabel}</span>
+                <strong>
+                  {rate ? `${formatHuf(toHuf(fixUnitEur, rate.value))} / db` : `${formatEur(fixUnitEur)} / db`}
+                </strong>
+              </p>
 
               <div className="calc__item">
                 <div className="calc__item-copy">
@@ -306,8 +315,15 @@ export function Calculator() {
               <ul className="calc__lines">
                 {result.lines.map((line) => (
                   <li key={line.label}>
-                    <span>{line.label}</span>
-                    <span className="calc__line-detail">{line.detail}</span>
+                    <span className="calc__line-name">
+                      {line.label}
+                      <span className="calc__line-detail">{line.detail}</span>
+                    </span>
+                    <span className={`calc__line-price ${line.eur === undefined ? 'is-custom' : ''}`}>
+                      {line.eur !== undefined && rate
+                        ? formatHuf(toHuf(line.eur, rate.value))
+                        : calculator.result.customPrice}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -319,8 +335,10 @@ export function Calculator() {
               </p>
             ) : null}
 
+            <p className="calc__cta-hint">{calculator.result.ctaHint}</p>
+
             <Button
-              size="lg"
+              variant="onDark"
               fullWidth
               icon={<ArrowDownIcon />}
               onClick={() => {

@@ -1,3 +1,8 @@
+/* A kiemelt szó + a hozzátapadó írásjel egyben marad. */
+.accent-word__glue {
+  white-space: nowrap;
+}
+
 .accent-word {
   position: relative;
   display: inline-block;

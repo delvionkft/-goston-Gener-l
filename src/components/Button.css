@@ -1,9 +1,13 @@
-/* A gombok színei szándékosan fix értékek, nem a paletta tokenjei: a
-   márkaszín változásakor is pontosan ilyenek maradnak. */
+/* A gombok színei fix értékek, nem tokenek — a kontrasztjuk kézzel
+   ellenőrzött, ezért nem szabad, hogy egy paletta-átszínezés elmozdítsa.
+
+   Az elsődleges gomb a tiszta márkaarany (#9B8245). A felirata azért
+   majdnem fekete és nem fehér, mert fehérrel csak 3.7:1 lenne — ez
+   folyószöveg-méretű feliratnál kevés. A #1A1A1A felirattal 4.7:1. */
 .btn {
-  --btn-bg: #3A2419;
-  --btn-fg: #FDFBF7;
-  --btn-bg-hover: #5A3A25;
+  --btn-bg: #9B8245;
+  --btn-fg: #1A1A1A;
+  --btn-bg-hover: #A78E4E;
   --btn-border: transparent;
 
   position: relative;
@@ -49,7 +53,7 @@
   width: 100%;
 }
 
-/* Elsődleges: sötétbarna alap, világos felirat (kontraszt ~12.9:1) */
+/* Elsődleges: márkaarany alap, sötét felirat (kontraszt 4.7:1) */
 .btn--primary {
   box-shadow: var(--shadow-sm);
 }
@@ -60,25 +64,25 @@
 /* Másodlagos: körvonalas, világos felületen */
 .btn--secondary {
   --btn-bg: transparent;
-  --btn-fg: #3A2419;
-  --btn-bg-hover: rgba(107, 68, 35, 0.07);
-  --btn-border: #A98263;
+  --btn-fg: #6E5B2F;
+  --btn-bg-hover: rgba(155, 130, 69, 0.07);
+  --btn-border: #9B8245;
 }
 .btn--secondary:hover {
-  --btn-border: #5A3A25;
+  --btn-border: #85703B;
 }
 
-/* Sötét háttéren: homokszín alap, sötétbarna felirat (kontraszt ~9.5:1) */
+/* Sötét háttéren: fehér alap, majdnem fekete felirat (kontraszt 16:1) */
 .btn--onDark {
-  --btn-bg: #E2D2BE;
-  --btn-fg: #2E1D14;
-  --btn-bg-hover: #E7D8C4;
+  --btn-bg: #FFFFFF;
+  --btn-fg: #1A1A1A;
+  --btn-bg-hover: #F3F3F1;
 }
 
 .btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: #3A2419;
-  --btn-bg-hover: rgba(107, 68, 35, 0.08);
+  --btn-fg: #6E5B2F;
+  --btn-bg-hover: rgba(155, 130, 69, 0.08);
   padding-inline: 0.9rem;
   font-weight: 500;
 }
@@ -149,7 +153,7 @@
   background: linear-gradient(
     100deg,
     transparent 0%,
-    rgba(90, 58, 37, 0.16) 50%,
+    rgba(133, 112, 59, 0.16) 50%,
     transparent 100%
   );
 }

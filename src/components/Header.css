@@ -22,7 +22,7 @@
 .header.is-scrolled {
   background: color-mix(in srgb, var(--c-beige) 94%, transparent);
   border-bottom-color: var(--c-line);
-  box-shadow: 0 1px 20px -12px rgba(37, 31, 18, 0.4);
+  box-shadow: 0 1px 20px -12px rgba(24, 24, 24, 0.4);
 }
 
 .header__inner {
@@ -49,7 +49,7 @@
   flex: none;
   border-radius: 3px;
   background: linear-gradient(140deg, var(--c-brown-700), var(--c-brown-400));
-  box-shadow: inset 0 0 0 1px rgba(37, 31, 18, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(24, 24, 24, 0.25);
 }
 
 .header__name {
@@ -150,7 +150,7 @@
   position: fixed;
   inset: 0;
   z-index: calc(var(--z-menu) - 1);
-  background: rgba(36, 26, 20, 0.42);
+  background: rgba(30, 30, 30, 0.42);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--dur) var(--ease-out);

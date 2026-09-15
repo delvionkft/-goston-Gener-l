@@ -292,9 +292,26 @@ folyószöveg Intert. A Montserrat geometrikus, prémium hatású, de hosszabb
 bekezdésben fárasztóbb — ezért van a kettő párban. Ha egységesen Montserratot
 szeretnél, a `--font-body` értékét írd át ugyanarra.
 
-**Kontraszt:** az akcentszín (`#5A3A25`) fehér felirattal 10.2:1-et ad, bőven
-a WCAG AA 4.5:1 fölött. A világosabb `--c-brown-400` kizárólag dekorációra
-megy — ikon, keret, elválasztó vonal —, ahol a küszöb 3:1.
+**A paletta öt színből áll:**
+
+| Szerep | Érték | Hol jelenik meg |
+| --- | --- | --- |
+| Olívás arany / bronz | `#9B8245` (`--c-gold`) | logó, menü, gombok, díszítőelemek |
+| Antracit | `#1A1A1A`–`#3A3A3A` (`--c-ink-*`) | sötét felületek, kiemelt blokkok, lábléc |
+| Fehér | `#FFFFFF` | fejléc, világos felületek, felirat sötét háttéren |
+| Sötétszürke szöveg | `#444444` / `#555555` | folyószöveg és másodlagos címek |
+| Világosszürke | `#F3F3F1` / `#F7F7F7` | háttérváltás, szekciók elválasztása |
+
+**Kontraszt.** A tiszta márkaarany fehéren 3.7:1 — ez **dekorációra elég**
+(küszöb 3:1), folyószöveghez nem. Ezért két külön arany van:
+
+- `--c-gold` (`#9B8245`) — keret, ikon, vonal, gombfelület.
+- `--c-accent-text` (`#6E5B2F`) — minden aranyszínű **szöveg** (6.6:1).
+
+Az elsődleges gomb a tiszta márkaarany, de a felirata majdnem fekete
+(`#1A1A1A`, 4.7:1) — fehér felirattal csak 3.7:1 lenne, ami elbukna.
+A gombszínek ezért fix értékek a `Button.css`-ben, nem tokenek: egy
+paletta-átszínezés nem mozdíthatja el a kézzel ellenőrzött kontrasztot.
 
 ---
 

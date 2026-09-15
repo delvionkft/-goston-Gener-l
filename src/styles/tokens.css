@@ -6,56 +6,75 @@
 
 :root {
   /* --- Színpaletta ---------------------------------------------------------
-     A márkaszín a #8F753E: minden nem fehér felület és kiemelés ebből a
-     családból jön. A nagy, sötét felületek ennek mélyebb árnyalatai, a
-     világos szekciók pedig ugyanennek a színnek a nagyon halvány keverései
-     fehérrel — így az oldal egyetlen színrendszert használ.
+     A márka öt színt használ, semmi többet:
 
-     A gombok színei nem innen jönnek: azok a Button.css-ben fix értékek. */
-  --c-gold: #8F753E;        /* MÁRKASZÍN — vonalak, ikonok, kiemelések */
-  --c-gold-600: #7A6333;    /* sötétebb arany — hover, hangsúly */
-  --c-gold-800: #4A3D20;    /* mély arany — sötét felületek felső tónusa */
-  --c-gold-900: #332A16;    /* mélyebb — sötét szekciók alaptónusa */
-  --c-gold-950: #241E10;    /* legmélyebb — footer, sötét gradiens alja */
-  --c-gold-light: #C0A96E;  /* világos arany — dekoratív fény */
+       1. Olívás arany / bronz  #9B8245  — a márka jellegzetes színe: logó,
+          menü, gombok, kisebb díszítőelemek.
+       2. Antracit             #202020–#303030 — nagy sötét felületek,
+          kiemelt blokkok, lábléc. Komoly, építőipari karakter.
+       3. Fehér                #FFFFFF — fejléc, világos tartalmi felületek,
+          és a sötét háttéren megjelenő feliratok.
+       4. Sötétszürke szöveg   #444444–#555555 — folyószöveg és másodlagos
+          címek világos háttéren.
+       5. Világosszürke        #F3F3F1–#F7F7F7 — finom háttérváltás, a
+          tartalmi részek elválasztása.
 
-  --c-cream: #E9DCBE;       /* krém — kiemelés sötét háttéren */
-  --c-cream-light: #F2E9D4;
-  --c-beige: #F4EFE3;       /* halvány arany-bézs szekcióháttér */
-  --c-offwhite: #FBF8F1;    /* törtfehér — az oldal alaphátere */
+     Kontraszt: a tiszta #9B8245 fehéren 3.7:1 — ez dekorációra és nagy
+     feliratra elég (küszöb 3:1), folyószöveghez nem. Szöveghez ezért a
+     sötétebb --c-accent-text (6.6:1) megy. */
+
+  --c-gold: #9B8245;        /* MÁRKASZÍN — logó, menü, gomb, díszítés */
+  --c-gold-600: #85703B;    /* sötétebb arany — hover */
+  --c-gold-700: #6E5B2F;    /* mély arany — szöveghez is elég sötét */
+  --c-gold-light: #C4AC72;  /* világos arany — kiemelés sötét háttéren */
+
+  /* Antracit skála — a sötét felületek. */
+  --c-ink-950: #1A1A1A;     /* legmélyebb — aranyon a felirat, gradiens alja */
+  --c-ink-900: #202020;
+  --c-ink-800: #262626;     /* sötét szekciók alaptónusa */
+  --c-ink-700: #303030;     /* kiemelt blokkok felső tónusa */
+  --c-ink-600: #3A3A3A;
+
   --c-white: #FFFFFF;
+  --c-offwhite: #F7F7F7;    /* az oldal alaphátere */
+  --c-grey-50: #F3F3F1;     /* finom háttérváltás, elválasztó szekciók */
 
-  --c-ink: #241E12;         /* fő szövegszín */
-  --c-muted: #6B6250;       /* másodlagos szöveg (5.6:1) */
-  --c-line: #E5DCC8;        /* keretek */
-  --c-line-soft: #EFE9DB;
+  --c-ink: #222222;         /* címsorok */
+  --c-text: #444444;        /* folyószöveg (9.7:1 fehéren) */
+  --c-muted: #555555;       /* másodlagos szöveg (7.5:1 fehéren) */
+  --c-line: #E4E3E0;        /* keretek */
+  --c-line-soft: #EDECE9;
 
-  /* Szövegre használható arany. A tiszta #8F753E világos háttéren 4.4:1-et
-     ad, ami folyószöveghez kevés — ezért szöveghez ez a sötétebb (5.9:1),
-     a tiszta márkaszín pedig dekorációra megy, ahol a küszöb 3:1. */
-  --c-accent-text: #755F2C;
+  /* Szövegre használható arany (6.6:1 fehéren). */
+  --c-accent-text: #6E5B2F;
 
   /* Visszafelé kompatibilis nevek: a komponens-CSS ezeket használja.
      Egy helyen mutatnak az új palettára. */
-  --c-espresso: var(--c-gold-950);
-  --c-brown-900: #2F2716;   /* címsorok, sötét szöveg */
-  --c-brown-800: #3C3119;
+  --c-espresso: var(--c-ink-950);
+  --c-brown-900: var(--c-ink);
+  --c-brown-800: #2E2E2E;
   --c-brown-700: var(--c-gold-600);
   --c-brown-600: var(--c-gold-600);
   --c-brown-500: var(--c-gold);
   --c-brown-400: var(--c-gold);
-  --c-sand: var(--c-cream);
-  --c-sand-light: var(--c-cream-light);
+  --c-sand: var(--c-gold-light);
+  --c-sand-light: #DCCB9E;
+  --c-cream: var(--c-gold-light);
+  --c-cream-light: #DCCB9E;
+  --c-beige: var(--c-grey-50);
+  --c-gold-800: var(--c-ink-700);
+  --c-gold-900: var(--c-ink-800);
+  --c-gold-950: var(--c-ink-900);
 
   /* --- Szerepkör szerinti színek --- */
   --bg: var(--c-offwhite);
-  --bg-beige: var(--c-beige);
-  --bg-deep: var(--c-gold-900);
+  --bg-beige: var(--c-grey-50);
+  --bg-deep: var(--c-ink-800);
   --surface: var(--c-white);
-  --text: var(--c-ink);
+  --text: var(--c-text);
   --text-muted: var(--c-muted);
-  --text-on-dark: #F8F4EA;
-  --text-on-dark-muted: #D2C5A6;
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-muted: #B8B8B8;
   --border: var(--c-line);
   --accent: var(--c-gold);
 
@@ -114,11 +133,11 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  /* --- Árnyék — finom, barnás alapú, soha nem szürke --- */
-  --shadow-xs: 0 1px 2px rgba(37, 31, 18, 0.05);
-  --shadow-sm: 0 2px 8px rgba(37, 31, 18, 0.05), 0 1px 2px rgba(37, 31, 18, 0.04);
-  --shadow-md: 0 14px 34px -16px rgba(37, 31, 18, 0.2);
-  --shadow-lg: 0 34px 70px -32px rgba(37, 31, 18, 0.32);
+  /* --- Árnyék — semleges, antracit alapú --- */
+  --shadow-xs: 0 1px 2px rgba(24, 24, 24, 0.05);
+  --shadow-sm: 0 2px 8px rgba(24, 24, 24, 0.05), 0 1px 2px rgba(24, 24, 24, 0.04);
+  --shadow-md: 0 14px 34px -16px rgba(24, 24, 24, 0.2);
+  --shadow-lg: 0 34px 70px -32px rgba(24, 24, 24, 0.32);
 
   /* Finom filmszemcse a sötét felületekre — közelről sem lesz „lapos
      barna folt", de nyomtatásban és kis kijelzőn sem tolakodó. */

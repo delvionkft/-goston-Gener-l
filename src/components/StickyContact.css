@@ -27,8 +27,8 @@
   padding: 0.95rem 1.5rem;
   border: 1px solid var(--c-brown-800);
   border-radius: var(--r-pill);
-  background: #3A2419;
-  color: #FBF8F1;
+  background: #9B8245;
+  color: #1A1A1A;
   font-size: var(--fs-sm);
   font-weight: 600;
   box-shadow: var(--shadow-lg);
@@ -43,7 +43,7 @@
 }
 
 .sticky-float__btn:hover {
-  background: #5A3A25;
+  background: #A78E4E;
   transform: translateY(-2px);
 }
 
@@ -66,7 +66,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--c-line);
-  box-shadow: 0 -6px 24px -18px rgba(37, 31, 18, 0.5);
+  box-shadow: 0 -6px 24px -18px rgba(24, 24, 24, 0.5);
   transform: translateY(100%);
   transition: transform var(--dur) var(--ease-out);
 }
@@ -100,7 +100,7 @@
   flex: 0 0 auto;
   border: 1px solid var(--c-brown-400);
   background: var(--c-white);
-  color: #3A2419;
+  color: #6E5B2F;
 }
 
 .sticky-bar__call svg {
@@ -111,12 +111,12 @@
 .sticky-bar__quote {
   flex: 1;
   border: 1px solid transparent;
-  background: #3A2419;
-  color: #FBF8F1;
+  background: #9B8245;
+  color: #1A1A1A;
 }
 
 .sticky-bar__quote:hover {
-  background: #5A3A25;
+  background: #A78E4E;
 }
 
 @media (min-width: 980px) {

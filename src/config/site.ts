@@ -438,6 +438,7 @@ export const calculator = {
     widthLabel: 'Szélesség (cm)',
     heightLabel: 'Magasság (cm)',
     countLabel: 'Darabszám',
+    unitLabel: 'Egységár ebben a méretben',
   },
 
   /** További nyílászárók. Ezekhez még nincs mérettáblázat. */
@@ -483,16 +484,20 @@ export const calculator = {
 
   /** Az eredménypanel szövegei. */
   result: {
-    label: 'Tájékoztató nagyságrend',
+    label: 'Kalkulált ár',
     empty: 'Állíts be legalább egy nyílászárót.',
     /** Ha a beállított tételek egyikéhez sincs még ár. */
     pending:
       'Ehhez a beállításhoz még nincs árunk feltöltve. Küldd el az ajánlatkérést, és konkrét árral keresünk meg.',
     /** Ha csak néhány tételhez hiányzik az ár. */
     missingPrefix: 'Az összeg nem tartalmazza:',
+    /** A tételsorban áll azoknál, amikhez még nincs listaár. */
+    customPrice: 'egyedi ár',
     disclaimer:
-      'Ez tájékoztató nagyságrend, nem ajánlat. A végleges árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
-    cta: 'Ajánlatot kérek erre a beállításra',
+      'A gyártói listaárból számolva. Ez tájékoztató nagyságrend, nem ajánlat: a végleges árat a helyszíni felmérés után, tételes ajánlatban adjuk meg.',
+    /** Az ajánlatkérés itt nem feltétel, csak lehetőség — az árat enélkül is látja. */
+    ctaHint: 'Az árat ajánlatkérés nélkül is látod. Ha pontos, tételes ajánlatot szeretnél:',
+    cta: 'Kérek tételes ajánlatot',
   },
 } as const;
 
