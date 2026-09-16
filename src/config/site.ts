@@ -222,9 +222,9 @@ export const hero = {
    * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
    */
   gallery: [
-    { image: 'hero-1.webp', alt: 'Modern családi ház nagy üvegfelületekkel, esti megvilágításban' },
-    { image: 'hero-2.webp', alt: 'Világos nappali erkélyajtóval és beépített redőnyökkel' },
-    { image: 'hero-3.webp', alt: 'Nappali padlóig érő üvegfelületekkel és tolóajtóval' },
+    { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
+    { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal, kívülről' },
+    { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
   ],
 } as const;
 
@@ -574,12 +574,8 @@ export const references = {
    * látszik. Akkor jelenik meg, ha a kép valamiért nem töltődik be.
    */
   items: [
-    { id: 'ref-1', image: 'ref-1.webp', alt: 'Frissen beépített kétszárnyú műanyag ablak kívülről, a beépítés lezárása előtt' },
-    { id: 'ref-2', image: 'ref-2.webp', alt: 'Kétszárnyú műanyag ablak belülről, kilátással a kertre' },
     { id: 'ref-3', image: 'ref-3.webp', alt: 'Két beépített műanyag ablak sárga homlokzaton' },
     { id: 'ref-4', image: 'ref-4.webp', alt: 'Családi ház homlokzata négy beépített nyílászáróval' },
-    { id: 'ref-5', image: 'ref-5.webp', alt: 'Kétszárnyú műanyag ablak új külső párkánnyal' },
-    { id: 'ref-6', image: 'ref-6.webp', alt: 'Beépített kétszárnyú ablak külső párkánnyal, közelről' },
   ],
 } as const;
 
