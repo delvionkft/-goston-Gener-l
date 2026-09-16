@@ -574,8 +574,11 @@ export const references = {
    * látszik. Akkor jelenik meg, ha a kép valamiért nem töltődik be.
    */
   items: [
-    { id: 'ref-3', image: 'ref-3.webp', alt: 'Két beépített műanyag ablak sárga homlokzaton' },
-    { id: 'ref-4', image: 'ref-4.webp', alt: 'Családi ház homlokzata négy beépített nyílászáróval' },
+    { id: 'ref-1', image: 'ref-1.webp', alt: 'Beépített kétszárnyú műanyag ablak belülről, kilátással a kertre' },
+    { id: 'ref-2', image: 'ref-2.webp', alt: 'Két beépített műanyag ablak sárga homlokzaton' },
+    { id: 'ref-3', image: 'ref-3.webp', alt: 'Családi ház homlokzata négy beépített nyílászáróval' },
+    { id: 'ref-4', image: 'ref-4.webp', alt: 'Kétszárnyú műanyag ablak kívülről, tiszta üvegfelülettel' },
+    { id: 'ref-5', image: 'ref-5.webp', alt: 'Beépített kétszárnyú műanyag ablak kívülről, közelről' },
   ],
 } as const;
 
