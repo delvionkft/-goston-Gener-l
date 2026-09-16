@@ -86,24 +86,20 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 | Logó, világos háttérre | `agoston-ablak-logo.webp` | 755×208 | 3,6:1 | kész |
 | Logó, sötét háttérre | `agoston-ablak-logo-light.webp` | 755×208 | 3,6:1 | kész |
 | Logó, álló változat | `agoston-ablak-logo-stacked.webp` | 575×584 | 1:1 | tartalék |
-| Referenciák (5 db) | `ref-1.webp` … `ref-5.webp` | 4:3, min. 1200×900 | 4:3 | kész |
+| Referenciák (6 db) | `ref-1.webp` … `ref-6.webp` | 1400×1050 | 4:3 | kész |
 | Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
 
 A hero képek a saját referenciafotókból készült 4:5 arányú vágások
 (`ref-4`, `ref-5`, `ref-6`). Ha saját fotó készül, elég felülírni a fájlt
 ugyanezzel a névvel — a kódban semmit nem kell átírni.
 
-**A referenciaképeken nem látszik a bontás** (kimonterozó hab,
-helyreállítatlan fal) a nyílászáró körül. Három fotónál ezt szűkebb
-kivágással értük el: a kép a tokon belülre van vágva, így a kész
-nyílászáró látszik, a körülötte lévő, még helyre nem állított fal nem.
-Emiatt ezek kisebb felbontásúak (700–1040 px széles), ami a kártyaméretben
-elég, de nagyobb nézetben lágyabb. A vágatlan eredetik a git előzményében
-megvannak.
+A hat referenciakép az eredeti, vágatlan fotó. Négyen látszik a beépítés
+munkaközi állapota (kimonterozó hab, még helyre nem állított fal) a
+nyílászáró körül — ez a megrendelő döntése alapján maradt így.
 
-Egy fotó (a korábbi `ref-1`) teljesen kimaradt: azon az üvegen keresztül
-is bontás alatt álló belső tér látszik, ezt kivágással nem lehetett
-megoldani.
+A galéria rácsa a képek számához igazodik: 3 oszlop 1100 px fölött,
+2 oszlop 700 px fölött, 1 oszlop mobilon. Ha kettőnél kevesebb kép marad,
+a rács szűkebb és középre zárt lesz, hogy ne maradjon üres hasáb.
 
 **Figyelem:** a `hero-2.webp` és a `hero-3.webp` a `ref-5`, illetve a
 `ref-6` kivágása — vagyis ugyanaz a hab látszik rajtuk, ami miatt azok a
