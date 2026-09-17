@@ -12,8 +12,9 @@
  *    elkaphatók.
  *  - GA4 (gtag.js közvetlenül): a `window.gtag` automatikusan meghívódik,
  *    ha a mérőkód betöltött.
- *  - Meta Pixel: a `META_PIXEL_MAP` táblában rendeld hozzá a saját
- *    eseményeidhez a Meta standard eseményeket.
+ *  - Meta Pixel: BEKÖTVE (azonosító az index.html-ben). A `META_PIXEL_MAP`
+ *    táblában rendeld hozzá a saját eseményeidhez a Meta standard
+ *    eseményeket. A Pixel a marketing-hozzájárulásig néma.
  *
  *  A mérés csak akkor fut, ha a látogató hozzájárult a statisztikai vagy
  *  marketing sütikhez (lásd `setConsent`). Enélkül az események eldobódnak.
@@ -63,6 +64,9 @@ const META_PIXEL_MAP: Partial<Record<AnalyticsEvent, string>> = {
 
 let consent: ConsentState = { analytics: false, marketing: false };
 
+/** A Meta PageView-t csak egyszer küldjük el, az első hozzájáruláskor. */
+let metaPageViewSent = false;
+
 /** A hozzájárulás megérkezéséig sorba állított események. */
 const queue: { name: AnalyticsEvent; params: AnalyticsParams }[] = [];
 
@@ -84,6 +88,23 @@ export function setConsent(next: ConsentState): void {
       ad_user_data: next.marketing ? 'granted' : 'denied',
       ad_personalization: next.marketing ? 'granted' : 'denied',
     });
+
+    /* Meta Pixel. Az index.html-ben `consent: revoke` áll az init előtt, így
+       a Pixel a hozzájárulásig nem ír sütit és nem küld adatot. Itt oldjuk
+       fel — és csak itt megy el a PageView is, egyszer.
+
+       Ha a látogató visszavonja a marketing-hozzájárulást, a Pixel újra
+       elnémul; a már elküldött PageView-t nem lehet visszavonni, ezért nem
+       is küldjük újra. */
+    if (next.marketing) {
+      window.fbq?.('consent', 'grant');
+      if (!metaPageViewSent) {
+        window.fbq?.('track', 'PageView');
+        metaPageViewSent = true;
+      }
+    } else {
+      window.fbq?.('consent', 'revoke');
+    }
   }
 
   if (wasBlocked && (next.analytics || next.marketing)) {

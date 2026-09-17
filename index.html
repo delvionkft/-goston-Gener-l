@@ -8,7 +8,7 @@
          Ajánlott: favicon.svg (skálázható) + apple-touch-icon.png 180×180. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#FBF8F4" />
+    <meta name="theme-color" content="#F7F7F7" />
 
     <!-- CANONICAL URL — írd át az éles domainre.
          Ugyanezt az értéket állítsd be a src/config/site.ts `site.url` mezőjében is. -->
@@ -71,10 +71,40 @@
            gtag('config', 'G-XXXXXXX');
          </script>
 
-         3) Meta Pixel: illeszd be a Meta által adott kódot, majd a
-            src/lib/analytics.ts META_PIXEL_MAP táblájában rendeld hozzá a
-            saját eseményeidhez a Meta standard eseményeit.
+         3) Meta Pixel: BEKÖTVE, lásd alább.
          ================================================================== -->
+
+    <!-- =====================================================================
+         META PIXEL  (azonosító: 1381730370784885)
+         =====================================================================
+         Ez a Meta által adott kód, KÉT szándékos eltéréssel:
+
+         1. `fbq('consent', 'revoke')` fut az `init` ELŐTT. Enélkül a Pixel
+            azonnal sütit írna és adatot küldene a Metának, még mielőtt a
+            látogató a sütisávon bármit választott volna. Így a Pixel
+            betöltődik, de csendben marad.
+
+         2. NINCS itt `fbq('track', 'PageView')`. Azt a src/lib/analytics.ts
+            küldi el, abban a pillanatban, amikor a látogató elfogadja a
+            marketingsütiket — a `consent grant` jelzéssel együtt. Aki nem
+            fogad el, arról nem megy adat.
+
+         A konverziós események (ajánlatkérés, telefon, e-mail) ugyanonnan
+         mennek: a META_PIXEL_MAP táblában van, melyik saját eseményből
+         melyik Meta standard esemény lesz.
+         ================================================================== -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('consent', 'revoke');
+      fbq('init', '1381730370784885');
+    </script>
   </head>
   <body>
     <div id="root"></div>

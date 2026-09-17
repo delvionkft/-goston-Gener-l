@@ -262,14 +262,38 @@ megy át. A komponensek nem tudnak a konkrét mérőrendszerekről.
 | `faq_open` | GYIK-kérdés lenyitása |
 | `nav_click`, `process_step_view` | Navigáció, idővonal-görgetés |
 
-**Bekötés:** a mérőkódok helye az `index.html` `<head>` szakaszában van,
-kikommentezett, bemásolható mintával (Consent Mode v2 → GA4 → Meta Pixel).
+**Bekötés:** a mérőkódok helye az `index.html` `<head>` szakaszában van.
 
 - **GTM** — nincs teendő. Az események a `window.dataLayer`-be kerülnek
   `event: '<név>'` kulccsal; GTM-ben Custom Event triggerrel elkaphatók.
-- **GA4 közvetlenül** — a `window.gtag` automatikusan meghívódik.
-- **Meta Pixel** — a `META_PIXEL_MAP` táblában rendeld hozzá a saját
-  eseményeidhez a Meta standard eseményeit.
+- **GA4 / GTM** — még nincs bekötve, a bemásolható minta ott áll
+  kikommentezve.
+- **Meta Pixel** — **bekötve**, azonosító: `1381730370784885`.
+
+### Meta Pixel
+
+A Meta által adott kód két ponton el lett térítve, szándékosan:
+
+1. **`fbq('consent', 'revoke')` fut az `init` előtt.** Enélkül a Pixel
+   azonnal sütit írna és adatot küldene, még mielőtt a látogató a
+   sütisávon bármit választott volna.
+2. **A `PageView` nem az `index.html`-ből megy.** A `setConsent()` küldi
+   el, a `consent grant` jelzéssel együtt, amikor a látogató elfogadja a
+   marketingsütiket. Aki nem fogadja el, arról nem megy adat.
+
+A `<noscript>` képpont **kimaradt**. Az oldal JavaScript nélkül nem
+renderel semmit (helyette a „engedélyezd a JavaScriptet" üzenet látszik),
+tehát ott nincs mit mérni — viszont az a képpont hozzájárulás nélkül is
+azonnal elsülne.
+
+Melyik saját eseményből lesz Meta standard esemény, azt a `META_PIXEL_MAP`
+tábla mondja meg (`src/lib/analytics.ts`):
+
+| Saját esemény | Meta esemény |
+| --- | --- |
+| `form_submit` | `Lead` |
+| `phone_click` | `Contact` |
+| `email_click` | `Contact` |
 
 ### Sütikonszent
 
