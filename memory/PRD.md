@@ -20,9 +20,13 @@ Blokkoló: a lead-beküldő végpont (VITE_LEAD_ENDPOINT) hiányzott.
 - Ellenőrizve: desktop + 360px mobil nézet, nincs vízszintes túlcsordulás, sütisáv működik,
   többlépcsős ajánlatkérő űrlap renderel, lead POST ok:true.
 - Kalkulátor → űrlap csatolás: a becslés csak tényleges kalkulátor-használat után kerül
-  be az űrlapba (Calculator.tsx `touched` kapu), az elérhetőségi lépésen látható,
-  nem szerkeszthető összefoglalódobozban (QuoteForm `qform__estimate`, nem kötelező).
+  be az űrlapba (Calculator.tsx `touched` kapu), és az űrlap MINDEN lépésén látható
+  összefoglalódobozban (QuoteForm `qform__estimate`, nem kötelező).
   estimate.ts `subscribeEstimate()` feliratkozással azonnal frissül.
+  Ellenőrizve e2e: kalkulátor CTA után 1/5 lépéstől az utolsóig látszik, a beküldött
+  payload tartalmazza az estimate szöveget.
+- Meta Pixel ellenőrizve (1381730370784885): sütielfogadás előtt nincs Facebook-hálózati
+  kérés (consent revoke az init előtt), „Mindet elfogadom” után indul a config/PageView.
 - EmailJS e-mail értesítés (service_7nks6ft / template_pk6jr1c): a lead mentése után
   a submitLead.ts emailjs.send()-et is hív; az e-mail hibája nem akadályozza a mentést.
   Kulcsok a frontend/.env-ben: VITE_EMAILJS_SERVICE_ID / TEMPLATE_ID / PUBLIC_KEY.
