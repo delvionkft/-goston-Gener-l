@@ -23,6 +23,12 @@ Blokkoló: a lead-beküldő végpont (VITE_LEAD_ENDPOINT) hiányzott.
   be az űrlapba (Calculator.tsx `touched` kapu), az elérhetőségi lépésen látható,
   nem szerkeszthető összefoglalódobozban (QuoteForm `qform__estimate`, nem kötelező).
   estimate.ts `subscribeEstimate()` feliratkozással azonnal frissül.
+- EmailJS e-mail értesítés (service_7nks6ft / template_pk6jr1c): a lead mentése után
+  a submitLead.ts emailjs.send()-et is hív; az e-mail hibája nem akadályozza a mentést.
+  Kulcsok a frontend/.env-ben: VITE_EMAILJS_SERVICE_ID / TEMPLATE_ID / PUBLIC_KEY.
+  Ellenőrizve: beküldéskor az api.emailjs.com hívás ténylegesen elmegy, hibamentesen.
+- Ismert, nem blokkoló: a frankfurter.app árfolyam-lekérés CORS-hibát ad a preview
+  domainről, a kód beépített tartalék árfolyamot használ (gyári viselkedés).
 
 ## Backlog (a README szerinti hiányzók)
 - P0: Leadek e-mail kézbesítése agostongeneral@gmail.com felé (Emergent-kezelt Resend).
