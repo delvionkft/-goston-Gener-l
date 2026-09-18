@@ -19,6 +19,10 @@ Blokkoló: a lead-beküldő végpont (VITE_LEAD_ENDPOINT) hiányzott.
 - /api/leads végpont: fogadja a toPayload() mezőit, MongoDB-be ment (receivedAt-tel).
 - Ellenőrizve: desktop + 360px mobil nézet, nincs vízszintes túlcsordulás, sütisáv működik,
   többlépcsős ajánlatkérő űrlap renderel, lead POST ok:true.
+- Kalkulátor → űrlap csatolás: a becslés csak tényleges kalkulátor-használat után kerül
+  be az űrlapba (Calculator.tsx `touched` kapu), az elérhetőségi lépésen látható,
+  nem szerkeszthető összefoglalódobozban (QuoteForm `qform__estimate`, nem kötelező).
+  estimate.ts `subscribeEstimate()` feliratkozással azonnal frissül.
 
 ## Backlog (a README szerinti hiányzók)
 - P0: Leadek e-mail kézbesítése agostongeneral@gmail.com felé (Emergent-kezelt Resend).
