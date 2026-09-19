@@ -25,8 +25,12 @@ Blokkoló: a lead-beküldő végpont (VITE_LEAD_ENDPOINT) hiányzott.
   estimate.ts `subscribeEstimate()` feliratkozással azonnal frissül.
   Ellenőrizve e2e: kalkulátor CTA után 1/5 lépéstől az utolsóig látszik, a beküldött
   payload tartalmazza az estimate szöveget.
-- Meta Pixel ellenőrizve (1381730370784885): sütielfogadás előtt nincs Facebook-hálózati
-  kérés (consent revoke az init előtt), „Mindet elfogadom” után indul a config/PageView.
+- Meta Pixel (1381730370784885): a felhasználó kérésére az eredeti Meta-kód fut —
+  init + PageView azonnal, sütielfogadás nélkül (nem consent-gated; tudatos döntés,
+  GDPR-figyelmeztetés megtörtént). A sütisáv megmaradt, a GA4/GTM továbbra is
+  hozzájáruláshoz kötött. analytics.ts: az fbq események (Lead/Contact) azonnal mennek,
+  a consent queue csak a Google-oldalt tartalékolja. Ellenőrizve: _fbp süti beáll,
+  config kérés azonnal indul, nincs dupla PageView, a sütisáv működik.
 - EmailJS e-mail értesítés (service_7nks6ft / template_pk6jr1c): a lead mentése után
   a submitLead.ts emailjs.send()-et is hív; az e-mail hibája nem akadályozza a mentést.
   Kulcsok a frontend/.env-ben: VITE_EMAILJS_SERVICE_ID / TEMPLATE_ID / PUBLIC_KEY.
