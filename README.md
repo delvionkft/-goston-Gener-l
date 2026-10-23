@@ -150,67 +150,41 @@ betöltést kap (nincs lazy load), minden más lustán töltődik.
 
 ## 3. Az űrlap bekötése
 
-Az ajánlatkérő űrlap egyetlen függvényen megy keresztül:
-**`src/lib/submitLead.ts`**.
+Az ajánlatkérés **két független csatornán** mehet ki. A beküldés akkor
+sikeres, ha **legalább az egyik** célba ér — ha az adatbázis nem elérhető,
+de az e-mail kiment, az érdeklődő akkor is eljutott hozzátok, és a
+látogató sikervisszajelzést kap (különben újraküldené, és kétszer
+kapnátok meg).
 
-Állítsd be a végpontot egy `.env` fájlban (minta: `.env.example`):
+### E-mail értesítés — bekötve
 
-```
-VITE_LEAD_ENDPOINT=https://api.sajatceg.hu/leads
-```
+A böngésző az **EmailJS**-en keresztül küld e-mailt. Az azonosítók a
+`src/config/email.ts` fájlban vannak; környezeti változóval felülírhatók
+(`VITE_EMAILJS_SERVICE_ID`, `..._TEMPLATE_ID`, `..._PUBLIC_KEY`).
 
-A `toPayload()` függvényben igazítsd a mezőneveket a CRM-ed sémájához.
-Ha nem REST API-t használsz, a `send()` törzsét cseréld le.
+A kulcsok **szándékosan nyilvánosak** — az EmailJS kliensoldali kulcsa
+ilyen. Visszaélés ellen az EmailJS felületén kell szűkíteni a megengedett
+domaineket: **Account → Security → Allowed origins**. Élesítéskor ezt
+állítsd be, különben más oldalról is küldhetnek a kvótád terhére.
 
-### Üzemmódok
+A sablon ezekre a változónevekre hivatkozhat:
 
-| Helyzet | Viselkedés |
-| --- | --- |
-| Végpont beállítva | Valódi beküldés |
-| Nincs végpont, `npm run dev` | Konzolra ír, sikert jelez |
-| Nincs végpont, éles build | **Hibát jelez** — szándékosan |
-| `VITE_LEAD_ENDPOINT=demo` | Sikert mutat, de sehova nem küld (bemutatóhoz) |
+`name`, `phone`, `email`, `city`, `propertyType`, `windowCount`, `needs`,
+`timing`, `estimate`, `message`, `consent` („igen" / „nem"), `source`,
+`page`, `referrer`, `submittedAt`, `reply_to`.
 
-Az éles build szándékosan hibát jelez bekötetlen végponttal: így nem lehet
-észrevétlenül elveszíteni valós érdeklődőt egy félig bekötött oldalon.
+Amelyikre a sablon nem hivatkozik, azt az EmailJS figyelmen kívül hagyja;
+amelyiket a sablon használ, de nem küldjük, az üresen marad.
 
-### Két űrlap az oldalon
+### Saját végpont — opcionális
 
-Ugyanaz a kérdőív fut két helyen: egy a hero alatt (`source: 'hero-urlap'`),
-egy a lap alján (`source: 'fo-urlap'`). A beküldött adatban és a mérésben a
-`source` mező különbözteti meg őket, így látszik, melyik hoz több
-érdeklődőt.
+`VITE_LEAD_ENDPOINT=https://...` esetén a teljes lead JSON-ban POST-olódik
+oda is (adatbázis, CRM). Amíg üres, csak az e-mail megy ki. A mezőneveket
+a `toPayload()` függvényben lehet a fogadó oldalhoz igazítani
+(`src/lib/submitLead.ts`).
 
-A gombok mindig a **közelebbi** űrlapra visznek (a hero saját gombja
-kivétel: az mindig a közvetlenül alatta lévőre). Így a látogató sosem ugrik
-át a fél oldalon a rossz irányba.
-
-### A kérdőív
-
-Az ajánlatkérés öt lépésből áll: négy egyérintéses minősítő kérdés, majd az
-elérhetőség. A kérdések és a válaszlehetőségek a `form.questions` tömbben
-szerkeszthetők — a `key` értékeket viszont ne írd át, azokra hivatkozik a
-kód, a mérés és a CRM-be küldött adat.
-
-| Kérdés | Mezőnév | Mit szűr |
-| --- | --- | --- |
-| Milyen ingatlanról van szó? | `propertyType` | Releváns-e egyáltalán a munka |
-| Hány nyílászárót érint a csere? | `windowCount` | A projekt nagyságrendje |
-| Mire van szükséged? | `needs` | Ablak / redőny / szúnyogháló — releváns ajánlat |
-| Mikor tervezed? | `timing` | Élő érdeklődés vagy még csak tájékozódás |
-
-Az utolsó lépésen **a név, a telefonszám, az ingatlan települése és az
-adatkezelési hozzájárulás kötelező**; az e-mail-cím és az üzenet nem. A
-település azért kötelező, mert enélkül olyan megkeresést is felhívnál, ami
-eleve kívül esik a kiszolgálási területen.
-
-### Köszönőüzenet vagy köszönőoldal
-
-Alapból a köszönőüzenet az űrlap helyén jelenik meg (`form.thankYou`).
-Ha külön köszönőoldalra navigálnál — például mert a GA4-ben oldalletöltés
-alapú konverziót mérsz —, add meg az útvonalat a `form.thankYouUrl` mezőben.
-
----
+Bemutatóhoz: `VITE_LEAD_ENDPOINT=demo` — semmi nem megy el, a felület
+viszont a teljes sikerállapotot mutatja.
 
 ## 3/B. Árkalkulátor
 

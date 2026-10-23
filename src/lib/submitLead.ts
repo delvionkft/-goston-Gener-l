@@ -28,6 +28,8 @@
  * ============================================================================
  */
 
+import { emailEnabled, emailjs } from '../config/email';
+
 export interface LeadData {
   /** A kérdőív minősítő válaszai. */
   propertyType: string;
@@ -77,36 +79,76 @@ function toPayload(data: LeadData) {
   };
 }
 
-async function send(data: LeadData): Promise<void> {
-  if (DEMO_MODE) {
-    console.warn(
-      '[submitLead] BEMUTATÓ MÓD — az adat sehova nem került elküldésre.',
-      toPayload(data),
-    );
-    await new Promise((r) => setTimeout(r, 700));
-    return;
-  }
+/**
+ * Az EmailJS-sablonnak átadott mezők. A sablonban PONTOSAN ezekre a
+ * nevekre kell hivatkozni ({{name}}, {{phone}} stb.), különben üres marad.
+ *
+ * A `consent` szándékosan szövegként megy: a sablonban a true/false
+ * értéket a legtöbb nézőke üresen hagyná.
+ */
+function toTemplateParams(data: LeadData): Record<string, string> {
+  const p = toPayload(data);
+  return {
+    name: p.name,
+    phone: p.phone,
+    email: p.email,
+    city: p.city,
+    propertyType: p.propertyType,
+    windowCount: p.windowCount,
+    needs: p.needs,
+    timing: p.timing,
+    estimate: p.estimate,
+    message: p.message,
+    consent: p.consent ? 'igen' : 'nem',
+    source: p.source,
+    page: p.page,
+    referrer: p.referrer,
+    submittedAt: p.submittedAt,
+    /* Ha a sablonban beállítod a „Reply To" mezőt erre, a levélre
+       válaszolva közvetlenül az érdeklődőnek írsz. */
+    reply_to: p.email,
+  };
+}
 
-  if (!ENDPOINT) {
-    if (import.meta.env.DEV) {
-      console.warn(
-        '[submitLead] Nincs beállítva VITE_LEAD_ENDPOINT. ' +
-          'Fejlesztői módban a beküldés csak szimulált.',
-        toPayload(data),
-      );
-      await new Promise((r) => setTimeout(r, 700));
-      return;
-    }
-    throw new Error(
-      'A beküldési végpont nincs beállítva (VITE_LEAD_ENDPOINT).',
-    );
-  }
-
+/**
+ * E-mail értesítés küldése az EmailJS-en keresztül.
+ *
+ * Az EmailJS böngészős REST végpontját hívjuk, külön függőség nélkül —
+ * a hivatalos SDK is pontosan ezt csinálja.
+ */
+async function sendEmail(data: LeadData): Promise<void> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const response = await fetch(ENDPOINT, {
+    const response = await fetch(emailjs.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        service_id: emailjs.serviceId,
+        template_id: emailjs.templateId,
+        user_id: emailjs.publicKey,
+        template_params: toTemplateParams(data),
+      }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      const detail = await response.text().catch(() => '');
+      throw new Error(`EmailJS ${response.status}: ${detail || 'ismeretlen hiba'}`);
+    }
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/** Beküldés a saját végpontra (ha be van állítva). */
+async function sendToEndpoint(data: LeadData): Promise<void> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  try {
+    const response = await fetch(ENDPOINT as string, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(toPayload(data)),
@@ -124,18 +166,62 @@ async function send(data: LeadData): Promise<void> {
 /**
  * Elküldi a lead adatot. Soha nem dob kivételt — a hívó a `SubmitResult`
  * alapján dönt, mit mutasson a felhasználónak.
+ *
+ * KÉT FÜGGETLEN CSATORNA
+ * Az e-mail értesítés (EmailJS) és a saját végpont egymástól függetlenül
+ * fut. A beküldés akkor sikeres, ha LEGALÁBB AZ EGYIK célba ért: ha az
+ * adatbázis nem elérhető, de az e-mail kiment, az érdeklődő akkor is
+ * eljutott hozzátok — ilyenkor hiba helyett sikert kell mutatni, különben
+ * a látogató újraküldi, és kétszer kapjátok meg.
+ *
+ * Ha egyik csatorna sincs beállítva, éles buildben HIBÁT jelzünk. Ez
+ * szándékos: így nem lehet észrevétlenül elveszíteni valós érdeklődőt.
  */
 export async function submitLead(data: LeadData): Promise<SubmitResult> {
-  try {
-    await send(data);
+  if (DEMO_MODE) {
+    console.warn('[submitLead] BEMUTATÓ MÓD — az adat sehova nem került elküldésre.', toPayload(data));
+    await new Promise((r) => setTimeout(r, 700));
     return { ok: true };
-  } catch (error) {
-    const isAbort = error instanceof DOMException && error.name === 'AbortError';
-    const message = isAbort
-      ? 'A beküldés túl sokáig tartott. Ellenőrizd az internetkapcsolatot, és próbáld újra.'
-      : 'A beküldés most nem sikerült. Próbáld újra, vagy hívj minket telefonon.';
-
-    if (import.meta.env.DEV) console.error('[submitLead]', error);
-    return { ok: false, error: message };
   }
+
+  const channels: { name: string; run: () => Promise<void> }[] = [];
+  if (emailEnabled) channels.push({ name: 'e-mail', run: () => sendEmail(data) });
+  if (ENDPOINT) channels.push({ name: 'végpont', run: () => sendToEndpoint(data) });
+
+  if (channels.length === 0) {
+    if (import.meta.env.DEV) {
+      console.warn(
+        '[submitLead] Nincs beállítva sem e-mail küldés, sem VITE_LEAD_ENDPOINT. ' +
+          'Fejlesztői módban a beküldés csak szimulált.',
+        toPayload(data),
+      );
+      await new Promise((r) => setTimeout(r, 700));
+      return { ok: true };
+    }
+    return {
+      ok: false,
+      error: 'A beküldés most nem sikerült. Próbáld újra, vagy hívj minket telefonon.',
+    };
+  }
+
+  const results = await Promise.allSettled(channels.map((c) => c.run()));
+
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      console.error(`[submitLead] A(z) ${channels[index].name} csatorna hibázott:`, result.reason);
+    }
+  });
+
+  if (results.some((r) => r.status === 'fulfilled')) return { ok: true };
+
+  const timedOut = results.some(
+    (r) => r.status === 'rejected' && r.reason instanceof DOMException && r.reason.name === 'AbortError',
+  );
+
+  return {
+    ok: false,
+    error: timedOut
+      ? 'A beküldés túl sokáig tartott. Ellenőrizd az internetkapcsolatot, és próbáld újra.'
+      : 'A beküldés most nem sikerült. Próbáld újra, vagy hívj minket telefonon.',
+  };
 }
