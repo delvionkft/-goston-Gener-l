@@ -9,13 +9,7 @@ import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
 
 /**
- * Hero: klasszikus kétosztatú elrendezés, antracit alapon.
- *
- * A sötét alap a márkapaletta szerinti szerep: az antracit a „nagy, sötét
- * képrétegek és kiemelt blokkok" színe — stabil, komoly, építőipari
- * karakter. A hero az oldal legnagyobb kiemelt blokkja, ezért ez kapja.
- * A `section--dark` osztály hozza magával az oldal meglévő sötét
- * konvencióit (kiemelés, címsorok, bevezető színei).
+ * Hero: klasszikus kétosztatú elrendezés.
  *
  *   BAL   balra zárt üzenet — kiemelés, címsor, bevezető, két gomb, és
  *         alattuk a három bizalmi pont egymás alatt.
@@ -44,7 +38,7 @@ export function Hero() {
   };
 
   return (
-    <section className="hero section--dark" id={ANCHOR.hero} aria-labelledby="hero-cim">
+    <section className="hero" id={ANCHOR.hero} aria-labelledby="hero-cim">
       <div className="hero__bg" aria-hidden="true" />
 
       <div className="hero__inner container">
