@@ -7,11 +7,12 @@ import './Footer.css';
 
 interface Props {
   onOpenPrivacy: () => void;
+  onOpenCookiePolicy: () => void;
   onOpenImprint: () => void;
   onOpenCookies: () => void;
 }
 
-export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
+export function Footer({ onOpenPrivacy, onOpenCookiePolicy, onOpenImprint, onOpenCookies }: Props) {
   const year = new Date().getFullYear();
 
   return (
@@ -128,6 +129,15 @@ export function Footer({ onOpenPrivacy, onOpenImprint, onOpenCookies }: Props) {
                 ) : (
                   <button type="button" onClick={onOpenPrivacy}>
                     {legal.privacy.title}
+                  </button>
+                )}
+              </li>
+              <li>
+                {legal.cookiePolicy.href ? (
+                  <a href={legal.cookiePolicy.href}>{legal.cookiePolicy.title}</a>
+                ) : (
+                  <button type="button" onClick={onOpenCookiePolicy}>
+                    {legal.cookiePolicy.title}
                   </button>
                 )}
               </li>

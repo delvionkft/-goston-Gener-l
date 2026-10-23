@@ -19,7 +19,7 @@ import { TocRail } from './components/TocRail';
 import { CookieConsent } from './components/CookieConsent';
 import { Modal } from './components/Modal';
 
-type LegalDoc = 'privacy' | 'imprint' | null;
+type LegalDoc = 'privacy' | 'cookiePolicy' | 'imprint' | null;
 
 /**
  * Az oldal felépítése szándékosan egy útvonalat jár be:
@@ -62,6 +62,7 @@ export function App() {
 
       <Footer
         onOpenPrivacy={openPrivacy}
+        onOpenCookiePolicy={() => setLegalDoc('cookiePolicy')}
         onOpenImprint={() => setLegalDoc('imprint')}
         onOpenCookies={() => setCookieSettings(true)}
       />
@@ -77,7 +78,25 @@ export function App() {
 
       {doc ? (
         <Modal title={doc.title} onClose={() => setLegalDoc(null)}>
-          <p>{doc.body}</p>
+          {doc.intro ? <p className="legal__intro">{doc.intro}</p> : null}
+
+          {doc.sections.map((section) => (
+            <section className="legal__section" key={section.heading}>
+              <h3 className="legal__heading">{section.heading}</h3>
+
+              {'body' in section
+                ? section.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+                : null}
+
+              {'list' in section ? (
+                <ul className="legal__list">
+                  {section.list.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
+          ))}
         </Modal>
       ) : null}
     </>

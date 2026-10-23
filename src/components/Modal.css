@@ -93,3 +93,42 @@
   padding: var(--sp-4) var(--sp-5) var(--sp-5);
   border-top: 1px solid var(--c-line-soft);
 }
+
+/* --- Jogi dokumentumok tördelése ----------------------------------------
+   Egy adatkezelési tájékoztatót senki nem olvas el, ha egyetlen szövegtömb.
+   Szakaszcím, mért sortáv és behúzott felsorolás kell hozzá. */
+
+.legal__intro {
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--c-line);
+  color: var(--text-muted);
+}
+
+.legal__section + .legal__section {
+  margin-top: var(--sp-6);
+}
+
+.legal__heading {
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+.legal__section p + p {
+  margin-top: var(--sp-3);
+}
+
+.legal__list {
+  margin-top: var(--sp-3);
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.legal__list li + li {
+  margin-top: var(--sp-2);
+}
+
+.legal__list li::marker {
+  color: var(--c-gold);
+}

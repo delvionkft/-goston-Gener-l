@@ -766,17 +766,189 @@ export const form = {
  * 13. FOOTER ÉS JOGI SZÖVEGEK
  * ------------------------------------------------------------------------ */
 
+/**
+ * Jogi dokumentumok.
+ *
+ * FONTOS: ezek a szövegek az oldal TÉNYLEGES működését írják le — a
+ * beérkező adatok körét, az EmailJS-es értesítést, a Meta Pixelt, a
+ * Google Fontsot. Ha a működés változik (új mérőkód, más levélküldő,
+ * saját szerver), a tájékoztatót is módosítani kell.
+ *
+ * A szögletes zárójeles értékek kitöltetlenek — az `npm run check:content`
+ * listázza őket.
+ *
+ * A megőrzési idők (1 év / 8 év) javaslat: az 5 éves elévülés és a
+ * számviteli törvény 169. §-a alapján szokásos értékek. Élesítés előtt
+ * ügyvéddel erősítsd meg őket.
+ */
 export const legal = {
   privacy: {
     title: 'Adatkezelési tájékoztató',
     /** Ha külön aloldalon van, add meg az URL-t — akkor linkként viselkedik. */
     href: '',
-    body: '[Ide kerül a teljes adatkezelési tájékoztató — a meglévő agostongeneral.hu tájékoztató szövege átemelhető. Tartalmaznia kell: az adatkezelő nevét és elérhetőségét, a kezelt adatok körét, az adatkezelés célját és jogalapját, a megőrzési időt, az adatfeldolgozókat és az érintett jogait.]',
+    intro:
+      'Az Ágoston-Generál Korlátolt Felelősségű Társaság (székhely: 8648 Balatonkeresztúr, Iskola utca 4/I; cégjegyzékszám: 14-09-321548; adószám: 32793246-2-14; e-mail: info@agostongeneral.hu; web: agostongeneral.hu; a továbbiakban: Adatkezelő) – mint adatkezelő – az Európai Parlament és a Tanács (EU) 2016/679 rendelete (a továbbiakban: GDPR), valamint a vonatkozó magyar jogszabályok előírásainak megfelelően az alábbi tájékoztatást adja személyes adatok kezeléséről.',
+    sections: [
+      {
+        heading: '1. Milyen adatokat kezelünk és miért?',
+        body: [
+          'Az oldalon egyetlen helyen adhatsz meg személyes adatot: az ajánlatkérő űrlapon. Minden más funkció (árkalkulátor, referenciagaléria, gyakori kérdések) anélkül használható, hogy bármit megadnál magadról.',
+        ],
+        list: [
+          'Kapcsolattartási adatok: név, telefonszám, település. Ezek megadása kötelező, mert e nélkül nem tudunk visszahívni és nem tudjuk megmondani, kimegyünk-e hozzád felmérni.',
+          'E-mail cím: nem kötelező. Akkor kezeljük, ha megadod — ilyenkor e-mailben is tudunk ajánlatot küldeni.',
+          'Az igényedre vonatkozó válaszok: milyen ingatlanról van szó, hány nyílászárót érint a csere, mire van szükséged, mikorra tervezed. Ezekből állítjuk össze az ajánlatot.',
+          'Szabad szöveges üzenet, ha írsz ilyet.',
+          'Az árkalkulátor beállítása, ha használtad (például „2 fix ablak, beépítéssel, kalkulált nagyságrend: 52 000 Ft"). Ebből látjuk, milyen nagyságrendre gondoltál.',
+          'Technikai adatok a beküldéshez: a beküldés időpontja, annak az oldalnak a címe, ahonnan küldted (ez tartalmazhatja a hirdetés azonosítóját), és hogy melyik oldalról érkeztél hozzánk.',
+        ],
+      },
+      {
+        heading: '2. Mi az adatkezelés jogalapja?',
+        body: [
+          'Az ajánlatkérés során megadott adatokat a GDPR 6. cikk (1) bekezdés b) pontja alapján kezeljük: a te kérésedre tett, a szerződéskötést megelőző lépések megtételéhez szükségesek. Ha az ajánlatból megrendelés lesz, ugyanez a jogalap él tovább a szerződés teljesítéséig.',
+          'A számlázással és a bizonylatok megőrzésével kapcsolatos adatkezelés jogalapja a GDPR 6. cikk (1) bekezdés c) pontja: jogi kötelezettség teljesítése.',
+          'A statisztikai és marketingcélú sütik, valamint a Meta Pixel használatának jogalapja a GDPR 6. cikk (1) bekezdés a) pontja: a te hozzájárulásod. Ezt bármikor, következmény nélkül visszavonhatod.',
+        ],
+      },
+      {
+        heading: '3. Meddig őrizzük meg az adataidat?',
+        body: [
+          'Ha az ajánlatkérésből nem lesz megrendelés, az adataidat az ajánlat elküldésétől számított 1 évig őrizzük meg, utána töröljük. Erre azért van szükség, mert a nyílászárócserét sokan hónapokkal az első érdeklődés után rendelik meg, és szeretnénk, hogy ne kelljen mindent újra elmondanod.',
+          'Ha megrendelés lesz belőle, a szerződéssel kapcsolatos adatokat a szerződés megszűnésétől számított 5 évig (általános elévülési idő) kezeljük. A számviteli bizonylatokat a számvitelről szóló 2000. évi C. törvény 169. § (2) bekezdése alapján 8 évig kötelesek vagyunk megőrizni.',
+          'A hozzájárulásoddal kezelt adatokat a hozzájárulás visszavonásáig kezeljük.',
+        ],
+      },
+      {
+        heading: '4. Kik férnek hozzá az adataidhoz?',
+        body: [
+          'Az adataidat nem adjuk el, és nem adjuk át harmadik félnek marketingcélra. A működéshez viszont igénybe veszünk szolgáltatókat, akik adatfeldolgozóként járnak el:',
+        ],
+        list: [
+          'Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE, SZÉKHELYE ÉS ELÉRHETŐSÉGE] — az oldal és a beérkezett ajánlatkérések tárolása.',
+          'EmailJS (emailjs.com, üzemeltető: [EMAILJS ÜZEMELTETŐ CÉGNEVE ÉS SZÉKHELYE]) — az ajánlatkérésről szóló értesítő e-mail kézbesítése a munkatársaink postafiókjába. A szolgáltató az Európai Unión kívül, az Amerikai Egyesült Államokban működik; az adattovábbítás a szolgáltató szerződéses garanciái (általános adatvédelmi kikötések) alapján történik.',
+          'Meta Platforms Ireland Limited (4 Grand Canal Square, Dublin 2, Írország) — a Meta Pixel működtetése, kizárólag a hozzájárulásod esetén.',
+          'Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Írország) — az oldal betűtípusait a Google szervereiről töltjük be, ezért az oldal megnyitásakor az IP-címed a Google felé továbbítódik. Ez az oldal megjelenítéséhez szükséges.',
+        ],
+      },
+      {
+        heading: '5. Milyen jogaid vannak?',
+        body: ['A GDPR alapján bármikor kérheted tőlünk, hogy:'],
+        list: [
+          'tájékoztassunk arról, milyen adataidat kezeljük (hozzáférés joga),',
+          'javítsuk ki a pontatlan adatokat (helyesbítés joga),',
+          'töröljük az adataidat (törléshez való jog), kivéve, ha jogszabály kötelez a megőrzésre,',
+          'korlátozzuk az adatkezelést (adatkezelés korlátozásához való jog),',
+          'géppel olvasható formában megkapd az általad megadott adatokat (adathordozhatósághoz való jog),',
+          'tiltakozz az adatkezelés ellen (tiltakozáshoz való jog),',
+          'visszavond a hozzájárulásodat — ez nem érinti a visszavonás előtti adatkezelés jogszerűségét.',
+        ],
+      },
+      {
+        heading: '6. Hogyan élhetsz a jogaiddal?',
+        body: [
+          'Írj az info@agostongeneral.hu címre, vagy hívj minket a +36 70 547 9595 számon. A kérésedre legkésőbb egy hónapon belül válaszolunk. Ha a kérés összetett, ez a határidő további két hónappal meghosszabbítható — erről értesítünk.',
+          'A sütikre vonatkozó hozzájárulásodat nem kell külön kérned: az oldal láblécében a „Cookie-beállítások" pontra kattintva bármikor módosíthatod vagy visszavonhatod.',
+        ],
+      },
+      {
+        heading: '7. Hová fordulhatsz panasszal?',
+        body: [
+          'Ha úgy érzed, az adatkezelésünk jogszabályt sért, elsőként kérjük, keress minket — a legtöbb kérdés néhány perc alatt tisztázható.',
+          'Panasszal a Nemzeti Adatvédelmi és Információszabadság Hatósághoz is fordulhatsz (cím: 1055 Budapest, Falk Miksa utca 9-11.; postacím: 1363 Budapest, Pf. 9.; telefon: +36 1 391 1400; e-mail: ugyfelszolgalat@naih.hu; web: naih.hu), továbbá bírósághoz fordulhatsz; a pert a lakóhelyed szerinti törvényszék előtt is megindíthatod.',
+        ],
+      },
+      {
+        heading: '8. Adatbiztonság és automatizált döntéshozatal',
+        body: [
+          'Az oldal titkosított (HTTPS) kapcsolaton keresztül érhető el, a beérkezett ajánlatkéréseket jelszóval védett felületen kezeljük, és csak azok a munkatársaink férnek hozzájuk, akiknek a munkájához szükséges.',
+          'Nem hozunk rólad automatizált döntést, és nem végzünk profilalkotást. Az árkalkulátor eredménye tájékoztató számítás, nem rólad szóló döntés: ugyanazokra a beállításokra mindenki ugyanazt az összeget kapja.',
+        ],
+      },
+      {
+        heading: '9. A tájékoztató módosítása',
+        body: [
+          'A tájékoztatót akkor módosítjuk, ha az adatkezelésünk megváltozik. A hatályos változat mindig ezen az oldalon érhető el. Jelen tájékoztató hatályba lépésének napja: [HATÁLYBALÉPÉS DÁTUMA].',
+        ],
+      },
+    ],
   },
+
+  cookiePolicy: {
+    title: 'Cookie-tájékoztató',
+    href: '',
+    intro:
+      'Ez a tájékoztató azt írja le, milyen sütiket és hasonló technológiákat használ az agostongeneral.hu, mire valók, és hogyan rendelkezhetsz róluk. Az adatkezelő az Ágoston-Generál Kft. (8648 Balatonkeresztúr, Iskola utca 4/I; info@agostongeneral.hu).',
+    sections: [
+      {
+        heading: '1. Mi az a süti?',
+        body: [
+          'A süti (cookie) egy kis adatfájl, amelyet a meglátogatott weboldal helyez el a böngésződben. Az oldal hasonló célra használja a böngésző helyi tárolóját (localStorage) is — ez nem süti, de ugyanúgy a te eszközödön tárol adatot, ezért erről is tájékoztatunk.',
+        ],
+      },
+      {
+        heading: '2. Működéshez szükséges — hozzájárulás nélkül is',
+        body: [
+          'Az oldal egyetlen ilyen adatot tárol: a sütikre vonatkozó döntésedet, hogy ne kelljen minden egyes megnyitáskor újra válaszolnod.',
+        ],
+        list: [
+          'cookie-consent-v1 (localStorage, a böngésződben marad, amíg nem törlöd) — azt tárolja, hogy elfogadtad-e a statisztikai, illetve a marketingsütiket. Nem alkalmas a személyed azonosítására.',
+        ],
+      },
+      {
+        heading: '3. Statisztika — csak a hozzájárulásoddal',
+        body: [
+          'Látogatottsági méréssel azt néznénk meg, hány látogató érkezik, melyik szekcióig jutnak el, és hol hagyják abba — ebből tudjuk, mit érdemes javítani az oldalon.',
+          'Jelenleg statisztikai mérőkód NINCS beépítve az oldalba. Ha később bekerül (például Google Analytics 4), ezt a tájékoztatót előtte frissítjük, és a mérés akkor is csak a hozzájárulásoddal indul el.',
+        ],
+      },
+      {
+        heading: '4. Marketing — csak a hozzájárulásoddal',
+        body: [
+          'Az oldal a Meta Pixelt használja (azonosító: 1381730370784885), a Meta Platforms Ireland Limited szolgáltatását. Ez méri, hogy a Facebookon vagy Instagramon megjelent hirdetésünkből lett-e ajánlatkérés, és lehetővé teszi, hogy a korábbi látogatóknak újra megjelenjünk.',
+          'A Pixel az oldal betöltésekor letöltődik, de hallgat: amíg nem fogadod el a marketingsütiket, nem helyez el sütit és nem küld adatot. Ha elfogadod, a Meta sütiket helyez el (jellemzően _fbp néven, legfeljebb 90 napos élettartammal), és az IP-címed, a böngésződ adatai, valamint a meglátogatott oldal címe eljut hozzá.',
+          'Ha később visszavonod a hozzájárulásodat, a Pixel azonnal újra elnémul. A már elküldött adatok kezeléséről a Meta adatvédelmi tájékoztatója rendelkezik.',
+        ],
+      },
+      {
+        heading: '5. Harmadik felek, amelyek nem sütiznek, de adatot látnak',
+        body: [
+          'Két szolgáltatás az oldal működéséhez kell, és sütit nem helyez el, de az oldal megnyitásakor látja az IP-címedet:',
+        ],
+        list: [
+          'Google Fonts (Google Ireland Limited) — az oldal betűtípusait tölti be.',
+          'frankfurter.app — az árkalkulátor ebből kéri le az aznapi euró-árfolyamot. Csak az árfolyamot kérdezzük le, rólad semmilyen adatot nem küldünk.',
+        ],
+      },
+      {
+        heading: '6. Hogyan rendelkezhetsz a sütikről?',
+        body: [
+          'Az első látogatáskor megjelenő sávon választhatsz. A döntésedet később bármikor módosíthatod: a lap alján, a láblécben kattints a „Cookie-beállítások" pontra.',
+          'A böngésződ beállításaiban is törölheted vagy letilthatod a sütiket. Ha a működéshez szükséges tárolást is letiltod, az oldal használható marad, de minden megnyitáskor újra megkérdezzük a süti-beállításaidat.',
+        ],
+      },
+    ],
+  },
+
   imprint: {
     title: 'Impresszum',
     href: '',
-    body: 'Ágoston-Generál Kft. · Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I · Képviselő: Ágoston Zsolt ügyvezető · Cégjegyzékszám: 14-09-321548 · Adószám: 32793246-2-14 · E-mail: agostongeneral@gmail.com · Telefon: +36 70 547 9595 · Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE ÉS ELÉRHETŐSÉGE]',
+    intro: '',
+    sections: [
+      {
+        heading: 'Üzemeltető',
+        list: [
+          'Cégnév: Ágoston-Generál Korlátolt Felelősségű Társaság',
+          'Székhely: 8648 Balatonkeresztúr, Iskola utca 4/I',
+          'Képviselő: Ágoston Zsolt ügyvezető',
+          'Cégjegyzékszám: 14-09-321548',
+          'Adószám: 32793246-2-14',
+          'E-mail: info@agostongeneral.hu',
+          'Telefon: +36 70 547 9595',
+          'Tárhelyszolgáltató: [TÁRHELYSZOLGÁLTATÓ NEVE, SZÉKHELYE ÉS ELÉRHETŐSÉGE]',
+        ],
+      },
+    ],
   },
 } as const;
 
