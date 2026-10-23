@@ -759,7 +759,7 @@ export const form = {
    * '/koszonjuk'), sikeres beküldés után az oldal oda navigál — hasznos,
    * ha a GA4-ben oldalletöltés-alapú konverziót mérsz.
    */
-  thankYouUrl: '',
+  thankYouUrl: '/koszonjuk.html',
 } as const;
 
 /* ---------------------------------------------------------------------------

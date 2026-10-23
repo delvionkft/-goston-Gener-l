@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Köszönőoldalt soha nem indexelünk: a keresőben nem ez a landolás,
+         és a találati listában félrevezető lenne. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Köszönjük a megkeresést – Ágoston-Generál Kft.</title>
+    <meta name="description" content="Megkaptuk az ajánlatkérésed. Két munkanapon belül keresünk." />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#FFFFFF" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap&subset=latin,latin-ext"
+    />
+
+    <!--
+      ÖNÁLLÓ OLDAL, szándékosan.
+
+      Nem a React alkalmazás része: így akkor is megjelenik, ha a JavaScript
+      nem fut le, és minden statikus tárhelyen működik útvonal-átírás nélkül.
+      Cserébe a szövege ITT van, nem a src/config/site.ts fájlban — ha a
+      köszönő szöveget átírod ott, ezt is írd át.
+
+      Mérés: a konverziós esemény (form_submit / Meta "Lead") még az űrlap
+      oldalán sül el, a navigáció előtt. Ezen az oldalon NINCS mérőkód, így
+      nincs duplázás, és nem kell külön sütikezelés sem.
+    -->
+    <style>
+      :root {
+        --gold: #9b8245;
+        --gold-text: #6e5b2f;
+        --ink: #222222;
+        --text: #444444;
+        --muted: #555555;
+        --line: #e4e3e0;
+        --white: #ffffff;
+        --offwhite: #f7f7f7;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: clamp(1.25rem, 1rem + 2vw, 3rem);
+        background: linear-gradient(180deg, var(--white) 0%, var(--offwhite) 100%);
+        color: var(--text);
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .card {
+        width: min(38rem, 100%);
+        padding: clamp(1.75rem, 1.4rem + 2vw, 3rem);
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 24px 50px -34px rgba(24, 24, 24, 0.35);
+        text-align: center;
+      }
+
+      .logo { width: 170px; height: auto; margin-bottom: 1.75rem; }
+
+      .mark {
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 1.25rem;
+        border-radius: 50%;
+        background: rgba(155, 130, 69, 0.12);
+        color: var(--gold-text);
+      }
+
+      h1 {
+        margin: 0 0 0.75rem;
+        font-family: 'Montserrat', system-ui, sans-serif;
+        font-size: clamp(1.5rem, 1.25rem + 1.4vw, 2.125rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+      }
+
+      .lead { margin: 0 auto; max-width: 34ch; color: var(--muted); }
+
+      ul {
+        margin: 1.75rem 0 0;
+        padding: 1.5rem 0 0;
+        border-top: 1px solid var(--line);
+        list-style: none;
+        text-align: left;
+      }
+
+      li {
+        display: flex;
+        gap: 0.65rem;
+        align-items: flex-start;
+        font-size: 0.9375rem;
+      }
+
+      li + li { margin-top: 0.75rem; }
+      li svg { flex: none; margin-top: 0.3rem; color: var(--gold-text); }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex: 1 1 13rem;
+        padding: 0.95rem 1.5rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+      }
+
+      /* Aranyon sötét felirat: fehérrel csak 3.7:1 lenne. */
+      .btn--primary { background: var(--gold); color: #1a1a1a; }
+      .btn--primary:hover { background: #a78e4e; }
+      .btn--secondary { border-color: var(--gold); color: var(--gold-text); }
+      .btn--secondary:hover { background: rgba(155, 130, 69, 0.07); }
+
+      a:focus-visible, .btn:focus-visible {
+        outline: 2px solid var(--gold-text);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="card">
+      <img class="logo" src="/agoston-ablak-logo.webp" width="755" height="208" alt="Ágoston Ablak" />
+
+      <span class="mark" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </span>
+
+      <h1>Köszönjük, megkaptuk a kérésed!</h1>
+      <p class="lead">
+        Két munkanapon belül felvesszük veled a kapcsolatot a megadott telefonszámon.
+      </p>
+
+      <ul>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          <span>A megkeresésedet rögzítettük, nem vész el.</span>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          <span>Ha sürgős, hívj minket nyugodtan közvetlenül is.</span>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <a class="btn btn--primary" href="tel:+36705479595">Hívás: +36 70 547 9595</a>
+        <a class="btn btn--secondary" href="/">Vissza a főoldalra</a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -86,6 +86,8 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 | Logó, sötét háttérre | `agoston-ablak-logo-light.webp` | 755×208 | 3,6:1 | kész |
 | Logó, álló változat | `agoston-ablak-logo-stacked.webp` | 575×584 | 1:1 | tartalék |
 | Referenciák (6 db) | `ref-1.webp` … `ref-6.webp` | 1400×1050 | 4:3 | kész |
+| Favicon | `favicon-32.png`, `favicon-192.png` | 32 / 192 | 1:1 | kész |
+| Apple ikon | `apple-touch-icon.png` | 180×180 | 1:1 | kész |
 | Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
 
 A hero kétosztatú: balra a szöveg, jobbra **egyetlen** fotó. A kirakott
@@ -175,6 +177,25 @@ A sablon ezekre a változónevekre hivatkozhat:
 
 Amelyikre a sablon nem hivatkozik, azt az EmailJS figyelmen kívül hagyja;
 amelyiket a sablon használ, de nem küldjük, az üresen marad.
+
+### Köszönőoldal
+
+Sikeres beküldés után az oldal a **`/koszonjuk.html`** címre navigál
+(`form.thankYouUrl` a `site.ts`-ben; ha kiüríted, a köszönő üzenet az
+űrlap helyén jelenik meg, navigáció nélkül).
+
+A köszönőoldal **önálló HTML** a `public/` mappában, nem a React
+alkalmazás része: így akkor is megjelenik, ha a JavaScript nem fut le, és
+minden statikus tárhelyen működik útvonal-átírás nélkül. **Cserébe a
+szövege ott van, nem a `site.ts`-ben** — ha a köszönő szöveget átírod a
+konfigurációban, a `public/koszonjuk.html`-t is írd át.
+
+`noindex` van rajta: a köszönőoldal nem való a találati listába.
+
+A konverziós esemény (`form_submit`, Meta „Lead") még az űrlap oldalán sül
+el, a navigáció előtt — a navigáció 350 ms késleltetéssel indul, hogy a
+jelzés biztosan kimenjen. A köszönőoldalon nincs mérőkód, így nincs
+duplázás, és nem kell rajta külön sütikezelés.
 
 ### Saját végpont — opcionális
 

@@ -119,9 +119,15 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
       /*
        * Ha be van állítva külön köszönőoldal, oda navigálunk — így a GA4-ben
        * oldalletöltés-alapú konverzió is mérhető.
+       *
+       * A navigáció rövid késleltetéssel indul: a konverziós jelzés (Meta
+       * „Lead", GA4 esemény) közvetlenül fölötte sült el, és az azonnali
+       * oldalelhagyás elvághatná a még úton lévő kérést. Ennyi idő alatt
+       * a jelzés kimegy, a látogató pedig semmit nem érzékel belőle.
        */
       if (formCopy.thankYouUrl) {
-        window.location.assign(formCopy.thankYouUrl);
+        const url = formCopy.thankYouUrl;
+        window.setTimeout(() => window.location.assign(url), 350);
         return;
       }
 
