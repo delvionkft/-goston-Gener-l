@@ -150,6 +150,8 @@ export const ANCHOR = {
   process: 'folyamat',
   references: 'referenciak',
   testimonials: 'velemenyek',
+  /* A gyakori kérdések szekció jelenleg NEM jelenik meg az oldalon. A
+     horgony és a `faq` tartalom megmaradt, hogy visszatehető legyen. */
   faq: 'gyik',
   form: 'ajanlatkeres',
 } as const;
@@ -160,7 +162,6 @@ export const navLinks = [
   { id: ANCHOR.why, label: 'Miért minket' },
   { id: ANCHOR.process, label: 'Folyamat' },
   { id: ANCHOR.references, label: 'Referenciák' },
-  { id: ANCHOR.faq, label: 'Kérdések' },
 ] as const;
 
 /**
@@ -176,7 +177,6 @@ export const SECTIONS = [
   { id: ANCHOR.process, label: 'Folyamat' },
   { id: ANCHOR.references, label: 'Referenciák' },
   { id: ANCHOR.testimonials, label: 'Vélemények' },
-  { id: ANCHOR.faq, label: 'Kérdések' },
   { id: ANCHOR.form, label: 'Ajánlatkérés' },
 ] as const;
 
@@ -634,6 +634,15 @@ export const testimonials = {
  *  helyőrzők. Kitalált szám itt nem csak félrevezető: ígéretnek számít.
  * ------------------------------------------------------------------------ */
 
+/**
+ * Gyakori kérdések.
+ *
+ * JELENLEG NEM JELENIK MEG az oldalon — a megrendelő kérésére kivettük.
+ * A tartalom itt marad, hogy visszatehető legyen: ehhez a SECTIONS és a
+ * navLinks listába vissza kell venni az ANCHOR.faq sort, az App.tsx-be
+ * pedig a <Faq /> komponenst, és a seo.ts-ben újra be kell kapcsolni a
+ * FAQPage strukturált adatot.
+ */
 export const faq = {
   eyebrow: 'Gyakori kérdések',
   title: 'Amit a leggyakrabban kérdeznek tőlünk',

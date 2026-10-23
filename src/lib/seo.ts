@@ -79,9 +79,19 @@ export function buildBusinessSchema(): Record<string, unknown> | null {
 }
 
 /**
- * GYIK séma. Csak akkor kerül ki, ha egyetlen válasz sem tartalmaz
- * kitöltetlen helyőrzőt — kitöltetlen ár vagy garancia a találati
- * listában jelenne meg, ami rosszabb, mint ha nincs kiemelt találat.
+ * GYIK séma.
+ *
+ * JELENLEG NEM KERÜL KI: a gyakori kérdések szekció nem jelenik meg az
+ * oldalon. A strukturált adatnak kötelezően a LÁTHATÓ tartalmat kell
+ * tükröznie — FAQPage jelölés a hozzá tartozó szöveg nélkül a Google
+ * szabályzatába ütközik, és kézi büntetést vonhat maga után.
+ *
+ * Ha a szekció visszakerül, hívd újra a `setJsonLd('ld-faq', ...)` sort
+ * az `applyDocumentHead()`-ben.
+ *
+ * A szűrés akkor is érvényes: csak kitöltött válaszok mehetnek ki —
+ * kitöltetlen ár vagy garancia a találati listában rosszabb, mint ha
+ * nincs kiemelt találat.
  */
 export function buildFaqSchema(): Record<string, unknown> | null {
   const usable = faq.items.filter(
@@ -124,7 +134,9 @@ export function applyDocumentHead(): void {
   setMeta('name', 'twitter:description', description);
 
   setJsonLd('ld-business', buildBusinessSchema());
-  setJsonLd('ld-faq', buildFaqSchema());
+  /* A GYIK szekció nincs az oldalon, ezért a FAQPage jelölés sem mehet ki.
+     A korábbi oldalletöltésből maradt jelölést is eltávolítjuk. */
+  setJsonLd('ld-faq', null);
 }
 
 function setMeta(attr: 'name' | 'property', key: string, value: string): void {

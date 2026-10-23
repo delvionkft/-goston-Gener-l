@@ -4,7 +4,7 @@ Egyoldalas, konverzióra optimalizált landing oldal nyílászárós vállalkoz�
 React + Vite + TypeScript, külső UI-könyvtár és animációs függőség nélkül.
 
 Az oldal felépítése egyetlen útvonalat jár be:
-**probléma → megoldás → miért mi → hogyan dolgozunk → bizonyíték → kérdések → ajánlatkérés.**
+**probléma → megoldás → miért mi → hogyan dolgozunk → bizonyíték → ajánlatkérés.**
 
 ## Indítás
 
@@ -55,7 +55,7 @@ maradt ilyen — CI-ba is beköthető.
 5. `social` — közösségi média linkek (üresen hagyva nem jelennek meg)
 6. `references` — **csak valós, elvégzett munkák**, előtte–utána képekkel
 7. `testimonials` — **csak valós, az ügyféltől engedélyezett vélemények**
-8. `faq` — az árra, határidőre és garanciára vonatkozó helyőrzők kitöltése
+8. `faq` — **jelenleg nem jelenik meg az oldalon** (lásd lentebb)
 9. `legal` — adatkezelési tájékoztató és impresszum (jogi ellenőrzéssel)
 
 > Az oldalon szándékosan nincs kitalált referencia, ügyfélvélemény,
@@ -258,7 +258,7 @@ megy át. A komponensek nem tudnak a konkrét mérőrendszerekről.
 | `form_submit` | **Fő konverzió:** sikeres űrlapbeküldés, a négy minősítő válasszal együtt |
 | `form_error` | Mezőhiba vagy sikertelen beküldés |
 | `reference_open` | Referenciakép megnyitása |
-| `faq_open` | GYIK-kérdés lenyitása |
+| `faq_open` | GYIK-kérdés lenyitása (a szekció jelenleg nincs kint) |
 | `nav_click`, `process_step_view` | Navigáció, idővonal-görgetés |
 
 **Bekötés:** a mérőkódok helye az `index.html` `<head>` szakaszában van.
@@ -304,6 +304,29 @@ jelzései automatikusan frissülnek.
 
 ---
 
+## 4/B. A gyakori kérdések szekció
+
+**A GYIK szekció jelenleg NEM jelenik meg az oldalon** — a megrendelő
+kérésére került ki. A tartalma megmaradt a `src/config/site.ts` `faq`
+blokkjában, hogy bármikor visszatehető legyen.
+
+A visszatételhez három helyen kell módosítani:
+
+1. `src/App.tsx` — a `<Faq />` komponens importja és beillesztése
+   (a `Testimonials` és a `QuoteSection` közé).
+2. `src/config/site.ts` — az `ANCHOR.faq` sor vissza a `SECTIONS` és a
+   `navLinks` listába. A szekciószámok (01, 02…) és a tartalomjegyzék
+   ebből a listából jönnek, ezért automatikusan újraszámozódnak.
+3. `src/lib/seo.ts` — a `setJsonLd('ld-faq', buildFaqSchema())` hívás
+   visszaállítása.
+
+**A 3. pont nem hagyható ki, és fordítva sem:** a FAQPage strukturált
+adat csak akkor mehet ki, ha a kérdések ténylegesen LÁTHATÓK az oldalon.
+Jelölés a hozzá tartozó szöveg nélkül a Google szabályzatába ütközik, és
+kézi büntetést vonhat maga után. Ezért a kivételkor ezt is kikapcsoltuk.
+
+---
+
 ## 5. Felépítés
 
 ```
@@ -313,7 +336,7 @@ src/
     submitLead.ts       ← CRM / API bekötési pont
     analytics.ts        ← mérési réteg
     validation.ts       ← űrlap-mezőellenőrzés
-    seo.ts              ← cím, meta, Open Graph, strukturált adat (LocalBusiness + GYIK)
+    seo.ts              ← cím, meta, Open Graph, strukturált adat (LocalBusiness)
     contact.ts          ← tel: / mailto: linkek
     scroll.ts           ← horgonyra görgetés
   hooks/                ← megjelenési animáció, fókuszcsapda, reduced-motion
@@ -372,4 +395,3 @@ paletta-átszínezés nem mozdíthatja el a kézzel ellenőrzött kontrasztot.
 - [ ] `VITE_LEAD_ENDPOINT` beállítva, és a beküldés **valóban megérkezik**
 - [ ] Adatkezelési tájékoztató és impresszum jogilag ellenőrzött szöveggel
 - [ ] Mérőkód beillesztve az `index.html`-be, események ellenőrizve
-- [ ] GYIK-válaszokban nincs olyan ár, határidő vagy garancia, amit nem vállalsz

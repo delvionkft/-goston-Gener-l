@@ -11,7 +11,6 @@ import { WhyUs } from './sections/WhyUs';
 import { Process } from './sections/Process';
 import { References } from './sections/References';
 import { Testimonials } from './sections/Testimonials';
-import { Faq } from './sections/Faq';
 import { QuoteSection } from './sections/QuoteSection';
 import { Footer } from './sections/Footer';
 import { StickyContact } from './components/StickyContact';
@@ -56,7 +55,6 @@ export function App() {
         <Process />
         <References />
         <Testimonials />
-        <Faq />
         <QuoteSection onOpenPrivacy={openPrivacy} />
       </main>
 
