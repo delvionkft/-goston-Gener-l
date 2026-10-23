@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ANCHOR, company, cta, hero } from '../config/site';
+import { ANCHOR, cta, hero } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { Button } from '../components/Button';
@@ -10,11 +10,21 @@ import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
 
 /**
- * Hero: középre zárt üzenet, alatta képsáv.
+ * Hero.
  *
- * A szöveg kapja a teljes szélességet — az ígéretet másodpercek alatt el
- * kell olvasni —, a képek pedig alatta, széles sávban következnek. Középen
- * a legerősebb kép: ez látszik mobilon is elsőként.
+ * Három blokk, nem négy, és mindegyik más ritmusú — ettől olvasható:
+ *
+ *   1. ÜZENET   középre zárt ígéret és a két gomb. Ez kapja a legtöbb
+ *               levegőt: ezen múlik, hogy a látogató marad-e.
+ *   2. KÉPSÁV   a három fotó egy síkban, azonos árnyékkal — egyetlen
+ *               tárgyként olvasódik, nem három külön kártyaként.
+ *   3. BIZONYÍTÉK  a bizalmi pontok és a számok EGY halk sávban, a
+ *               szekció alján. Nem versenyeznek a címsorral.
+ *
+ * A korábbi elrendezésben a bizalmi pontok a gombok és a képek közé
+ * ékelődtek, és három egymás utáni háromoszlopos sor adta ki a hero-t —
+ * ugyanaz a ritmus háromszor, sok szöveggel. Most a sűrű rész lekerült
+ * az aljára, halkabb szedéssel.
  */
 export function Hero() {
   const stripRef = useRef<HTMLUListElement>(null);
@@ -46,6 +56,7 @@ export function Hero() {
     <section className="hero" id={ANCHOR.hero} aria-labelledby="hero-cim">
       <div className="hero__bg" aria-hidden="true" />
 
+      {/* 1. Üzenet */}
       <div className="hero__inner container">
         <p className="eyebrow hero__eyebrow">
           <PH value={hero.eyebrow} />
@@ -65,7 +76,28 @@ export function Hero() {
             {cta.secondary}
           </Button>
         </div>
+      </div>
 
+      {/* 2. Képsáv. Mobilon vízszintesen húzható, a középső képnél kezdve. */}
+      <div className="hero__gallery">
+        <ul className="hero__strip" ref={stripRef}>
+          {hero.gallery.map((item, index) => (
+            <li className="hero__shot" key={item.image}>
+              <ImageSlot
+                src={item.image}
+                alt={item.alt}
+                ratio="4 / 5"
+                label="[HERO KÉP]"
+                priority={index === 1}
+                sizes="(min-width: 900px) 32vw, 78vw"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 3. Bizonyíték: bizalmi pontok és számok egy halk sávban. */}
+      <div className="hero__proof container">
         <ul className="hero__trust">
           {hero.trust.map((point) => (
             <li key={point.title} className="hero__trust-item">
@@ -79,35 +111,7 @@ export function Hero() {
             </li>
           ))}
         </ul>
-      </div>
 
-      {/* Képsáv. Mobilon vízszintesen húzható, középen kezdve. */}
-      <div className="hero__gallery">
-        <ul className="hero__strip" ref={stripRef}>
-          {hero.gallery.map((item, index) => (
-            <li className={`hero__shot hero__shot--${index + 1}`} key={item.image}>
-              <ImageSlot
-                src={item.image}
-                alt={item.alt}
-                ratio="4 / 5"
-                label="[HERO KÉP]"
-                priority={index === 1}
-                sizes="(min-width: 900px) 32vw, 78vw"
-              />
-            </li>
-          ))}
-        </ul>
-
-        <div className="hero__badge">
-          <span className="hero__badge-label">Működési terület</span>
-          <span className="hero__badge-value">
-            <PH value={company.serviceAreaShort} />
-          </span>
-        </div>
-      </div>
-
-      {/* Rövid számsáv a képsáv alatt — görgetéskor felfutó értékekkel. */}
-      <div className="hero__stats">
         <Stats />
       </div>
     </section>
