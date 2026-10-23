@@ -1,58 +1,78 @@
+/* --- Felugró süti-ablak ---------------------------------------------------
+   Középre helyezett párbeszédablak sötétített háttérrel. Nincs bezárógomb,
+   és a háttérre kattintás sem zár: dönteni kell. A visszautasítás viszont
+   pontosan ugyanolyan könnyű és ugyanolyan hangsúlyos, mint az elfogadás —
+   ez GDPR-követelmény, nem ízlés kérdése. */
+
 .cookiebar {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: calc(var(--mobilebar-h) + 0px);
+  inset: 0;
   z-index: var(--z-cookie);
-  padding: var(--sp-4) var(--gutter) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
-  background: var(--c-white);
-  border-top: 1px solid var(--c-line);
-  box-shadow: 0 -10px 40px -24px rgba(24, 24, 24, 0.55);
-  animation: cookiebar-in 340ms var(--ease-out) both;
-  transition:
-    opacity var(--dur-fast) var(--ease-out),
-    visibility var(--dur-fast) var(--ease-out);
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
 }
 
-/* Amíg modális ablak (nagy kép, mobilmenü, jogi ablak) van nyitva, a
-   sütisáv félreáll, és bezárás után magától visszatér. */
+.cookiebar__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: cookie-fade 240ms var(--ease-out) both;
+}
+
+.cookiebar__card {
+  position: relative;
+  width: min(34rem, 100%);
+  max-height: calc(100dvh - 2 * var(--gutter));
+  overflow-y: auto;
+  padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  background: var(--c-white);
+  border-radius: var(--r-lg);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.55);
+  animation: cookie-in 300ms var(--ease-out) both;
+}
+
+.cookiebar__card:focus {
+  outline: none;
+}
+
+@keyframes cookie-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cookie-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookiebar__backdrop,
+  .cookiebar__card { animation: none; }
+}
+
+/* Amíg másik modális ablak (süti-beállítások, jogi dokumentum) van nyitva,
+   a felugró ablak félreáll, és bezárás után magától visszatér. */
 body.is-locked .cookiebar {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-@keyframes cookiebar-in {
-  from { opacity: 0; transform: translateY(100%); }
-  to { opacity: 1; transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cookiebar { animation: none; }
-}
-
-.cookiebar__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-4) var(--sp-6);
-  max-width: var(--container);
-  margin-inline: auto;
+.cookiebar__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--c-ink);
 }
 
 .cookiebar__text {
-  max-width: 62ch;
+  margin-top: var(--sp-3);
   font-size: var(--fs-sm);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--text-muted);
-}
-
-.cookiebar__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-base);
-  font-weight: 600;
-  color: var(--c-brown-900);
 }
 
 .cookiebar__actions,
@@ -62,30 +82,44 @@ body.is-locked .cookiebar {
   gap: var(--sp-3);
 }
 
+/* A két gomb egyenlő szélességű: egyik sem tűnhet a „helyes" választásnak. */
 .cookiebar__actions {
-  flex: none;
+  margin-top: var(--sp-5);
+}
+
+.cookiebar__actions .btn {
+  flex: 1 1 12rem;
+  min-width: 0;
+  white-space: normal;
+  padding-inline: 1rem;
 }
 
 .cookiebar__modal-actions {
   justify-content: flex-end;
 }
 
-@media (max-width: 520px) {
-  /* Keskeny kijelzőn a gombsor önálló sorba kerül és zsugorodhat —
-     `flex: none` mellett kilógna a képernyőből. */
-  .cookiebar__actions {
-    flex: 1 1 100%;
-    min-width: 0;
-  }
+/* Halk, harmadik lehetőség: kategóriánkénti döntés. */
+.cookiebar__settings {
+  display: block;
+  margin: var(--sp-4) auto 0;
+  padding: 0.25rem;
+  /* A böngésző alapértelmezett gombkerete és háttere nincs globálisan
+     nullázva — itt szöveges linkként kell viselkednie. */
+  border: 0;
+  background: none;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-  .cookiebar__actions .btn,
-  .cookiebar__modal-actions .btn {
-    flex: 1 1 auto;
-    min-width: 0;
-    /* A gombfelirat itt kivételesen törhet — szűk helyen ez jobb,
-       mint ha a gomb kilógna a képernyőből. */
-    white-space: normal;
-    padding-inline: 1rem;
+.cookiebar__settings:hover {
+  color: var(--c-accent-text);
+}
+
+@media (max-width: 420px) {
+  .cookiebar__actions .btn {
+    flex: 1 1 100%;
   }
 }
 

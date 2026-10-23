@@ -74,6 +74,7 @@ export function App() {
       <CookieConsent
         settingsOpen={cookieSettings}
         onSettingsClose={() => setCookieSettings(false)}
+        onOpenSettings={() => setCookieSettings(true)}
       />
 
       {doc ? (

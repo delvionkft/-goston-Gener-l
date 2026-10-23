@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cookies } from '../config/site';
 import { setConsent } from '../lib/analytics';
 import { Button } from './Button';
@@ -39,9 +39,11 @@ interface Props {
   /** Igaz, ha a footerből nyitották meg a beállításokat. */
   settingsOpen: boolean;
   onSettingsClose: () => void;
+  /** A felugró ablak „Beállítások" pontja hívja. */
+  onOpenSettings: () => void;
 }
 
-export function CookieConsent({ settingsOpen, onSettingsClose }: Props) {
+export function CookieConsent({ settingsOpen, onSettingsClose, onOpenSettings }: Props) {
   /*
    * A mentett döntést már az első renderelés előtt beolvassuk. Így a
    * süti-sáv nem villan fel egy pillanatra annál, aki korábban már döntött.
@@ -70,19 +72,28 @@ export function CookieConsent({ settingsOpen, onSettingsClose }: Props) {
 
   const showBanner = !decided && !settingsOpen;
 
+  /* A felugró ablak megnyitáskor fókuszt kap, hogy billentyűzettel is
+     rögtön elérhető legyen — e nélkül a tabulátor a mögötte lévő oldalon
+     indulna el. Szándékosan nincs bezárógomb és a háttérre kattintás sem
+     zár: választani kell, de a visszautasítás ugyanolyan könnyű, mint az
+     elfogadás. */
+  const cardRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (showBanner) cardRef.current?.focus({ preventScroll: true });
+  }, [showBanner]);
+
   return (
     <>
       {showBanner ? (
-        <div
-          className="cookiebar"
-          role="region"
-          aria-label={cookies.title}
-        >
-          <div className="cookiebar__inner">
-            <div className="cookiebar__text">
-              <p className="cookiebar__title">{cookies.title}</p>
-              <p>{cookies.body}</p>
-            </div>
+        <div className="cookiebar" role="dialog" aria-modal="true" aria-labelledby="cookie-cim">
+          <div className="cookiebar__backdrop" aria-hidden="true" />
+
+          <div className="cookiebar__card" ref={cardRef} tabIndex={-1}>
+            <p className="cookiebar__title" id="cookie-cim">
+              {cookies.title}
+            </p>
+            <p className="cookiebar__text">{cookies.body}</p>
+
             <div className="cookiebar__actions">
               <Button
                 variant="secondary"
@@ -94,6 +105,10 @@ export function CookieConsent({ settingsOpen, onSettingsClose }: Props) {
                 Mindet elfogadom
               </Button>
             </div>
+
+            <button type="button" className="cookiebar__settings" onClick={onOpenSettings}>
+              Beállítások
+            </button>
           </div>
         </div>
       ) : null}
