@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { ANCHOR, cta, hero } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
@@ -10,37 +9,23 @@ import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
 
 /**
- * Hero.
+ * Hero: klasszikus kétosztatú elrendezés.
  *
- * Három blokk, nem négy, és mindegyik más ritmusú — ettől olvasható:
+ *   BAL   balra zárt üzenet — kiemelés, címsor, bevezető, két gomb, és
+ *         alattuk a három bizalmi pont egymás alatt.
+ *   JOBB  egyetlen nagy fotó, függőlegesen középre igazítva.
+ *   ALUL  teljes szélességű számsáv.
  *
- *   1. ÜZENET   középre zárt ígéret és a két gomb. Ez kapja a legtöbb
- *               levegőt: ezen múlik, hogy a látogató marad-e.
- *   2. KÉPSÁV   a három fotó egy síkban, azonos árnyékkal — egyetlen
- *               tárgyként olvasódik, nem három külön kártyaként.
- *   3. BIZONYÍTÉK  a bizalmi pontok és a számok EGY halk sávban, a
- *               szekció alján. Nem versenyeznek a címsorral.
+ * A forrásrend szándékosan üzenet → kép → bizalmi pontok: mobilon így a
+ * fotó rögtön a gombok után jön, nem a szöveges lista mögé szorul. A
+ * desktop elrendezést a rács állítja vissza.
  *
- * A korábbi elrendezésben a bizalmi pontok a gombok és a képek közé
- * ékelődtek, és három egymás utáni háromoszlopos sor adta ki a hero-t —
- * ugyanaz a ritmus háromszor, sok szöveggel. Most a sűrű rész lekerült
- * az aljára, halkabb szedéssel.
+ * Az `hero.gallery` tömb első eleme kerül ki. A másik kettő a
+ * konfigurációban marad: ha másik képet akarsz, elég a sorrendet
+ * átírni vagy a fájlt felülírni, kódot nem kell módosítani.
  */
 export function Hero() {
-  const stripRef = useRef<HTMLUListElement>(null);
-
-  /**
-   * Mobilon a húzható képsáv a középső (legerősebb) képnél nyit. Ez egyben
-   * jelzi is, hogy a sáv oldalra húzható, mert mindkét szélen kilátszik a
-   * szomszédos kép. Desktopon a sáv nem görgethető, ott nincs dolga.
-   */
-  useEffect(() => {
-    const strip = stripRef.current;
-    if (!strip) return;
-    const middle = strip.children[1] as HTMLElement | undefined;
-    if (!middle || strip.scrollWidth <= strip.clientWidth) return;
-    strip.scrollLeft = middle.offsetLeft - (strip.clientWidth - middle.clientWidth) / 2;
-  }, []);
+  const shot = hero.gallery[0];
 
   const onQuote = () => {
     track('cta_quote_click', { placement: 'hero' });
@@ -56,48 +41,44 @@ export function Hero() {
     <section className="hero" id={ANCHOR.hero} aria-labelledby="hero-cim">
       <div className="hero__bg" aria-hidden="true" />
 
-      {/* 1. Üzenet */}
       <div className="hero__inner container">
-        <p className="eyebrow hero__eyebrow">
-          <PH value={hero.eyebrow} />
-        </p>
+        {/* --- Bal oszlop: az üzenet --- */}
+        <div className="hero__copy">
+          <p className="eyebrow hero__eyebrow">
+            <PH value={hero.eyebrow} />
+          </p>
 
-        <h1 id="hero-cim" className="hero__title">
-          {hero.title}
-        </h1>
+          <h1 id="hero-cim" className="hero__title">
+            {hero.title}
+          </h1>
 
-        <p className="hero__lead">{hero.lead}</p>
+          <p className="hero__lead">{hero.lead}</p>
 
-        <div className="hero__actions">
-          <Button size="lg" onClick={onQuote} icon={<ArrowDownIcon />}>
-            {cta.primary}
-          </Button>
-          <Button size="lg" variant="secondary" onClick={onServices} icon={<ArrowRightIcon />}>
-            {cta.secondary}
-          </Button>
+          <div className="hero__actions">
+            <Button size="lg" onClick={onQuote} icon={<ArrowDownIcon />}>
+              {cta.primary}
+            </Button>
+            <Button size="lg" variant="secondary" onClick={onServices} icon={<ArrowRightIcon />}>
+              {cta.secondary}
+            </Button>
+          </div>
+
         </div>
-      </div>
 
-      {/* 2. Képsáv. Mobilon vízszintesen húzható, a középső képnél kezdve. */}
-      <div className="hero__gallery">
-        <ul className="hero__strip" ref={stripRef}>
-          {hero.gallery.map((item, index) => (
-            <li className="hero__shot" key={item.image}>
-              <ImageSlot
-                src={item.image}
-                alt={item.alt}
-                ratio="4 / 5"
-                label="[HERO KÉP]"
-                priority={index === 1}
-                sizes="(min-width: 900px) 32vw, 78vw"
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
+        {/* --- Jobb oszlop: egyetlen kép ---
+            A forrásban a bizalmi pontok ELŐTT áll, hogy mobilon rögtön a
+            gombok után jöjjön. Desktopon a rács teszi a jobb hasábba. */}
+        <div className="hero__media">
+          <ImageSlot
+            src={shot.image}
+            alt={shot.alt}
+            ratio="4 / 5"
+            label="[HERO KÉP]"
+            priority
+            sizes="(min-width: 980px) 46vw, 100vw"
+          />
+        </div>
 
-      {/* 3. Bizonyíték: bizalmi pontok és számok egy halk sávban. */}
-      <div className="hero__proof container">
         <ul className="hero__trust">
           {hero.trust.map((point) => (
             <li key={point.title} className="hero__trust-item">
@@ -111,7 +92,10 @@ export function Hero() {
             </li>
           ))}
         </ul>
+      </div>
 
+      {/* --- Számsáv a hero alján, teljes szélességben --- */}
+      <div className="hero__stats">
         <Stats />
       </div>
     </section>

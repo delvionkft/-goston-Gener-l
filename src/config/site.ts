@@ -222,8 +222,10 @@ export const hero = {
    * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
    */
   gallery: [
-    { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
+    /* A hero a LISTA ELSŐ elemét mutatja. Ha másik fotót szeretnél a
+       hero-ba, elég ezt a sorrendet átírni — kódot nem kell módosítani. */
     { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal, kívülről' },
+    { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
     { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
   ],
 } as const;

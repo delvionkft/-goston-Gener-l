@@ -80,14 +80,18 @@ Tedd a képeket a `public/` mappába, és írd be az útvonalukat a
 
 | Hely | Fájlnév a `public/` mappában | Ajánlott méret | Képarány | Állapot |
 | --- | --- | --- | --- | --- |
-| Hero, bal kép | `hero-1.webp` | 840×1050 | 4:5 | kész |
-| Hero, középső (legerősebb) | `hero-2.webp` | 840×1050 | 4:5 | kész |
-| Hero, jobb kép | `hero-3.webp` | 840×1050 | 4:5 | kész |
+| Hero kép (ez látszik) | `hero-2.webp` | 840×1050 | 4:5 | kész |
+| Hero, tartalék | `hero-1.webp`, `hero-3.webp` | 840×1050 | 4:5 | nem látszik |
 | Logó, világos háttérre | `agoston-ablak-logo.webp` | 755×208 | 3,6:1 | kész |
 | Logó, sötét háttérre | `agoston-ablak-logo-light.webp` | 755×208 | 3,6:1 | kész |
 | Logó, álló változat | `agoston-ablak-logo-stacked.webp` | 575×584 | 1:1 | tartalék |
 | Referenciák (6 db) | `ref-1.webp` … `ref-6.webp` | 1400×1050 | 4:3 | kész |
 | Open Graph (megosztás) | `og-image.png` | 1200×630 | 1.91:1 | **hiányzik** |
+
+A hero kétosztatú: balra a szöveg, jobbra **egyetlen** fotó. A kirakott
+kép a `site.ts` `hero.gallery` listájának **első** eleme — ha másikat
+szeretnél, elég a sorrendet átírni ott. A másik két fájl a mappában
+marad, hogy gyorsan cserélhető legyen.
 
 A hero képek a saját referenciafotókból készült 4:5 arányú vágások
 (`ref-4`, `ref-5`, `ref-6`). Ha saját fotó készül, elég felülírni a fájlt
