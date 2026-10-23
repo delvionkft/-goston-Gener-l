@@ -5,14 +5,15 @@
   overflow: hidden;
 }
 
-/* Halk, semleges háttér: fehérből világosszürkébe, a kép mögött egy alig
-   érzékelhető világos folttal. */
+/* Antracit alap, finom filmszemcsével, hogy ne legyen lapos sötét folt.
+   A kép mögött egy alig érzékelhető arany derengés adja a mélységet. */
 .hero__bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(50% 55% at 78% 18%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 65%),
-    linear-gradient(178deg, var(--c-white) 0%, var(--c-offwhite) 60%, var(--c-grey-50) 100%);
+    var(--grain),
+    radial-gradient(46% 52% at 76% 16%, rgba(155, 130, 69, 0.22) 0%, rgba(155, 130, 69, 0) 68%),
+    linear-gradient(168deg, var(--c-ink-700) 0%, var(--c-ink-800) 52%, var(--c-ink-950) 100%);
 }
 
 /* --- Kétosztatú elrendezés ---------------------------------------------
@@ -78,7 +79,7 @@
   max-width: 46ch;
   font-size: var(--fs-lg);
   line-height: 1.6;
-  color: var(--text-muted);
+  color: var(--text-on-dark-muted);
 }
 
 .hero__actions {
@@ -106,7 +107,7 @@
   width: 100%;
   margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
   padding-top: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-  border-top: 1px solid var(--c-line);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   list-style: none;
 }
 
@@ -124,7 +125,7 @@
   width: 20px;
   height: 20px;
   margin-top: 2px;
-  color: var(--c-accent-text);
+  color: var(--c-gold-light);
 }
 
 .hero__trust-icon svg {
@@ -143,14 +144,14 @@
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   font-weight: 600;
-  color: var(--c-ink);
+  color: var(--text-on-dark);
   line-height: 1.35;
 }
 
 .hero__trust-copy span {
   font-size: var(--fs-xs);
   line-height: 1.55;
-  color: var(--text-muted);
+  color: var(--text-on-dark-muted);
 }
 
 /* --- Jobb oszlop: a kép --- */
@@ -161,9 +162,11 @@
 }
 
 .hero__media .imgslot {
-  border-radius: var(--r-lg);
+  border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 28px 60px -34px rgba(24, 24, 24, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 40px 80px -40px rgba(0, 0, 0, 0.75);
 }
 
 /* Mobilon ne vigye el a fél képernyőt a fotó: alacsonyabb arány. */
@@ -179,5 +182,36 @@
   position: relative;
   margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
   padding-top: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-  border-top: 1px solid var(--c-line);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* --- Sötét alapra igazított elemek -------------------------------------- */
+
+/* A másodlagos gomb alapból sötét arany feliratú, ami antraciton 2.5:1 —
+   olvashatatlan. Sötét alapon fehér körvonalas változatot kap. */
+.hero .btn--secondary {
+  --btn-bg: transparent;
+  --btn-fg: #FFFFFF;
+  --btn-border: rgba(255, 255, 255, 0.45);
+  --btn-bg-hover: rgba(255, 255, 255, 0.1);
+}
+
+.hero .btn--secondary:hover {
+  --btn-border: rgba(255, 255, 255, 0.8);
+}
+
+.hero .stats__value {
+  color: var(--text-on-dark);
+}
+
+.hero .stats__suffix {
+  color: var(--c-gold-light);
+}
+
+.hero .stats__label {
+  color: var(--text-on-dark-muted);
+}
+
+.hero .stats__item + .stats__item::before {
+  background: rgba(255, 255, 255, 0.16);
 }

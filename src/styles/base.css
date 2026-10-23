@@ -151,8 +151,9 @@ button {
   color: var(--text-on-dark);
 }
 
-.section--dark h2,
-.section--dark h3 {
+/* A h1 is kell: eddig egyetlen sötét szekcióban sem volt címsor ebből a
+   szintből, ezért maradt ki — a hero antracit alapon viszont ez a főcím. */
+.section--dark :is(h1, h2, h3) {
   color: var(--text-on-dark);
 }
 
