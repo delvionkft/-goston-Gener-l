@@ -27,29 +27,47 @@
 
 @media (min-width: 980px) {
   .hero__inner {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    gap: clamp(2rem, 1rem + 3vw, 3.5rem) clamp(2.5rem, 1.5rem + 4vw, 5rem);
-    align-items: start;
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+    column-gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    /* Szándékos, mért térköz a gombok és a bizalmi blokk között. Korábban
+       ez a rés abból maradt, hogy a kép saját magassága feszítette szét a
+       rácsot — 96 px véletlen üresség keletkezett. */
+    row-gap: clamp(2rem, 1.6rem + 1.5vw, 3rem);
+    align-items: stretch;
   }
 
-  /* A forrásrend üzenet → kép → bizalmi pontok (a mobil miatt). Itt a
-     rács visszarakja a kettéosztott elrendezést: balra a szöveg egymás
-     alatt, jobbra a kép, ami mindkét sort átéri. */
+  /* A forrásrend üzenet → kép → bizalmi pontok (a mobil miatt). A rács
+     itt kettéosztja: balra a szöveg két sorban, jobbra a kép, ami
+     mindkettőt átéri. */
   .hero__copy {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .hero__media {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-
   .hero__trust {
     grid-column: 1;
     grid-row: 2;
-    margin-top: 0;
+    align-self: end;
+  }
+
+  .hero__media {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  /* A MAGASSÁGOT A TARTALOM ADJA, a kép igazodik hozzá. A kép abszolút
+     pozícióval tölti ki az oszlopot, így a saját természetes magassága
+     (a 840×1050-es forrásé) nem feszíti szét a rácsot — e nélkül a bal
+     oszlopban 120 px véletlen üresség keletkezett. */
+  .hero__media {
+    position: relative;
+    min-height: 26rem;
+  }
+
+  .hero__media .imgslot {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
   }
 }
 
@@ -103,10 +121,17 @@
   flex-direction: column;
   gap: var(--sp-4);
   width: 100%;
-  margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
   padding-top: clamp(1.5rem, 1.2rem + 1vw, 2rem);
   border-top: 1px solid var(--c-line);
   list-style: none;
+}
+
+/* Egy oszlopban a felső margó adja a távolságot. Desktopon NEM kell: ott
+   a rács sorköze méri ki, és a margó csak elrontaná az igazítást. */
+@media (max-width: 979px) {
+  .hero__trust {
+    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+  }
 }
 
 .hero__trust-item {
