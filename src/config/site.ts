@@ -228,17 +228,19 @@ export const hero = {
    *   hero-cover-portrait.webp   1000 × 1250  (4:5,  nagyobb telefon)
    *
    * A kompozíciónak a BAL OLDALON kell üres falfelületet hagynia: oda kerül
-   * a címsor. Jobbra jöjjenek a nyílászárók. A jelenlegi kép a meglévő
-   * referenciafotóból készült — ez a leggyengébb láncszem az oldalon, mert
-   * a forrás mindössze 1400 px széles. Nagy felbontású fotóval érezhetően
-   * jobb lesz.
+   * a címsor. Jobbra jöjjenek a nyílászárók.
+   *
+   * FORRÁS: „Kortárs otthon anthracit tolóajtóval.png” a projekt gyökerében
+   * (1672 × 941). FONTOS: ez HANGULATKÉP, nem a cég saját munkája — sem a
+   * szövegben, sem az alt attribútumban nem állítjuk róla, hogy referencia.
+   * A valós munkákat a referenciaszekció mutatja.
    */
   cover: {
     wideSmall: 'hero-cover-1100.webp',
     wide: 'hero-cover.webp',
     portraitSmall: 'hero-cover-700.webp',
     portrait: 'hero-cover-portrait.webp',
-    alt: 'Felújított családi ház homlokzata új műanyag ablakokkal',
+    alt: 'Kortárs családi ház terasza nagy méretű antracit tolóajtóval',
   },
   /**
    * Tartalék képek. A hero már nem ezeket használja, de a fájlok megvannak:

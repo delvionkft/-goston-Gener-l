@@ -2,7 +2,10 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: var(--z-header);
-  background: color-mix(in srgb, var(--c-beige) 82%, transparent);
+  /* 94%, nem 82%: a hero fotója a fejléc MÖGÉ is befut, és a korábbi
+     áttetszőségnél a kép sötét fal / világos üveg határa átütött a
+     sávon, egy látható függőleges lépcsőt rajzolva a logó mellé. */
+  background: color-mix(in srgb, var(--c-beige) 94%, transparent);
   backdrop-filter: blur(14px) saturate(1.1);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
   border-bottom: 1px solid transparent;
