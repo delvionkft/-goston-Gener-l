@@ -5,7 +5,8 @@
  */
 
 export interface FormValues {
-  /** Minősítő kérdések — a kérdőív első négy lépése. */
+  /** Minősítő kérdések — a kérdőív első öt lépése. */
+  county: string;
   propertyType: string;
   windowCount: string;
   needs: string;
@@ -79,6 +80,7 @@ export function validate(values: FormValues): FormErrors {
 }
 
 export const emptyForm: FormValues = {
+  county: '',
   propertyType: '',
   windowCount: '',
   needs: '',

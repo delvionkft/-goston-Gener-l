@@ -108,6 +108,7 @@ export function QuoteForm({ source, onDark = false, onOpenPrivacy }: Props) {
     if (result.ok) {
       track('form_submit', {
         source,
+        county: values.county,
         propertyType: values.propertyType,
         windowCount: values.windowCount,
         needs: values.needs,

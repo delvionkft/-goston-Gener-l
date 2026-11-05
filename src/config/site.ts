@@ -718,6 +718,16 @@ export const form = {
   /** A négy minősítő kérdés. Mindegyik egy lépés, egy kattintással. */
   questions: [
     {
+      /* Ez áll elöl: egyetlen koppintással kiderül, a kiszolgálási
+         területen van-e az ingatlan. A harmadik lehetőség szándékos —
+         kétválaszos kérdésnél a területen kívüli érdeklődő kénytelen
+         lenne valótlant választani, és használhatatlan adatot kapnánk. */
+      key: 'county' as const,
+      title: 'Melyik megyében van az ingatlan?',
+      hint: 'A Balaton déli partján és környékén dolgozunk.',
+      options: ['Somogy', 'Zala', 'Más megyében'],
+    },
+    {
       key: 'propertyType' as const,
       title: 'Milyen ingatlanról van szó?',
       hint: 'Ebből tudjuk, milyen beépítési körülményekre számítsunk.',
@@ -806,7 +816,7 @@ export const legal = {
         list: [
           'Kapcsolattartási adatok: név, telefonszám, település. Ezek megadása kötelező, mert e nélkül nem tudunk visszahívni és nem tudjuk megmondani, kimegyünk-e hozzád felmérni.',
           'E-mail cím: nem kötelező. Akkor kezeljük, ha megadod — ilyenkor e-mailben is tudunk ajánlatot küldeni.',
-          'Az igényedre vonatkozó válaszok: milyen ingatlanról van szó, hány nyílászárót érint a csere, mire van szükséged, mikorra tervezed. Ezekből állítjuk össze az ajánlatot.',
+          'Az igényedre vonatkozó válaszok: melyik megyében van az ingatlan, milyen ingatlanról van szó, hány nyílászárót érint a csere, mire van szükséged, mikorra tervezed. Ezekből állítjuk össze az ajánlatot.',
           'Szabad szöveges üzenet, ha írsz ilyet.',
           'Az árkalkulátor beállítása, ha használtad (például „2 fix ablak, beépítéssel, kalkulált nagyságrend: 52 000 Ft"). Ebből látjuk, milyen nagyságrendre gondoltál.',
           'Technikai adatok a beküldéshez: a beküldés időpontja, annak az oldalnak a címe, ahonnan küldted (ez tartalmazhatja a hirdetés azonosítóját), és hogy melyik oldalról érkeztél hozzánk.',

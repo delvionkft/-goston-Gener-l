@@ -32,6 +32,7 @@ import { emailEnabled, emailjs } from '../config/email';
 
 export interface LeadData {
   /** A kérdőív minősítő válaszai. */
+  county: string;
   propertyType: string;
   windowCount: string;
   needs: string;
@@ -61,6 +62,7 @@ const TIMEOUT_MS = 15000;
 /** A CRM felé küldött adatszerkezet. Itt igazítsd a saját sémádhoz. */
 function toPayload(data: LeadData) {
   return {
+    county: data.county,
     propertyType: data.propertyType,
     windowCount: data.windowCount,
     needs: data.needs,
@@ -93,6 +95,7 @@ function toTemplateParams(data: LeadData): Record<string, string> {
     phone: p.phone,
     email: p.email,
     city: p.city,
+    county: p.county,
     propertyType: p.propertyType,
     windowCount: p.windowCount,
     needs: p.needs,

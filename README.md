@@ -171,9 +171,9 @@ domaineket: **Account → Security → Allowed origins**. Élesítéskor ezt
 
 A sablon ezekre a változónevekre hivatkozhat:
 
-`name`, `phone`, `email`, `city`, `propertyType`, `windowCount`, `needs`,
-`timing`, `estimate`, `message`, `consent` („igen" / „nem"), `source`,
-`page`, `referrer`, `submittedAt`, `reply_to`.
+`name`, `phone`, `email`, `city`, **`county`**, `propertyType`,
+`windowCount`, `needs`, `timing`, `estimate`, `message`, `consent`
+(„igen" / „nem"), `source`, `page`, `referrer`, `submittedAt`, `reply_to`.
 
 Amelyikre a sablon nem hivatkozik, azt az EmailJS figyelmen kívül hagyja;
 amelyiket a sablon használ, de nem küldjük, az üresen marad.
