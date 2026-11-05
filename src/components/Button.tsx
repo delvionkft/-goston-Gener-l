@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
 import './Button.css';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'onDark';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'onDark' | 'outlineLight';
 type Size = 'md' | 'lg';
 
 interface Common {

@@ -2,30 +2,30 @@ import { ANCHOR, cta, hero } from '../config/site';
 import { track } from '../lib/analytics';
 import { scrollToId } from '../lib/scroll';
 import { Button } from '../components/Button';
-import { ImageSlot } from '../components/ImageSlot';
 import { Stats } from '../components/Stats';
 import { PH } from '../components/PlaceholderText';
 import { ArrowDownIcon, ArrowRightIcon, CheckIcon } from '../components/Icons';
 import './Hero.css';
 
 /**
- * Hero: klasszikus kétosztatú elrendezés.
+ * Hero: teljes szélességű háttérfotó, rajta a mondanivaló.
  *
- *   BAL   balra zárt üzenet — kiemelés, címsor, bevezető, két gomb, és
- *         alattuk a három bizalmi pont egymás alatt.
- *   JOBB  egyetlen nagy fotó, függőlegesen középre igazítva.
- *   ALUL  teljes szélességű számsáv.
+ *   FOTÓ    a szekció teljes területét kitölti, a fejléc mögé is befut —
+ *           így nincs vízszintes törés az oldal tetején.
+ *   FÁTYOL  antracit színátmenet a fotón. Ez nem dekoráció: enélkül a
+ *           szöveg kontrasztja a fotó világos foltjain leesne. Alul a
+ *           legerősebb, felül szinte átlátszó, hogy a kép megmaradjon.
+ *   SZÖVEG  a fotó ALSÓ HARMADÁBAN, balra zárva. Felül marad szabad
+ *           képfelület — ettől lesz levegős.
+ *   SZÁMOK  a fotó alsó peremén, hajszálvonal fölött.
+ *   PÁRKÁNY a fotó ALATT, világos sávon: a három bizalmi pont.
  *
- * A forrásrend szándékosan üzenet → kép → bizalmi pontok: mobilon így a
- * fotó rögtön a gombok után jön, nem a szöveges lista mögé szorul. A
- * desktop elrendezést a rács állítja vissza.
- *
- * Az `hero.gallery` tömb első eleme kerül ki. A másik kettő a
- * konfigurációban marad: ha másik képet akarsz, elég a sorrendet
- * átírni vagy a fájlt felülírni, kódot nem kell módosítani.
+ * SZÁNDÉKOSAN KEVÉS ELEM VAN A KÉPEN. A három bizalmi pont azért került
+ * a kép alá, mert szöveges felsorolásként a fotón zsúfolttá tette volna
+ * a kompozíciót — a képnek lélegeznie kell.
  */
 export function Hero() {
-  const shot = hero.gallery[0];
+  const { cover } = hero;
 
   const onQuote = () => {
     track('cta_quote_click', { placement: 'hero' });
@@ -39,47 +39,69 @@ export function Hero() {
 
   return (
     <section className="hero" id={ANCHOR.hero} aria-labelledby="hero-cim">
-      <div className="hero__bg" aria-hidden="true" />
-
-      <div className="hero__inner container">
-        {/* --- Bal oszlop: az üzenet --- */}
-        <div className="hero__copy">
-          <p className="eyebrow hero__eyebrow">
-            <PH value={hero.eyebrow} />
-          </p>
-
-          <h1 id="hero-cim" className="hero__title">
-            {hero.title}
-          </h1>
-
-          <p className="hero__lead">{hero.lead}</p>
-
-          <div className="hero__actions">
-            <Button size="lg" onClick={onQuote} icon={<ArrowDownIcon />}>
-              {cta.primary}
-            </Button>
-            <Button size="lg" variant="secondary" onClick={onServices} icon={<ArrowRightIcon />}>
-              {cta.secondary}
-            </Button>
-          </div>
-
-        </div>
-
-        {/* --- Jobb oszlop: egyetlen kép ---
-            A forrásban a bizalmi pontok ELŐTT áll, hogy mobilon rögtön a
-            gombok után jöjjön. Desktopon a rács teszi a jobb hasábba. */}
-        <div className="hero__media">
-          <ImageSlot
-            src={shot.image}
-            alt={shot.alt}
-            ratio="4 / 5"
-            label="[HERO KÉP]"
-            priority
-            sizes="(min-width: 980px) 46vw, 100vw"
+      <div className="hero__frame">
+        {/* A fotó. Nem `background-image`: így kap srcset-et, és a böngésző
+            a legnagyobb tartalmi elemként (LCP) előre tudja tölteni. */}
+        <picture className="hero__photo">
+          <source
+            media="(min-width: 760px)"
+            srcSet={`${cover.wideSmall} 1100w, ${cover.wide} 1800w`}
+            sizes="100vw"
           />
+          <img
+            src={cover.portrait}
+            srcSet={`${cover.portraitSmall} 700w, ${cover.portrait} 1000w`}
+            sizes="100vw"
+            alt={cover.alt}
+            fetchPriority="high"
+            decoding="sync"
+            draggable={false}
+          />
+        </picture>
+
+        <div className="hero__veil" aria-hidden="true" />
+
+        <div className="hero__inner container">
+          <div className="hero__copy">
+            <p className="hero__eyebrow">
+              <PH value={hero.eyebrow} />
+            </p>
+
+            <h1 id="hero-cim" className="hero__title">
+              {hero.title}
+            </h1>
+
+            <p className="hero__lead">{hero.lead}</p>
+
+            <div className="hero__actions">
+              <Button size="lg" onClick={onQuote} icon={<ArrowDownIcon />}>
+                {cta.primary}
+              </Button>
+              <Button
+                size="lg"
+                variant="outlineLight"
+                onClick={onServices}
+                icon={<ArrowRightIcon />}
+              >
+                {cta.secondary}
+              </Button>
+            </div>
+          </div>
         </div>
 
-        <ul className="hero__trust">
+      </div>
+
+      {/* --- Számsáv: önálló antracit sáv a fotó ALATT ---
+          Korábban a képre került, de telefonon a három szám egymás alá
+          csúszott, és feketére takarta a fotó alsó felét. Külön sávban
+          mindkét méreten rendezett marad, a kép pedig végig kép marad. */}
+      <div className="hero__facts">
+        <Stats onDark />
+      </div>
+
+      {/* --- Párkány: a kép alatti világos sáv --- */}
+      <div className="hero__ledge">
+        <ul className="hero__trust container">
           {hero.trust.map((point) => (
             <li key={point.title} className="hero__trust-item">
               <span className="hero__trust-icon" aria-hidden="true">
@@ -92,11 +114,6 @@ export function Hero() {
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* --- Számsáv a hero alján, teljes szélességben --- */}
-      <div className="hero__stats">
-        <Stats />
       </div>
     </section>
   );

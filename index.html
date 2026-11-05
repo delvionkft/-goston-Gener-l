@@ -11,6 +11,31 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#F7F7F7" />
 
+    <!-- A HERO HÁTTÉRFOTÓJÁNAK ELŐTÖLTÉSE.
+         A képet a React rakja ki, így a böngésző magától csak a JS
+         lefutása után tudna róla — ez a legnagyobb tartalmi elem (LCP)
+         megjelenését késlelteti. Ez a két sor még a HTML elemzésekor
+         elindítja a letöltést, pontosan azt a változatot, amelyiket a
+         <picture> is választaná.
+         HA ÁTNEVEZED A FÁJLOKAT, itt is írd át — a neveket a
+         src/config/site.ts `hero.cover` tartalmazza. -->
+    <link
+      rel="preload"
+      as="image"
+      media="(min-width: 760px)"
+      imagesrcset="/hero-cover-1100.webp 1100w, /hero-cover.webp 1800w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      media="(max-width: 759.98px)"
+      imagesrcset="/hero-cover-700.webp 700w, /hero-cover-portrait.webp 1000w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+
     <!-- CANONICAL URL — írd át az éles domainre.
          Ugyanezt az értéket állítsd be a src/config/site.ts `site.url` mezőjében is. -->
     <link rel="canonical" href="https://agostongeneral.hu/" />

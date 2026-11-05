@@ -72,6 +72,19 @@
   --btn-border: #85703B;
 }
 
+/* Fotón / sötét felületen, másodlagosként: fehér körvonal, fehér felirat.
+   A kitöltött arany gomb mellé kell egy visszafogott társ — kitöltve
+   kettő versenyezne egymással, és egyik sem vezetné a szemet. */
+.btn--outlineLight {
+  --btn-bg: transparent;
+  --btn-fg: #FFFFFF;
+  --btn-bg-hover: rgba(255, 255, 255, 0.12);
+  --btn-border: rgba(255, 255, 255, 0.55);
+}
+.btn--outlineLight:hover {
+  --btn-border: #FFFFFF;
+}
+
 /* Sötét háttéren: fehér alap, majdnem fekete felirat (kontraszt 16:1) */
 .btn--onDark {
   --btn-bg: #FFFFFF;

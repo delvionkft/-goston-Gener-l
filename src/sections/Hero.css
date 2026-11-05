@@ -1,101 +1,208 @@
+/* ===========================================================================
+   HERO — teljes szélességű háttérfotó, rajta a mondanivaló
+   ===========================================================================
+
+   Az elrendezés három rétegből áll, ebben a sorrendben:
+     1. .hero__photo   a fotó, object-fit: cover
+     2. .hero__veil    antracit színátmenet — ez teszi olvashatóvá a szöveget
+     3. .hero__inner   a szöveg, a kép alsó harmadában, balra zárva
+
+   A .hero__ledge már a fotón KÍVÜL van: világos sáv a kép alatt.
+   ======================================================================== */
+
 .hero {
   position: relative;
-  padding-top: calc(var(--header-h) + clamp(2.5rem, 1.8rem + 3.5vw, 5rem));
-  padding-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
-  overflow: hidden;
+  background: var(--c-offwhite);
 }
 
-/* Fehér alap. Szándékosan nincs rajta színezés, derengés vagy folt: a
-   komolyságot a tipográfia és a mért térköz adja, nem a háttér. Lefelé
-   egy alig érzékelhető szürkülés köti a következő szekcióhoz. */
-.hero__bg {
+/* --- A képes rész ------------------------------------------------------- */
+
+.hero__frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  overflow: hidden;
+  /* Tartalék azoknak a böngészőknek, amelyek nem ismerik az svh-t. */
+  min-height: 38rem;
+  /* Az svh a telefon címsávját is beleszámolja, így nem ugrik görgetéskor.
+     A felső korlát azért kell, hogy nagy monitoron a kép ne nyúljon
+     parttalanul — 46rem fölött már csak üres falfelület nőne. */
+  min-height: min(90svh, 46rem);
+}
+
+@media (max-width: 759px) {
+  .hero__frame {
+    min-height: 32rem;
+    min-height: min(84svh, 38rem);
+  }
+}
+
+.hero__photo,
+.hero__photo img {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--c-white) 0%, var(--c-white) 62%, var(--c-offwhite) 100%);
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-/* --- Kétosztatú elrendezés ---------------------------------------------
-   Mobilon egymás alatt: előbb az üzenet, utána a kép. Desktopon a szöveg
-   kapja a nagyobb hasábot, a kép a kisebbet — a címsornak kell dominálnia. */
+.hero__photo img {
+  object-fit: cover;
+  /* A forrásfotó sárgás vakolata túl hangos lenne nyersen. A visszafogott
+     telítettség és a hajszálnyi kontraszt a márkához hangolja, anélkül
+     hogy színszűrőt tenne rá. */
+  filter: saturate(0.82) contrast(1.04);
+}
+
+/* --- A fátyol -----------------------------------------------------------
+   Két átmenet egymáson. A függőleges adja az alapolvashatóságot, a
+   vízszintes a bal oldalt sötétíti még egy keveset — oda kerül a szöveg.
+   Felül mindkettő szinte átlátszó: a kép teteje maradjon kép. */
+
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    /* 1. Lágy, elliptikus sötétítés PONT a szövegblokk alatt. Ez nem
+       hangulatelem: enélkül a kiemelő sor és a bevezető kontrasztja a
+       vakolat világos foltjain 4.5:1 alá esett (mérve: 1.24:1 telefonon).
+       Azért ellipszis és nem doboz, mert így nem látszik panelnek. */
+    radial-gradient(
+      125% 90% at 16% 76%,
+      rgba(26, 26, 26, 0.62) 0%,
+      rgba(26, 26, 26, 0.42) 38%,
+      rgba(26, 26, 26, 0.12) 64%,
+      rgba(26, 26, 26, 0) 80%
+    ),
+    linear-gradient(
+      to right,
+      rgba(26, 26, 26, 0.6) 0%,
+      rgba(26, 26, 26, 0.26) 46%,
+      rgba(26, 26, 26, 0) 72%
+    ),
+    linear-gradient(
+      to top,
+      rgba(26, 26, 26, 0.92) 0%,
+      rgba(26, 26, 26, 0.8) 16%,
+      rgba(26, 26, 26, 0.5) 46%,
+      rgba(26, 26, 26, 0.26) 74%,
+      rgba(26, 26, 26, 0.18) 100%
+    );
+}
+
+/* Egy oszlopban nincs hova „félreállni” a szövegnek: ott a függőleges
+   átmenetnek kell az egész munkát elvégeznie. */
+@media (max-width: 759px) {
+  .hero__veil {
+    background:
+      radial-gradient(
+        145% 72% at 50% 84%,
+        rgba(26, 26, 26, 0.58) 0%,
+        rgba(26, 26, 26, 0.38) 42%,
+        rgba(26, 26, 26, 0.1) 70%,
+        rgba(26, 26, 26, 0) 86%
+      ),
+      linear-gradient(
+        to top,
+        rgba(26, 26, 26, 0.95) 0%,
+        rgba(26, 26, 26, 0.9) 30%,
+        rgba(26, 26, 26, 0.74) 58%,
+        rgba(26, 26, 26, 0.42) 82%,
+        rgba(26, 26, 26, 0.28) 100%
+      );
+  }
+}
+
+/* --- A szöveg ------------------------------------------------------------
+   `flex: 1` + `align-items: flex-end`: a blokk a rendelkezésre álló hely
+   ALJÁRA ül. Felette marad a szabad képfelület — ez adja a levegőt. */
 
 .hero__inner {
   position: relative;
-  display: grid;
-  gap: clamp(2rem, 1.5rem + 3vw, 3.5rem);
-  align-items: center;
+  display: flex;
+  align-items: flex-end;
+  flex: 1;
+  padding-top: calc(var(--header-h) + clamp(3rem, 2rem + 5vw, 7rem));
+  padding-bottom: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
 }
-
-@media (min-width: 980px) {
-  .hero__inner {
-    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
-    column-gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
-    /* Szándékos, mért térköz a gombok és a bizalmi blokk között. Korábban
-       ez a rés abból maradt, hogy a kép saját magassága feszítette szét a
-       rácsot — 96 px véletlen üresség keletkezett. */
-    row-gap: clamp(2rem, 1.6rem + 1.5vw, 3rem);
-    align-items: stretch;
-  }
-
-  /* A forrásrend üzenet → kép → bizalmi pontok (a mobil miatt). A rács
-     itt kettéosztja: balra a szöveg két sorban, jobbra a kép, ami
-     mindkettőt átéri. */
-  .hero__copy {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .hero__trust {
-    grid-column: 1;
-    grid-row: 2;
-    align-self: end;
-  }
-
-  .hero__media {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-  }
-
-  /* A MAGASSÁGOT A TARTALOM ADJA, a kép igazodik hozzá. A kép abszolút
-     pozícióval tölti ki az oszlopot, így a saját természetes magassága
-     (a 840×1050-es forrásé) nem feszíti szét a rácsot — e nélkül a bal
-     oszlopban 120 px véletlen üresség keletkezett. */
-  .hero__media {
-    position: relative;
-    min-height: 26rem;
-  }
-
-  .hero__media .imgslot {
-    position: absolute;
-    inset: 0;
-    aspect-ratio: auto;
-  }
-}
-
-/* --- Bal oszlop: üzenet --- */
 
 .hero__copy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  text-align: left;
   min-width: 0;
+  /* A sorhossz korlátja fontosabb, mint hogy kitöltse a hasábot: a
+     széthúzott címsor olvashatatlan és olcsó hatású. */
+  max-width: 38rem;
+}
+
+/* A kiemelő sor FEHÉR, nem arany. A világos arany (#C4AC72) a vakolat
+   világos foltjain 1.24:1-re esett — olvashatatlan. Az arany így sem
+   tűnik el: a sor elé kerülő rövid vonalként marad meg, ami dekoráció,
+   tehát 3:1 a küszöbe, és azt bőven hozza. */
+/* Keskeny képernyőn a szövegblokk majdnem az egész fotót elfoglalja, így
+   a kép aljához kötött fátyol nem ér fel a kiemelő sorig (mérve: 3.03:1
+   320 px-en). Ez a sötétítés magához a SZÖVEGBLOKKHOZ tapad, ezért akkor
+   is a szöveg mögött van, ha a blokk magasabbra csúszik.
+
+   A negatív margó pontosan kioltja a paddinget: az elrendezés nem mozdul,
+   a sötétítés viszont túlnyúlik a szövegen, és lágyan elfogy — így nem
+   látszik panelnek. A túlnyúlást a .hero__frame overflow: hidden vágja. */
+@media (max-width: 759px) {
+  .hero__copy {
+    margin: -2.5rem -3.25rem -2rem;
+    padding: 2.5rem 3.25rem 2rem;
+    background: radial-gradient(
+      92% 88% at 40% 50%,
+      rgba(26, 26, 26, 0.58) 0%,
+      rgba(26, 26, 26, 0.46) 42%,
+      rgba(26, 26, 26, 0.16) 72%,
+      rgba(26, 26, 26, 0) 88%
+    );
+  }
 }
 
 .hero__eyebrow {
-  margin-bottom: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: clamp(0.875rem, 0.7rem + 0.6vw, 1.25rem);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.hero__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 1.75rem;
+  height: 2px;
+  background: var(--c-gold-light);
 }
 
 .hero__title {
-  max-width: 15ch;
-  margin-bottom: var(--sp-5);
-  letter-spacing: -0.025em;
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(2.125rem, 1.5rem + 3.1vw, 4rem);
+  line-height: 1.07;
+  letter-spacing: -0.028em;
+  color: var(--text-on-dark);
+  text-wrap: balance;
 }
 
 .hero__lead {
-  max-width: 46ch;
+  margin-top: clamp(1rem, 0.8rem + 0.9vw, 1.5rem);
+  max-width: 44ch;
   font-size: var(--fs-lg);
   line-height: 1.6;
-  color: var(--text-muted);
+  /* Nem a --text-on-dark-muted (#B8B8B8): az a tömör antracitra van
+     hangolva. Fotón a fehér áttetsző változata stabilabb, mert a háttér
+     világosabb foltjain is fehér marad, nem szürkül bele. */
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .hero__actions {
@@ -110,27 +217,42 @@
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    max-width: 24rem;
+    max-width: 22rem;
   }
 }
 
-/* --- Bizalmi pontok: a gombok alatt, egymás alatt --- */
+/* --- Számsáv: önálló antracit sáv a kép alatt -----------------------------
+   A szín megegyezik a fátyol alsó végével, ezért a kép és a sáv között
+   nincs látható törés — a kettő egy tömbként olvasódik, és alatta a
+   fehér párkány annál élesebben válik el. */
 
-.hero__trust {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
-  width: 100%;
-  padding-top: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-  border-top: 1px solid var(--c-line);
-  list-style: none;
+.hero__facts {
+  position: relative;
+  background: var(--c-ink-950);
 }
 
-/* Egy oszlopban a felső margó adja a távolságot. Desktopon NEM kell: ott
-   a rács sorköze méri ki, és a margó csak elrontaná az igazítást. */
-@media (max-width: 979px) {
+/* --- Párkány: a kép alatti világos sáv ----------------------------------- */
+
+.hero__ledge {
+  position: relative;
+  background: var(--c-white);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.hero__trust {
+  display: grid;
+  gap: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  padding-top: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  padding-bottom: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  list-style: none;
+  /* Csak függőlegesen! A `margin: 0` kiütné a .container
+     `margin-inline: auto` szabályát, és a lista a lap szélére csúszna. */
+  margin-block: 0;
+}
+
+@media (min-width: 760px) {
   .hero__trust {
-    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -138,6 +260,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--sp-3);
+  min-width: 0;
 }
 
 /* Keret és korong nélkül: csak a pipa, márkaszínben. */
@@ -147,7 +270,7 @@
   flex: none;
   width: 20px;
   height: 20px;
-  margin-top: 2px;
+  margin-top: 1px;
   color: var(--c-accent-text);
 }
 
@@ -175,37 +298,4 @@
   font-size: var(--fs-xs);
   line-height: 1.55;
   color: var(--text-muted);
-}
-
-/* --- Jobb oszlop: a kép --- */
-
-.hero__media {
-  position: relative;
-  min-width: 0;
-}
-
-.hero__media .imgslot {
-  border-radius: var(--r-md);
-  overflow: hidden;
-  box-shadow:
-    0 0 0 1px var(--c-line),
-    0 22px 44px -30px rgba(24, 24, 24, 0.35);
-}
-
-/* Szögletesebb sarok és egy hajszálvékony kontúr a lágy, szórt árnyék
-   helyett. A kemény él építészeti, mért hatást ad; a nagy elmosott árnyék
-   lágyabbnak, olcsóbbnak olvasódik. */
-@media (max-width: 979px) {
-  .hero__media .imgslot {
-    aspect-ratio: 4 / 3;
-  }
-}
-
-/* --- Számsáv --- */
-
-.hero__stats {
-  position: relative;
-  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
-  padding-top: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-  border-top: 1px solid var(--c-line);
 }

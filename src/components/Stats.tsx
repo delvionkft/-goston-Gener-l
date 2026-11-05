@@ -10,7 +10,7 @@ import './Stats.css';
  * könnyeddé teszi az oldalt anélkül, hogy eltakarná a tartalmat.
  * Csökkentett mozgás esetén rögtön a végértéket mutatja.
  */
-export function Stats() {
+export function Stats({ onDark = false }: { onDark?: boolean }) {
   const ref = useRef<HTMLUListElement>(null);
   const reduced = usePrefersReducedMotion();
   const [animated, setAnimated] = useState(0);
@@ -52,7 +52,7 @@ export function Stats() {
   }, [reduced]);
 
   return (
-    <ul className="stats" ref={ref}>
+    <ul className={onDark ? 'stats stats--on-dark' : 'stats'} ref={ref}>
       {stats.map((item) => (
         <li className="stats__item" key={item.label}>
           <span className="stats__value">

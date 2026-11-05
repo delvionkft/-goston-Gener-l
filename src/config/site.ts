@@ -214,16 +214,37 @@ export const hero = {
     },
   ],
   /**
-   * A hero alatti képsáv. Három kép: középen a legerősebb (ez látszik
-   * mobilon is elsőként), két oldalt egy-egy kiegészítő.
+   * A HERO HÁTTÉRFOTÓJA.
    *
-   * A képek a /public mappában vannak, a saját referenciafotóitokból
-   * 4:5 arányra vágva. Ha jobb fotó készül, elég felülírni a fájlt
-   * ugyanezzel a névvel. Ajánlott: 4:5 arány, WebP, 200 kB alatt.
+   * A kép teljes szélességben, a tartalom mögött fut. Két vágás készül
+   * belőle, mert a fekvő kivágás telefonon használhatatlanul szűk sávvá
+   * lapulna: `wide*` a 760 px feletti képernyőkre, `portrait*` az alatta
+   * lévőkre. A böngésző a `srcset` alapján választ méretet.
+   *
+   * HA ÚJ FOTÓT TESZEL BE, ezekkel a méretekkel írd felül a fájlokat:
+   *   hero-cover-1100.webp       1100 × 550   (2:1,  nagyobb telefon/tablet fekvő)
+   *   hero-cover.webp            1800 × 900   (2:1,  asztali)
+   *   hero-cover-700.webp         700 × 875   (4:5,  telefon)
+   *   hero-cover-portrait.webp   1000 × 1250  (4:5,  nagyobb telefon)
+   *
+   * A kompozíciónak a BAL OLDALON kell üres falfelületet hagynia: oda kerül
+   * a címsor. Jobbra jöjjenek a nyílászárók. A jelenlegi kép a meglévő
+   * referenciafotóból készült — ez a leggyengébb láncszem az oldalon, mert
+   * a forrás mindössze 1400 px széles. Nagy felbontású fotóval érezhetően
+   * jobb lesz.
+   */
+  cover: {
+    wideSmall: 'hero-cover-1100.webp',
+    wide: 'hero-cover.webp',
+    portraitSmall: 'hero-cover-700.webp',
+    portrait: 'hero-cover-portrait.webp',
+    alt: 'Felújított családi ház homlokzata új műanyag ablakokkal',
+  },
+  /**
+   * Tartalék képek. A hero már nem ezeket használja, de a fájlok megvannak:
+   * ha másik fotóra váltanál, innen tudsz választani.
    */
   gallery: [
-    /* A hero a LISTA ELSŐ elemét mutatja. Ha másik fotót szeretnél a
-       hero-ba, elég ezt a sorrendet átírni — kódot nem kell módosítani. */
     { image: 'hero-2.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal, kívülről' },
     { image: 'hero-1.webp', alt: 'Két beépített műanyag ablak egy családi ház felújított homlokzatán' },
     { image: 'hero-3.webp', alt: 'Beépített kétszárnyú műanyag ablak új külső párkánnyal' },
